@@ -9,7 +9,8 @@ import HomeLayout from "./Layout/HomeLayout";
 import Card from "./Card";
 import Product from "./items/Product";
 import TouchableRipple from "./Touchable/TouchableRipple";
-
+import Sidebar from "./Sidebar/Sidebar";
+import Menu from "./Sidebar/Menu";
 
 export {
     Layout,
@@ -22,5 +23,7 @@ export {
     HomeLayout,
     Card,
     Product,
-    TouchableRipple
+    TouchableRipple,
+    Sidebar,
+    Menu
 }

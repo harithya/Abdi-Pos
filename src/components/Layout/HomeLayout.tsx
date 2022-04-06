@@ -5,16 +5,18 @@ import { Icon, Text } from '@ui-kitten/components'
 import { color, constant, theme } from '@utils'
 import SearchBar from '../Form/SearchBar'
 import Loading from '../Loading'
-import { LayoutStateProps } from '@types'
+import { LayoutStateProps, useNavigationProps } from '@types'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { changeLayout } from 'src/redux/actions/layoutAction'
+import { useNavigation } from '@react-navigation/native'
 
 interface Props {
     search?: boolean,
     loading?: boolean
 }
 const HomeLayout: FC<Props> = ({ children, search, loading }) => {
+    const navigation: any = useNavigation();
     const layoutState: LayoutStateProps = useSelector((state: State) => state.layout);
     const dispatch = useDispatch();
 
@@ -29,7 +31,7 @@ const HomeLayout: FC<Props> = ({ children, search, loading }) => {
                 <Bubble />
                 <View style={styles.header}>
                     <View style={theme.flexStart}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.openDrawer()}>
                             <Icon name='menu' fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
                         <View style={styles.titleContainer}>

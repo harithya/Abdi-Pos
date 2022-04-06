@@ -53,13 +53,12 @@ const helper = {
         return str.replace(/_/g, " ");
     },
 
-    // format number IDR
+    // format number to idr
     formatNumber: (number: number) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0
-        }).format(number);
+        var rupiah = '';
+        var angkarev = number.toString().split('').reverse().join('');
+        for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+        return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
     }
 }
 

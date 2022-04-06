@@ -4,13 +4,14 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import Color from './src/assets/theme/color.json'
 import Mapping from './src/assets/theme/mapping.json'
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { StatusBar } from 'react-native';
 import { LogBox } from 'react-native';
 import StackNavigation from './src/routes/StackNavigation';
 import { MaterialCommunityPack } from 'src/assets/icon/material-community-icons';
 import { Provider } from 'react-redux';
 import store from 'src/redux/store';
+import 'react-native-gesture-handler';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 const App = () => {
   const MyTheme = {
@@ -26,7 +27,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer theme={MyTheme}>
-        <IconRegistry icons={MaterialCommunityPack} />
+        <IconRegistry icons={[MaterialCommunityPack, EvaIconsPack]} />
         <StatusBar barStyle={"dark-content"} translucent backgroundColor={"transparent"} />
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...Color }} customMapping={{ ...eva.mapping, ...Mapping }}>
           <StackNavigation />
