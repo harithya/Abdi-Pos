@@ -6,6 +6,10 @@ import Loading from "./Loading";
 import Input from "./Form/Input";
 import DetailLayout from "./Layout/DetailLayout";
 import HomeLayout from "./Layout/HomeLayout";
+import Card from "./Card";
+import Product from "./items/Product";
+import TouchableRipple from "./Touchable/TouchableRipple";
+
 
 export {
     Layout,
@@ -15,5 +19,8 @@ export {
     Loading,
     Input,
     DetailLayout,
-    HomeLayout
+    HomeLayout,
+    Card,
+    Product,
+    TouchableRipple
 }

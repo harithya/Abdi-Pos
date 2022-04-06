@@ -14,7 +14,7 @@ const SearchBar: FC<Props> = (props) => {
             <Input
                 containerStyle={theme.marginBottom0}
                 style={[styles.searchbar, props.inputStyle]}
-                leftIcon="search-outline"
+                leftIcon="magnify"
                 placeholder='Apa yang ingin anda cari ?'
             />
         </View>

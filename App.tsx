@@ -8,6 +8,9 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { StatusBar } from 'react-native';
 import { LogBox } from 'react-native';
 import StackNavigation from './src/routes/StackNavigation';
+import { MaterialCommunityPack } from 'src/assets/icon/material-community-icons';
+import { Provider } from 'react-redux';
+import store from 'src/redux/store';
 
 const App = () => {
   const MyTheme = {
@@ -21,13 +24,15 @@ const App = () => {
   LogBox.ignoreAllLogs();
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <IconRegistry icons={EvaIconsPack} />
-      <StatusBar barStyle={"dark-content"} translucent backgroundColor={"transparent"} />
-      <ApplicationProvider {...eva} theme={{ ...eva.light, ...Color }} customMapping={{ ...eva.mapping, ...Mapping }}>
-        <StackNavigation />
-      </ApplicationProvider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer theme={MyTheme}>
+        <IconRegistry icons={MaterialCommunityPack} />
+        <StatusBar barStyle={"dark-content"} translucent backgroundColor={"transparent"} />
+        <ApplicationProvider {...eva} theme={{ ...eva.light, ...Color }} customMapping={{ ...eva.mapping, ...Mapping }}>
+          <StackNavigation />
+        </ApplicationProvider>
+      </NavigationContainer>
+    </Provider>
   )
 }
 

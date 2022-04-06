@@ -11,14 +11,13 @@ const LoginScreen: FC<PageProps> = ({ navigation }) => {
             <View style={styles.body}>
                 <View style={styles.form}>
                     <Input
-                        leftIcon='person-outline'
+                        leftIcon='account'
                         label='Username'
                         placeholder='username@mail.com'
                         autoCapitalize={'none'}
-
                     />
                     <Input
-                        leftIcon='lock-outline'
+                        leftIcon='key'
                         label='Password'
                         placeholder='your password'
                         secureTextEntry
