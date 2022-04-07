@@ -40,7 +40,7 @@ const HomeLayout: FC<Props> = ({ children, search, loading }) => {
                         </View>
                     </View>
                     <View style={theme.flexStart}>
-                        <TouchableOpacity style={styles.right}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Barcode")} style={styles.right}>
                             <Icon name='barcode-scan' fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleChangeLayout} style={styles.right}>

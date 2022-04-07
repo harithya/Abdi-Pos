@@ -1,10 +1,11 @@
 import { StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { Cart, DetailLayout, SelectPeople } from '@components'
 import { color, constant, theme } from '@utils'
 import { Button, Text } from '@ui-kitten/components'
+import { PageProps } from '@types'
 
-const CartScreen = () => {
+const CartScreen: FC<PageProps> = ({ navigation }) => {
     return (
         <DetailLayout title='Keranjang' back>
             <SelectPeople />
@@ -15,10 +16,10 @@ const CartScreen = () => {
                     <Text style={theme.fontMedium} category={"p2"}>Rp 17.500</Text>
                 </View>
                 <View style={[theme.flexBetween, theme.marginTop10]}>
-                    <Button status={"danger"} size="small" style={styles.button} appearance={"outline"}>
+                    <Button status={"danger"} style={styles.button} appearance={"outline"}>
                         Hapus Keranjang
                     </Button>
-                    <Button size="small" style={styles.button}>Bayar Sekarang</Button>
+                    <Button onPress={() => navigation.navigate("Checkout")} style={styles.button}>Bayar Sekarang</Button>
                 </View>
             </View>
         </DetailLayout>

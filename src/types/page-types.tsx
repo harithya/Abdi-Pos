@@ -9,7 +9,10 @@ type RootStackList = {
     PasswordEdit: undefined,
     Cart: undefined,
     Customer: undefined,
-    CartShow: undefined
+    CartShow: undefined,
+    Checkout: undefined,
+    Finish: undefined,
+    Barcode: undefined
 }
 
 
