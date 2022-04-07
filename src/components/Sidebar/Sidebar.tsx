@@ -3,8 +3,11 @@ import React from 'react'
 import { theme } from '@utils'
 import { Divider, Text } from '@ui-kitten/components'
 import Menu from './Menu'
+import { useNavigation } from '@react-navigation/native'
+import { useNavigationProps } from '@types'
 
 const Sidebar = () => {
+    const navigation: useNavigationProps = useNavigation();
     return (
         <View>
             <View style={styles.profile}>
@@ -17,16 +20,14 @@ const Sidebar = () => {
             <Divider />
             <View style={styles.section}>
                 <Menu
-                    title='Kasir'
-                    icon='tv-outline'
-                />
-                <Menu
                     title='Profile'
                     icon='person-outline'
+                    onPress={() => navigation.navigate("ProfileEdit")}
                 />
                 <Menu
                     title='Ganti Password'
                     icon='lock-outline'
+                    onPress={() => navigation.navigate("PasswordEdit")}
                 />
                 <Menu
                     title='History Transaksi'

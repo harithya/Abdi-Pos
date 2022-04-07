@@ -22,7 +22,7 @@ const DetailLayout: FC<Props> = ({ title, children, back, search, loading }) => 
                 <Bubble />
                 <View style={styles.header}>
                     {back && <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-                        <Icon name='arrow-ios-back-outline' fill={color.white} style={styles.icon} />
+                        <Icon name='arrow-ios-back-outline' pack='eva' fill={color.white} style={styles.icon} />
                     </TouchableOpacity>}
                     <Text status={"control"} category="h6" style={styles.title}>{title}</Text>
                 </View>

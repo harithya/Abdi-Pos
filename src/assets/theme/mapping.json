@@ -115,7 +115,15 @@
                   "backgroundColor" :"white",
                   "state": {
                     "active": {
-                        "backgroundColor": "#F2F2F2"
+                        "backgroundColor": "rgba(143, 155, 179, 0.2)"
+                    }
+                  }
+                },
+                "danger" :{
+                  "backgroundColor" :"white",
+                  "state": {
+                    "active": {
+                        "backgroundColor": "rgba(143, 155, 179, 0.2)"
                     }
                   }
                 },
@@ -123,7 +131,7 @@
                   "backgroundColor" :"white",
                   "state": {
                     "active": {
-                        "backgroundColor": "#F2F2F2"
+                        "backgroundColor": "rgba(143, 155, 179, 0.2)"
                     }
                   }
                 }

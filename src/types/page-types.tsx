@@ -7,10 +7,9 @@ type RootStackList = {
     Home: undefined,
     ProfileEdit: undefined,
     PasswordEdit: undefined,
-    Organ: undefined,
-    Medicine: undefined,
-    Finish: undefined,
-    Information: undefined
+    Cart: undefined,
+    Customer: undefined,
+    CartShow: undefined
 }
 
 

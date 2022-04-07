@@ -32,7 +32,7 @@ const HomeLayout: FC<Props> = ({ children, search, loading }) => {
                 <View style={styles.header}>
                     <View style={theme.flexStart}>
                         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                            <Icon name='menu' fill={color.white} style={styles.icon} />
+                            <Icon name='menu-2-outline' pack='eva' fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
                         <View style={styles.titleContainer}>
                             <Text status={"control"} category="h6" style={styles.title}>{'Semuanya'}</Text>

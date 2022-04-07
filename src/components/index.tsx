@@ -11,6 +11,9 @@ import Product from "./items/Product";
 import TouchableRipple from "./Touchable/TouchableRipple";
 import Sidebar from "./Sidebar/Sidebar";
 import Menu from "./Sidebar/Menu";
+import SelectInfo from "./SelectInfo";
+import SelectPeople from "./SelectPeople";
+import Cart from "./Cart";
 
 export {
     Layout,
@@ -25,5 +28,8 @@ export {
     Product,
     TouchableRipple,
     Sidebar,
-    Menu
+    Menu,
+    SelectInfo,
+    SelectPeople,
+    Cart
 }

@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet } from 'react-native'
 import React from 'react'
-import { HomeLayout, Product } from '@components'
+import { HomeLayout, Product, SelectInfo } from '@components'
 import { useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { constant } from '@utils'
@@ -42,6 +42,7 @@ const HomeScreen = () => {
                     />
                 }
             />
+            <SelectInfo value={5} />
         </HomeLayout>
     )
 }

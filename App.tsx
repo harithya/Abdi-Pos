@@ -28,7 +28,7 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer theme={MyTheme}>
         <IconRegistry icons={[MaterialCommunityPack, EvaIconsPack]} />
-        <StatusBar barStyle={"dark-content"} translucent backgroundColor={"transparent"} />
+        <StatusBar barStyle={"light-content"} translucent backgroundColor={"transparent"} />
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...Color }} customMapping={{ ...eva.mapping, ...Mapping }}>
           <StackNavigation />
         </ApplicationProvider>
