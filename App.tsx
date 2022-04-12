@@ -15,6 +15,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { helper } from '@utils';
 import Orientation from 'react-native-orientation';
 import { QueryClient, QueryClientProvider, } from 'react-query';
+import { fetchCategory } from 'src/redux/actions/categoryAction';
 if (__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
 }
@@ -29,12 +30,17 @@ const App = () => {
     },
   };
 
+  console.log("hi")
+
   useEffect(() => {
     helper.isTablet() ? Orientation.lockToLandscape() : Orientation.lockToPortrait();
   }, [])
 
 
   LogBox.ignoreAllLogs();
+  store.dispatch(fetchCategory())
+
+  //FETCH MASTER
 
   return (
     <Provider store={store}>

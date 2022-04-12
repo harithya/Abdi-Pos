@@ -7,6 +7,8 @@ import { State } from 'src/redux/reducer';
 import { SearchStateProps } from '@types';
 import { color, constant, theme } from '@utils';
 import { Button } from '@ui-kitten/components';
+import { useMutation } from 'react-query';
+import { http } from '@services';
 
 const CustomerImportScreen = () => {
     const [data, setData] = useState<Contact[]>([])
@@ -74,12 +76,20 @@ const CustomerImportScreen = () => {
                 })
                 setData(searchData)
             } else {
-                // await fetchContact();
+                await fetchContact();
             }
         }
         searchData();
     }, [searchState.data])
 
+    // const postCustomer = useMutation(async() => {
+    //     const req =await http.post("")
+    // })
+
+    // get contact selected
+    const getContactSelected = () => {
+        return data.filter(item => selectedContact.includes(item.recordID))
+    }
 
 
     return (

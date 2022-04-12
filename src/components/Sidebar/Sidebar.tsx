@@ -4,17 +4,20 @@ import { theme } from '@utils'
 import { Divider, Text } from '@ui-kitten/components'
 import Menu from './Menu'
 import { useNavigation } from '@react-navigation/native'
-import { useNavigationProps } from '@types'
+import { AuthStateProps, useNavigationProps } from '@types'
+import { useSelector } from 'react-redux'
+import { State } from 'src/redux/reducer'
 
 const Sidebar = () => {
     const navigation: useNavigationProps = useNavigation();
+    const authState: AuthStateProps = useSelector((state: State) => state.auth);
     return (
         <View>
             <View style={styles.profile}>
-                <Image source={{ uri: "http://via.placeholder.com/640x640" }} style={styles.img} />
+                <Image source={{ uri: authState.avatar }} style={styles.img} />
                 <View>
-                    <Text style={theme.fontSemiBold} numberOfLines={1}>Harithya Wisesa</Text>
-                    <Text category={'p2'} style={theme.marginTop5} appearance='hint'>harithya77@gmail.com</Text>
+                    <Text style={theme.fontSemiBold} numberOfLines={1}>{authState.name}</Text>
+                    <Text category={'p2'} style={theme.marginTop5} appearance='hint'>Kasir</Text>
                 </View>
             </View>
             <Divider />

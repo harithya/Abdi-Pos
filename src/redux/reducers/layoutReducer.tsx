@@ -1,7 +1,7 @@
 import { LayoutStateProps, ReducerProps } from "@types"
 
 const initialState: LayoutStateProps = {
-    data: 'grid'
+    data: 'list'
 }
 
 export default (state = initialState, { type, payload }: ReducerProps) => {

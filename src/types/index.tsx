@@ -34,6 +34,38 @@ export interface AuthStateProps {
     phone?: string
 }
 
+export interface CategoryStateProps {
+    data: CategoryResultProps[],
+    temp: CategoryResultProps[],
+    selected: CategoryResultProps
+}
+
+
+
+//pagination
+export interface PaginationProps {
+    current_page: number,
+    data?: Array<any>,
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Link[];
+    next_page_url: null;
+    path: string;
+    per_page: number;
+    prev_page_url: null;
+    to: number;
+    total: number;
+}
+
+interface Link {
+    url: null | string;
+    label: string;
+    active: boolean;
+}
+
+
 
 
 // Htpp request response
@@ -45,4 +77,23 @@ export interface UserResultProps {
     spesialis: string,
     username: string,
     no_hp?: string
+}
+
+export interface CategoryResultProps {
+    id: number,
+    nama: string
+}
+
+export interface CustomerResultProps {
+    id: number;
+    nama: string;
+    tanggal_lahir: string;
+    no_hp: string;
+    jenis_kelamin: string;
+    alamat: string;
+    jenis_identitas_id?: any;
+    no_identitas?: any;
+    alergi_khusus?: any;
+    keterangan: string;
+    golongan_darah?: any;
 }

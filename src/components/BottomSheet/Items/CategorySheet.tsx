@@ -1,164 +1,63 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
-import React, { Fragment } from 'react'
+import { StyleSheet, View } from 'react-native'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Text } from '@ui-kitten/components';
 import { constant, theme } from '@utils';
 import Input from 'src/components/Form/Input';
 import { FlatList } from 'react-native-gesture-handler';
 import TouchableRipple from 'src/components/Touchable/TouchableRipple';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from 'src/redux/reducer';
+import { CategoryResultProps, CategoryStateProps } from '@types';
+import { searchCategory, selectedCategory } from 'src/redux/actions/categoryAction';
+import { SheetManager } from 'react-native-actions-sheet';
 
-const data = [
-    {
-        "nama": "Perlengkapan New Normal"
-    },
-    {
-        "nama": "Alat Kesehatan"
-    },
-    {
-        "nama": "Obat Lambung & Saluran Pencernaan"
-    },
-    {
-        "nama": "Perlengkapan P3K"
-    },
-    {
-        "nama": "Obat Saraf & Otak"
-    },
-    {
-        "nama": "Obat Kulit"
-    },
-    {
-        "nama": "Alat Kontrasepsi & Hormon"
-    },
-    {
-        "nama": "Asupan Gizi & Nutrisi"
-    },
-    {
-        "nama": "Obat Batuk dan Flu"
-    },
-    {
-        "nama": "Obat Jantung"
-    },
-    {
-        "nama": "Obat Alergi"
-    },
-    {
-        "nama": "Obat Mata"
-    },
-    {
-        "nama": "Asupan Vitamin & Suplemen"
-    },
-    {
-        "nama": "Obat Otot, Tulang dan Sendi"
-    },
-    {
-        "nama": "Obat Mulut & Tenggorokan"
-    },
-    {
-        "nama": "Produk Perawatan Kecantikan"
-    },
-    {
-        "nama": "Obat Antidot"
-    },
-    {
-        "nama": "Asupan Makanan & Minuman Sehat"
-    },
-    {
-        "nama": "Obat Jenis Onkologi"
-    },
-    {
-        "nama": "Larutan Steril"
-    },
-    {
-        "nama": "Obat Saluran Kemih & Prostat"
-    },
-    {
-        "nama": "Obat Anestesi"
-    },
-    {
-        "nama": "Obat Anti Virus"
-    },
-    {
-        "nama": "Obat Antibiotik"
-    },
-    {
-        "nama": "Suplemen Fitness"
-    },
-    {
-        "nama": "Obat Demam"
-    },
-    {
-        "nama": "Obat Ambeien (Wasir)"
-    },
-    {
-        "nama": "Produk Konsumen"
-    },
-    {
-        "nama": "Obat Kolesterol"
-    },
-    {
-        "nama": "Produk Ibu Hamil dan Menyusui"
-    },
-    {
-        "nama": "Obat Antiseptik"
-    },
-    {
-        "nama": "Obat Anti Jamur"
-    },
-    {
-        "nama": "Obat Topikal"
-    },
-    {
-        "nama": "Obat Hipertensi"
-    },
-    {
-        "nama": "Obat Asma"
-    },
-    {
-        "nama": "Obat Diabetes"
-    },
-    {
-        "nama": "Obat Herbal"
-    },
-    {
-        "nama": "Obat Diet"
-    },
-    {
-        "nama": "Obat Anti Nyeri"
-    },
-    {
-        "nama": "Obat Telinga"
-    },
-    {
-        "nama": "Obat Elektrolit"
-    },
-    {
-        "nama": "Obat Anti Inflamasi"
-    },
-    {
-        "nama": "Obat Asam Urat"
-    },
-    {
-        "nama": "Produk Kesehatan Darah"
-    },
-    {
-        "nama": "Gangguan Tidur"
-    },
-    {
-        "nama": "Produk Bayi dan Anak"
-    }
-];
+
 const CategorySheet = () => {
+    const categoryState: CategoryStateProps = useSelector((state: State) => state.category);
+    const [search, setSearch] = useState('')
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(searchCategory(search))
+    }, [search])
+
+    const handleSelected = (item: CategoryResultProps) => {
+        dispatch(selectedCategory(item))
+        SheetManager.hide("bottomSheet");
+    }
+
+    const remoeveSelected = () => {
+        dispatch(selectedCategory({
+            id: 0,
+            nama: ''
+        }))
+        SheetManager.hide("bottomSheet");
+    }
+
+
     return (
         <Fragment>
             <View style={styles.searchContainer}>
-                <Input placeholder='Apa yang ingin anda cari ?' style={styles.searchbar} leftIcon='magnify' />
+                <Input
+                    placeholder='Apa yang ingin anda cari ?'
+                    style={styles.searchbar}
+                    containerStyle={[theme.flex1, theme.marginBottom0]}
+                    leftIcon='magnify'
+                    value={search}
+                    rightIcon={search.length > 0 ? 'close-circle-outline' : undefined}
+                    righIconOnPress={() => setSearch('')}
+                    onChangeText={(val) => setSearch(val)}
+                />
+                {categoryState.selected.id > 0 &&
+                    <Text status={"danger"} category="p2" style={styles.remove} onPress={remoeveSelected}>Hapus Filter</Text>}
             </View>
             <FlatList
-                data={data}
+                data={categoryState.data}
                 nestedScrollEnabled
                 style={styles.flatlist}
                 keyExtractor={(item) => item.nama}
                 renderItem={({ item }) =>
-                    <TouchableRipple key={item.nama}>
+                    <TouchableRipple onPress={() => handleSelected(item)} key={item.nama}>
                         <View style={styles.list}>
                             <Text>{item.nama}</Text>
                         </View>
@@ -179,6 +78,8 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         paddingHorizontal: constant.container,
+        ...theme.flexStart,
+        marginBottom: 10
     },
     searchbar: {
         height: 45,
@@ -186,5 +87,9 @@ const styles = StyleSheet.create({
     },
     flatlist: {
         maxHeight: 400
+    },
+    remove: {
+        ...theme.fontSemiBold,
+        marginLeft: 20
     }
 })

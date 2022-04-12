@@ -18,6 +18,7 @@ import BottomSheet from "./BottomSheet";
 import CategorySheet from "./BottomSheet/Items/CategorySheet";
 import List from "./items/List";
 import Empty from "./Status/Empty";
+import Customer from "./items/Customer";
 
 export {
     Layout,
@@ -39,5 +40,6 @@ export {
     BottomSheet,
     CategorySheet,
     List,
-    Empty
+    Empty,
+    Customer
 }

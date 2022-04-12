@@ -2,10 +2,10 @@ import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-nativ
 import React, { FC } from 'react'
 import Bubble from '../Bubble'
 import { Icon, Text } from '@ui-kitten/components'
-import { color, constant, theme } from '@utils'
+import { color, constant, helper, theme } from '@utils'
 import SearchBar from '../Form/SearchBar'
 import Loading from '../Loading'
-import { LayoutStateProps, useNavigationProps } from '@types'
+import { CategoryStateProps, LayoutStateProps, useNavigationProps } from '@types'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { changeLayout } from 'src/redux/actions/layoutAction'
@@ -26,6 +26,9 @@ const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory }) =
         dispatch(changeLayout(value))
     }
 
+    const categoryState: CategoryStateProps = useSelector((state: State) => state.category);
+
+
     return (
         <View style={theme.flex1}>
             <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch]}>
@@ -35,9 +38,11 @@ const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory }) =
                         <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.openDrawer()}>
                             <Icon name='menu-2-outline' pack='eva' fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onPressCategory} activeOpacity={0.8}>
-                            <View style={styles.titleContainer}>
-                                <Text status={"control"} category="h6" style={styles.title}>{'Semuanya'}</Text>
+                        <TouchableOpacity style={styles.touchableTitle} onPress={onPressCategory} activeOpacity={0.8}>
+                            <View style={[styles.titleContainer, theme.flex1]}>
+                                <Text status={"control"} numberOfLines={1} category="h6" style={styles.title}>
+                                    {categoryState.selected.nama === '' ? 'Semuanya' : categoryState.selected.nama}
+                                </Text>
                                 <Icon name='chevron-down' fill={color.white} style={styles.more} />
                             </View>
                         </TouchableOpacity>
@@ -105,5 +110,8 @@ const styles = StyleSheet.create({
     },
     right: {
         marginLeft: 16
+    },
+    touchableTitle: {
+        maxWidth: helper.isTablet() ? undefined : 220,
     }
 })
