@@ -30,6 +30,11 @@ const Sidebar = () => {
                     onPress={() => navigation.navigate("PasswordEdit")}
                 />
                 <Menu
+                    title='Pelanggan'
+                    icon='person-add-outline'
+                    onPress={() => navigation.navigate("Customer")}
+                />
+                <Menu
                     title='History Transaksi'
                     icon='refresh-outline'
                 />

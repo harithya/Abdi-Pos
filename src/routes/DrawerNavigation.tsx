@@ -9,9 +9,7 @@ const DrawerNavigation = () => {
         <Drawer.Navigator
             initialRouteName='DashboardDrawer'
             screenOptions={{
-                headerShown: false, drawerStyle: {
-                    width: '75%',
-                },
+                headerShown: false,
             }}
             drawerContent={(props) => <Sidebar />}
         >

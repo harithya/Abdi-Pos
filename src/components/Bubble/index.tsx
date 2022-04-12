@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     container: {
         position: "absolute",
         right: -70,
-        top: -70
+        top: -70,
     },
     body: {
         position: "relative"

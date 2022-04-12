@@ -1,4 +1,5 @@
 import moment from "moment";
+import DeviceInfo from 'react-native-device-info';
 
 const helper = {
     space: (index: number, marginValue = 20) => {
@@ -59,7 +60,14 @@ const helper = {
         var angkarev = number.toString().split('').reverse().join('');
         for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
         return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+    },
+
+    isTablet: () => {
+        // return Device.isTablet
+        return DeviceInfo.isTablet();
     }
+
+
 }
 
 

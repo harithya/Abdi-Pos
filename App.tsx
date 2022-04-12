@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
@@ -12,7 +12,14 @@ import { Provider } from 'react-redux';
 import store from 'src/redux/store';
 import 'react-native-gesture-handler';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { helper } from '@utils';
+import Orientation from 'react-native-orientation';
+import { QueryClient, QueryClientProvider, } from 'react-query';
+if (__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
+}
 
+const queryClient = new QueryClient();
 const App = () => {
   const MyTheme = {
     ...DefaultTheme,
@@ -22,17 +29,24 @@ const App = () => {
     },
   };
 
+  useEffect(() => {
+    helper.isTablet() ? Orientation.lockToLandscape() : Orientation.lockToPortrait();
+  }, [])
+
+
   LogBox.ignoreAllLogs();
 
   return (
     <Provider store={store}>
-      <NavigationContainer theme={MyTheme}>
-        <IconRegistry icons={[MaterialCommunityPack, EvaIconsPack]} />
-        <StatusBar barStyle={"light-content"} translucent backgroundColor={"transparent"} />
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...Color }} customMapping={{ ...eva.mapping, ...Mapping }}>
-          <StackNavigation />
-        </ApplicationProvider>
-      </NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer theme={MyTheme}>
+          <IconRegistry icons={[MaterialCommunityPack, EvaIconsPack]} />
+          <StatusBar barStyle={"light-content"} translucent backgroundColor={"transparent"} />
+          <ApplicationProvider {...eva} theme={{ ...eva.light, ...Color }} customMapping={{ ...eva.mapping, ...Mapping }}>
+            <StackNavigation />
+          </ApplicationProvider>
+        </NavigationContainer>
+      </QueryClientProvider>
     </Provider>
   )
 }

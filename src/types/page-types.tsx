@@ -12,7 +12,8 @@ type RootStackList = {
     CartShow: undefined,
     Checkout: undefined,
     Finish: undefined,
-    Barcode: undefined
+    Barcode: undefined,
+    CustomerImport: undefined
 }
 
 

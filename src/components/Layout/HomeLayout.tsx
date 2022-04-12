@@ -13,9 +13,10 @@ import { useNavigation } from '@react-navigation/native'
 
 interface Props {
     search?: boolean,
-    loading?: boolean
+    loading?: boolean,
+    onPressCategory?: () => void
 }
-const HomeLayout: FC<Props> = ({ children, search, loading }) => {
+const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory }) => {
     const navigation: any = useNavigation();
     const layoutState: LayoutStateProps = useSelector((state: State) => state.layout);
     const dispatch = useDispatch();
@@ -31,19 +32,21 @@ const HomeLayout: FC<Props> = ({ children, search, loading }) => {
                 <Bubble />
                 <View style={styles.header}>
                     <View style={theme.flexStart}>
-                        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.openDrawer()}>
                             <Icon name='menu-2-outline' pack='eva' fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
-                        <View style={styles.titleContainer}>
-                            <Text status={"control"} category="h6" style={styles.title}>{'Semuanya'}</Text>
-                            <Icon name='chevron-down' fill={color.white} style={styles.more} />
-                        </View>
+                        <TouchableOpacity onPress={onPressCategory} activeOpacity={0.8}>
+                            <View style={styles.titleContainer}>
+                                <Text status={"control"} category="h6" style={styles.title}>{'Semuanya'}</Text>
+                                <Icon name='chevron-down' fill={color.white} style={styles.more} />
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={theme.flexStart}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Barcode")} style={styles.right}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("Barcode")} style={styles.right}>
                             <Icon name='barcode-scan' fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleChangeLayout} style={styles.right}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={handleChangeLayout} style={styles.right}>
                             <Icon name={layoutState.data == "grid" ? "format-list-bulleted-square" : "view-grid-outline"} fill={color.white} style={styles.icon} />
                         </TouchableOpacity>
                     </View>

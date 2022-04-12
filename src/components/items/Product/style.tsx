@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { color, constant, theme } from "@utils";
+import { color, constant, helper, theme } from "@utils";
 
 const listStyle = StyleSheet.create({
     item: {
@@ -53,7 +53,8 @@ const gridStyle = StyleSheet.create({
     touchable: {
         borderRadius: 10,
         overflow: "hidden",
-        width: "48%",
+        width: helper.isTablet() ? "32%" : "48%",
+        marginRight: helper.isTablet() ? 14 : 0,
         marginBottom: 16,
         backgroundColor: color.white,
         ...theme.boxShadow,

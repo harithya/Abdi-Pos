@@ -3,23 +3,30 @@ import React, { FC } from 'react'
 import { Cart, DetailLayout, SelectPeople } from '@components'
 import { color, constant, theme } from '@utils'
 import { Button, Text } from '@ui-kitten/components'
-import { PageProps } from '@types'
+import { useNavigation } from '@react-navigation/native'
+import { useNavigationProps } from '@types'
 
-const CartScreen: FC<PageProps> = ({ navigation }) => {
+interface Props {
+    disableLayout?: boolean
+}
+const CartScreen: FC<Props> = ({ disableLayout }) => {
+    const navigation = useNavigation<useNavigationProps>()
     return (
-        <DetailLayout title='Keranjang' back>
-            <SelectPeople />
-            <Cart />
-            <View style={styles.footer}>
-                <View style={[theme.flexBetween, theme.marginBottom5]}>
-                    <Text style={theme.fontMedium} category={"p2"}>Total Pembayaran</Text>
-                    <Text style={theme.fontMedium} category={"p2"}>Rp 17.500</Text>
-                </View>
-                <View style={[theme.flexBetween, theme.marginTop10]}>
-                    <Button status={"danger"} style={styles.button} appearance={"outline"}>
-                        Hapus Keranjang
-                    </Button>
-                    <Button onPress={() => navigation.navigate("Checkout")} style={styles.button}>Bayar Sekarang</Button>
+        <DetailLayout title='Keranjang' disable={disableLayout} back>
+            <View style={theme.flex1}>
+                <SelectPeople />
+                <Cart />
+                <View style={styles.footer}>
+                    <View style={[theme.flexBetween, theme.marginBottom5]}>
+                        <Text style={theme.fontMedium} category={"p2"}>Total Pembayaran</Text>
+                        <Text style={theme.fontMedium} category={"p2"}>Rp 17.500</Text>
+                    </View>
+                    <View style={[theme.flexBetween, theme.marginTop10]}>
+                        <Button status={"danger"} style={styles.button} appearance={"outline"}>
+                            Hapus Keranjang
+                        </Button>
+                        <Button onPress={() => navigation.navigate("Checkout")} style={styles.button}>Bayar Sekarang</Button>
+                    </View>
                 </View>
             </View>
         </DetailLayout>

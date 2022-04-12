@@ -9,6 +9,7 @@ import CartShowScreen from "./cart/CartShowScreen";
 import CheckoutScreen from "./checkout/CheckoutScreen";
 import FinishScreen from "./checkout/FinishScreen";
 import BarcodeScreen from "./barcode/BarcodeScreen";
+import CustomerImportScreen from "./customer/CustomerImportScreen";
 
 export {
     SplashScreen,
@@ -21,5 +22,7 @@ export {
     CartShowScreen,
     CheckoutScreen,
     FinishScreen,
-    BarcodeScreen
+    BarcodeScreen,
+    CustomerImportScreen,
+
 }

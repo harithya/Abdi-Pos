@@ -1,6 +1,6 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BarcodeScreen, CartScreen, CartShowScreen, CheckoutScreen, CustomerScreen, FinishScreen, HomeScreen, PasswordEditScreen, ProfileEditScreen, SplashScreen, WelcomeScreen } from '@pages';
+import { BarcodeScreen, CartScreen, CartShowScreen, CheckoutScreen, CustomerImportScreen, CustomerScreen, FinishScreen, HomeScreen, PasswordEditScreen, ProfileEditScreen, SplashScreen, WelcomeScreen } from '@pages';
 import LoginScreen from 'src/pages/auth/LoginScreen';
 import DrawerNavigation from './DrawerNavigation';
 
@@ -21,6 +21,7 @@ const StackNavigation = () => {
             <Stack.Screen name="Checkout" component={CheckoutScreen} />
             <Stack.Screen name="Finish" component={FinishScreen} />
             <Stack.Screen name="Barcode" component={BarcodeScreen} />
+            <Stack.Screen name="CustomerImport" component={CustomerImportScreen} />
         </Stack.Navigator>
     )
 }

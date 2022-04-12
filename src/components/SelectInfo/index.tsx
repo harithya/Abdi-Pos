@@ -31,6 +31,13 @@ export default SelectInfo
 const styles = StyleSheet.create({
     card: {
         paddingHorizontal: 16,
+        zIndex: 99,
+        position: "absolute",
+        right: 0,
+        left: 0,
+        bottom: 0,
+        backgroundColor: color.white
+        // bottom: 16
     },
     info: {
         padding: 16,

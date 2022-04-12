@@ -1,8 +1,12 @@
 import { combineReducers, } from "redux";
+import authReducer from "./reducers/authReducer";
 import layoutReducer from "./reducers/layoutReducer";
+import searchReducer from "./reducers/searchReducer";
 
 const reducer = combineReducers({
-    layout: layoutReducer
+    layout: layoutReducer,
+    search: searchReducer,
+    auth: authReducer
 })
 
 export default reducer;
