@@ -19,6 +19,7 @@ import CategorySheet from "./BottomSheet/Items/CategorySheet";
 import List from "./items/List";
 import Empty from "./Status/Empty";
 import Customer from "./items/Customer";
+import Fab from "./Fab";
 
 export {
     Layout,
@@ -41,5 +42,6 @@ export {
     CategorySheet,
     List,
     Empty,
-    Customer
+    Customer,
+    Fab
 }

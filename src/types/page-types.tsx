@@ -13,7 +13,10 @@ type RootStackList = {
     Checkout: undefined,
     Finish: undefined,
     Barcode: undefined,
-    CustomerImport: undefined
+    CustomerImport: undefined,
+    CustomerCreate: {
+        id?: number
+    }
 }
 
 

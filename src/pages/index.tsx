@@ -10,6 +10,7 @@ import CheckoutScreen from "./checkout/CheckoutScreen";
 import FinishScreen from "./checkout/FinishScreen";
 import BarcodeScreen from "./barcode/BarcodeScreen";
 import CustomerImportScreen from "./customer/CustomerImportScreen";
+import CustomerCreateScreen from "./customer/CustomerCreateScreen";
 
 export {
     SplashScreen,
@@ -24,5 +25,6 @@ export {
     FinishScreen,
     BarcodeScreen,
     CustomerImportScreen,
+    CustomerCreateScreen
 
 }

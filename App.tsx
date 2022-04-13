@@ -16,9 +16,6 @@ import { helper } from '@utils';
 import Orientation from 'react-native-orientation';
 import { QueryClient, QueryClientProvider, } from 'react-query';
 import { fetchCategory } from 'src/redux/actions/categoryAction';
-if (__DEV__) {
-  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
-}
 
 const queryClient = new QueryClient();
 const App = () => {
@@ -30,7 +27,6 @@ const App = () => {
     },
   };
 
-  console.log("hi")
 
   useEffect(() => {
     helper.isTablet() ? Orientation.lockToLandscape() : Orientation.lockToPortrait();

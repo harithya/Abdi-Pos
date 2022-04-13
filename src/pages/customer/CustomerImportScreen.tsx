@@ -1,16 +1,23 @@
 import { StyleSheet, PermissionsAndroid, FlatList, View, ToastAndroid } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { DetailLayout, List, Empty } from '@components'
 import Contacts, { Contact } from 'react-native-contacts';
 import { useSelector } from 'react-redux';
 import { State } from 'src/redux/reducer';
-import { SearchStateProps } from '@types';
+import { PageProps, SearchStateProps } from '@types';
 import { color, constant, theme } from '@utils';
 import { Button } from '@ui-kitten/components';
-import { useMutation } from 'react-query';
+import { useInfiniteQuery, useMutation } from 'react-query';
 import { http } from '@services';
 
-const CustomerImportScreen = () => {
+
+interface ContactSelectedProps {
+    id: string,
+    name: string,
+    phone: string
+}
+
+const CustomerImportScreen: FC<PageProps> = ({ navigation }) => {
     const [data, setData] = useState<Contact[]>([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
@@ -45,22 +52,33 @@ const CustomerImportScreen = () => {
     }
 
     const [isSelectAll, setIsSelectAll] = useState(false)
-    const [selectedContact, setSelectedContact] = useState<string[]>([]);
+    const [selectedContact, setSelectedContact] = useState<ContactSelectedProps[]>([]);
 
     const setAllContact = () => {
         setIsSelectAll(!isSelectAll)
         if (isSelectAll) {
             setSelectedContact([])
         } else {
-            setSelectedContact(data.map(item => item.recordID))
+            setSelectedContact(data.map(item => {
+                return {
+                    id: item.recordID,
+                    name: item.givenName,
+                    phone: (item.phoneNumbers.length > 0) ? item.phoneNumbers[0].number : '-'
+                }
+            }))
         }
     }
 
     const onSelectContact = (item: Contact) => {
-        if (selectedContact.includes(item.recordID)) {
-            setSelectedContact(selectedContact.filter(id => id !== item.recordID))
+        const index = selectedContact.findIndex(contact => contact.id === item.recordID)
+        if (index > -1) {
+            setSelectedContact(selectedContact.filter(contact => contact.id !== item.recordID))
         } else {
-            setSelectedContact([...selectedContact, item.recordID])
+            setSelectedContact([...selectedContact, {
+                id: item.recordID,
+                name: item.givenName,
+                phone: (item.phoneNumbers.length > 0) ? item.phoneNumbers[0].number : '-'
+            }])
         }
     }
 
@@ -82,15 +100,20 @@ const CustomerImportScreen = () => {
         searchData();
     }, [searchState.data])
 
-    // const postCustomer = useMutation(async() => {
-    //     const req =await http.post("")
-    // })
-
-    // get contact selected
-    const getContactSelected = () => {
-        return data.filter(item => selectedContact.includes(item.recordID))
-    }
-
+    const queryClient = useInfiniteQuery(["customer", '']);
+    const postCustomer = useMutation(async () => {
+        const req = await http.post("pasien/import", selectedContact);
+        return req
+    }, {
+        onSuccess: (res) => {
+            queryClient.refetch();
+            ToastAndroid.show("Import data berhasil", ToastAndroid.SHORT)
+            navigation.goBack();
+        },
+        onError: (err) => {
+            ToastAndroid.show("Import data gagal", ToastAndroid.SHORT)
+        }
+    })
 
     return (
         <DetailLayout
@@ -99,7 +122,7 @@ const CustomerImportScreen = () => {
             action
             actionIcon={(isSelectAll) ? 'close-square-outline' : 'checkmark-square-outline'}
             actionOnPress={setAllContact}
-            loading={loading}
+            loading={loading || postCustomer.isLoading}
             search>
             {data.length > 0 ? <FlatList
                 data={data}
@@ -109,7 +132,7 @@ const CustomerImportScreen = () => {
                         useCheckbox
                         title={item.displayName}
                         key={item.recordID}
-                        checked={selectedContact.includes(item.recordID)}
+                        checked={selectedContact.findIndex(contact => contact.id === item.recordID) > -1}
                         onChecked={() => onSelectContact(item)}
                         onPress={() => onSelectContact(item)}
                         subtitle={(item.phoneNumbers.length > 0) ? item.phoneNumbers[0].number : '-'}
@@ -120,7 +143,7 @@ const CustomerImportScreen = () => {
             />}
             {selectedContact.length > 0 &&
                 <View style={styles.footer}>
-                    <Button>{`Import Kontak (${selectedContact.length})`}</Button>
+                    <Button onPress={() => postCustomer.mutate()}>{`Import Kontak (${selectedContact.length})`}</Button>
                 </View>}
         </DetailLayout>
     )

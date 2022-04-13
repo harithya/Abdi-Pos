@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native'
 import React, { FC } from 'react'
-import { Customer, DetailLayout, Empty } from '@components'
+import { Customer, DetailLayout, Empty, Fab } from '@components'
 import { PageProps, SearchStateProps, PaginationProps, CustomerResultProps } from '@types'
 import { http } from '@services'
 import { useInfiniteQuery } from 'react-query'
@@ -14,12 +14,15 @@ const CustomerScreen: FC<PageProps> = ({ navigation }) => {
         const req = await http.get(`pelanggan?page=${pageParam}&search=${searchState.data}`);
         return req.data.result ?? []
     }
-
     const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(["customer", searchState.data], fetchData, {
         getNextPageParam: (page) => (page.current_page == page.last_page) ? undefined : page.current_page + 1
     })
     const handleLoadMore = () => hasNextPage ? fetchNextPage() : undefined
 
+
+    const handleOnPress = (id: number) => {
+        navigation.navigate("CustomerCreate", { id: id })
+    }
 
     return (
         <DetailLayout
@@ -42,9 +45,15 @@ const CustomerScreen: FC<PageProps> = ({ navigation }) => {
                             subtitle='Untuk saat ini data tidak tersedia'
                         /> :
                         <React.Fragment key={item.current_page}>
-                            {item.data?.map((val: CustomerResultProps) => <Customer key={val.id} data={val} />)}
+                            {item.data?.map((val: CustomerResultProps) =>
+                                <Customer
+                                    key={val.id}
+                                    data={val}
+                                    onPress={() => handleOnPress(val.id)}
+                                />)}
                         </React.Fragment>}
             />
+            <Fab onPress={() => navigation.navigate("CustomerCreate", {})} />
         </DetailLayout>
     )
 }

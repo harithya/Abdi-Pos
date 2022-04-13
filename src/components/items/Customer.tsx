@@ -6,12 +6,13 @@ import { Divider, Text } from '@ui-kitten/components'
 import { color, constant, helper, theme } from '@utils'
 
 interface Props {
-    data: CustomerResultProps
+    data: CustomerResultProps,
+    onPress?: () => void
 }
-const Customer: FC<Props> = ({ data }) => {
+const Customer: FC<Props> = ({ data, onPress }) => {
     return (
         <>
-            <TouchableRipple>
+            <TouchableRipple onPress={onPress}>
                 <View style={styles.item}>
                     <View style={styles.initial}>
                         <Text status={"control"}>{helper.getInitial(data.nama)}</Text>
