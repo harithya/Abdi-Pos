@@ -7,7 +7,7 @@ import { Button, Icon, Text } from '@ui-kitten/components'
 const CartShowScreen = () => {
     return (
         <DetailLayout title='Detail' back>
-            <Cart />
+            {/* <Cart /> */}
             <View style={theme.content}>
                 <Input placeholder='Harga' leftIcon='currency-usd' />
                 <Input placeholder='Diskon dalam rupiah' leftIcon='percent-outline' />

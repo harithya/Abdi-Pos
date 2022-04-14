@@ -7,12 +7,13 @@ import { useNavigation } from '@react-navigation/native'
 import { AuthStateProps, useNavigationProps } from '@types'
 import { useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Sidebar = () => {
     const navigation: useNavigationProps = useNavigation();
     const authState: AuthStateProps = useSelector((state: State) => state.auth);
     return (
-        <View>
+        <ScrollView scrollsToTop={false} >
             <View style={styles.profile}>
                 <Image source={{ uri: authState.avatar }} style={styles.img} />
                 <View>
@@ -35,7 +36,7 @@ const Sidebar = () => {
                 <Menu
                     title='Pelanggan'
                     icon='person-add-outline'
-                    onPress={() => navigation.navigate("Customer")}
+                    onPress={() => navigation.navigate("Customer", {})}
                 />
                 <Menu
                     title='History Transaksi'
@@ -53,7 +54,7 @@ const Sidebar = () => {
                     icon='log-out-outline'
                 />
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     },
     section: {
         marginVertical: 16
-    }
+    },
 })
 
 export default Sidebar

@@ -40,7 +40,29 @@ export interface CategoryStateProps {
     selected: CategoryResultProps
 }
 
+export interface CustomerStateProps {
+    data: CustomerResultProps | null,
+}
 
+
+export interface SalesCartStateProps {
+    data: SalesCartProps[]
+}
+
+
+export interface SalesCartProps {
+    id: string,
+    name: string,
+    price: number,
+    priceList: PriceProductResultProps[],
+    qty: number,
+    unit: {
+        id: number,
+        name: string
+    },
+    total: number,
+    stok: number
+}
 
 //pagination
 export interface PaginationProps {
@@ -64,8 +86,6 @@ interface Link {
     label: string;
     active: boolean;
 }
-
-
 
 
 // Htpp request response
@@ -96,4 +116,33 @@ export interface CustomerResultProps {
     alergi_khusus?: any;
     keterangan: string;
     golongan_darah?: any;
+}
+
+
+export interface ProductResultProps {
+    kode: string;
+    nama: string;
+    harga_beli: number;
+    stok_awal?: null | number;
+    foto: string;
+    kategori_produk_id: number;
+    jenis_produk_id: number;
+    kategori: string;
+    jenis: string;
+    stok: string;
+    satuan: string;
+    satuan_id: number;
+    harga_jual: number;
+    harga: PriceProductResultProps[];
+}
+
+export interface PriceProductResultProps {
+    id: number;
+    harga_jual: number;
+    satuan_id: number;
+    produk_kode: string;
+    status: number;
+    jumlah: string;
+    jumlah_satuan_utama: string;
+    satuan: string;
 }

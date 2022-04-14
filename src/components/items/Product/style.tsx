@@ -54,7 +54,6 @@ const gridStyle = StyleSheet.create({
         borderRadius: 10,
         overflow: "hidden",
         width: helper.isTablet() ? "32%" : "48%",
-        marginRight: helper.isTablet() ? 14 : 0,
         marginBottom: 16,
         backgroundColor: color.white,
         ...theme.boxShadow,

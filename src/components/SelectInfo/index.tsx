@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
         right: 0,
         left: 0,
         bottom: 0,
+        ...theme.boxShadow,
+        paddingTop: 10,
         backgroundColor: color.white
         // bottom: 16
     },

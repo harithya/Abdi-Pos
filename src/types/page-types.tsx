@@ -8,7 +8,7 @@ type RootStackList = {
     ProfileEdit: undefined,
     PasswordEdit: undefined,
     Cart: undefined,
-    Customer: undefined,
+    Customer: { withSelect?: boolean },
     CartShow: undefined,
     Checkout: undefined,
     Finish: undefined,

@@ -1,5 +1,7 @@
 import moment from "moment";
+import { Dimensions } from "react-native";
 import DeviceInfo from 'react-native-device-info';
+import store from "src/redux/store";
 
 const helper = {
     space: (index: number, marginValue = 20) => {
@@ -76,8 +78,19 @@ const helper = {
             }
         }
         return initials.slice(0, 2).toUpperCase()
-    }
+    },
 
+    getLimitPage: () => {
+        if (store.getState().layout.data == "grid") {
+            if (DeviceInfo.isTablet()) {
+                return 15
+            } else {
+                return 14
+            }
+        } else {
+            return 14
+        }
+    }
 
 }
 

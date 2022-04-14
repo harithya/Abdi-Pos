@@ -1,25 +1,28 @@
 import { StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { Divider, Text } from '@ui-kitten/components'
-import { color, constant, theme } from '@utils'
+import { color, constant, helper, theme } from '@utils'
 import TouchableRipple from '../Touchable/TouchableRipple'
-import { useNavigationProps } from '@types'
+import { SalesCartProps, useNavigationProps } from '@types'
 import { useNavigation } from '@react-navigation/native'
 
-const Cart = () => {
+interface Props {
+    data: SalesCartProps
+}
+const Cart: FC<Props> = ({ data }) => {
     const navigation: useNavigationProps = useNavigation();
     return (
         <>
             <TouchableRipple onPress={() => navigation.navigate("CartShow")}>
                 <View style={styles.list}>
                     <View style={styles.number}>
-                        <Text style={theme.fontMedium} status={"control"}>13</Text>
+                        <Text style={theme.fontMedium} status={"control"}>{data.qty}</Text>
                     </View>
                     <View style={theme.flex1}>
-                        <Text>Holisticare Ester C</Text>
+                        <Text>{data.name}</Text>
                         <View style={theme.flexBetween}>
-                            <Text appearance={"hint"} category="c2" style={theme.marginTop5}>Harga: Rp 17.500 x 3, Diskon: -</Text>
-                            <Text category={"p2"}>Rp 17.500</Text>
+                            <Text appearance={"hint"} category="c2" style={theme.marginTop5}>Harga: {helper.formatNumber(data.price)} x {data.qty}, Diskon: -</Text>
+                            <Text category={"p2"}>{helper.formatNumber(data.price)}</Text>
                         </View>
                     </View>
                 </View>

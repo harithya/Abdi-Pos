@@ -4,10 +4,11 @@ import { Customer, DetailLayout, Empty, Fab } from '@components'
 import { PageProps, SearchStateProps, PaginationProps, CustomerResultProps } from '@types'
 import { http } from '@services'
 import { useInfiniteQuery } from 'react-query'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
+import { selectedCustomer } from 'src/redux/actions/customerAction'
 
-const CustomerScreen: FC<PageProps> = ({ navigation }) => {
+const CustomerScreen: FC<PageProps<'Customer'>> = ({ navigation, route }) => {
 
     const searchState: SearchStateProps = useSelector((state: State) => state.search)
     const fetchData = async ({ pageParam = 1 }) => {
@@ -19,9 +20,17 @@ const CustomerScreen: FC<PageProps> = ({ navigation }) => {
     })
     const handleLoadMore = () => hasNextPage ? fetchNextPage() : undefined
 
-
-    const handleOnPress = (id: number) => {
-        navigation.navigate("CustomerCreate", { id: id })
+    // Main Logic
+    const dispatch = useDispatch();
+    const handleOnPress = (id: number, item?: CustomerResultProps) => {
+        if (route.params.withSelect) {
+            if (item) {
+                dispatch(selectedCustomer(item))
+                navigation.goBack()
+            }
+        } else {
+            navigation.navigate("CustomerCreate", { id: id })
+        }
     }
 
     return (
@@ -49,7 +58,7 @@ const CustomerScreen: FC<PageProps> = ({ navigation }) => {
                                 <Customer
                                     key={val.id}
                                     data={val}
-                                    onPress={() => handleOnPress(val.id)}
+                                    onPress={() => handleOnPress(val.id, val)}
                                 />)}
                         </React.Fragment>}
             />

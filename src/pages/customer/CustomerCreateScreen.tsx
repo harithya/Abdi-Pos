@@ -67,7 +67,7 @@ const CustomerCreateScreen: FC<PageProps<'CustomerCreate'>> = ({ navigation, rou
     })
 
     return (
-        <DetailLayout title='Tambah' back loading={postData.isLoading || loading}>
+        <DetailLayout title={route.params.id ? 'Update' : 'Tambah'} back loading={postData.isLoading || loading}>
             <ScrollView contentContainerStyle={theme.content}>
                 <Input
                     label='Nama Lengkap'

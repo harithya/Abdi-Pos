@@ -1,14 +1,18 @@
 import { combineReducers, } from "redux";
 import authReducer from "./reducers/authReducer";
 import categoryReducer from "./reducers/categoryReducer";
+import customerReducer from "./reducers/customerReducer";
 import layoutReducer from "./reducers/layoutReducer";
 import searchReducer from "./reducers/searchReducer";
+import salesCartReducer from "./reducers/salesCartReducer";
 
 const reducer = combineReducers({
     layout: layoutReducer,
     search: searchReducer,
     auth: authReducer,
-    category: categoryReducer
+    category: categoryReducer,
+    customer: customerReducer,
+    salesCart: salesCartReducer
 })
 
 export default reducer;
