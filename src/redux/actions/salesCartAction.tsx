@@ -1,4 +1,4 @@
-import { ProductResultProps, SalesCartProps } from "@types";
+import { ProductResultProps, CartProps } from "@types";
 import store from "../store";
 
 const addSalesCart = (value: ProductResultProps) => {
@@ -24,7 +24,7 @@ const addSalesCart = (value: ProductResultProps) => {
 }
 
 
-const updateSalesCart = (value: SalesCartProps[]) => {
+const updateSalesCart = (value: CartProps[]) => {
     return {
         type: "UPDATE_SALES_CART",
         payload: value
@@ -33,7 +33,7 @@ const updateSalesCart = (value: SalesCartProps[]) => {
 
 const deleteSalesCart = (id: string) => {
     const cart = store.getState().salesCart.data;
-    const data = cart.filter((item: SalesCartProps) => item.id !== id);
+    const data = cart.filter((item: CartProps) => item.id !== id);
     return {
         type: "DELETE_SALES_CART",
         payload: data

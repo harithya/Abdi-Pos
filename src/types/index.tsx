@@ -45,15 +45,15 @@ export interface CustomerStateProps {
 }
 
 
-export interface SalesCartStateProps {
-    data: SalesCartProps[]
+export interface CartStateProps {
+    data: CartProps[]
 }
 
 export interface UnitProps {
     id: number,
     name: string
 }
-export interface SalesCartProps {
+export interface CartProps {
     id: string,
     name: string,
     price: number,

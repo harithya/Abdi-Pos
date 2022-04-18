@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react'
 import { BottomSheet, DetailLayout, Input, UnitSheet } from '@components'
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon, Text } from '@ui-kitten/components'
-import { PageProps, PriceProductResultProps, SalesCartProps, SalesCartStateProps } from '@types'
+import { PageProps, PriceProductResultProps, CartProps, CartStateProps } from '@types'
 import { SheetManager } from 'react-native-actions-sheet'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
@@ -44,10 +44,10 @@ const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
         SheetManager.show("unitSheet")
     }
 
-    const salesCartState: SalesCartStateProps = useSelector((state: State) => state.salesCart);
+    const salesCartState: CartStateProps = useSelector((state: State) => state.salesCart);
     const handleUpdateCart = () => {
-        const newCart = salesCartState.data.map((item: SalesCartProps) => {
-            let newItem: SalesCartProps = item;
+        const newCart = salesCartState.data.map((item: CartProps) => {
+            let newItem: CartProps = item;
             if (item.id === route.params.data.id) {
                 newItem = {
                     ...item,

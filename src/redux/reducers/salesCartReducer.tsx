@@ -1,6 +1,6 @@
-import { ReducerProps, SalesCartStateProps } from "@types"
+import { ReducerProps, CartStateProps } from "@types"
 
-const initialState: SalesCartStateProps = {
+const initialState: CartStateProps = {
     data: []
 }
 

@@ -4,13 +4,13 @@ import { Divider, Text } from '@ui-kitten/components'
 import { helper, theme } from '@utils'
 import { listStyle, gridStyle } from './style';
 import TouchableRipple from 'src/components/Touchable/TouchableRipple';
-import { ProductResultProps, SalesCartProps } from '@types';
+import { ProductResultProps, CartProps } from '@types';
 
 interface Props {
     data: ProductResultProps,
     layout: "grid" | "list",
     onPress?: () => void,
-    cart?: SalesCartProps
+    cart?: CartProps
 }
 const Product: FC<Props> = ({ data, layout, onPress, cart }) => {
     const styles: any = layout == "grid" ? gridStyle : listStyle;

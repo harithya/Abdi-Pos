@@ -1,4 +1,4 @@
-import { PriceProductResultProps, SalesCartProps } from "@types";
+import { PriceProductResultProps, CartProps } from "@types";
 import moment from "moment";
 import { Dimensions } from "react-native";
 import DeviceInfo from 'react-native-device-info';
@@ -124,7 +124,7 @@ const helper = {
     getTotalCart: () => {
         const cart = store.getState().salesCart.data;
         let total = 0;
-        cart.forEach((item: SalesCartProps) => {
+        cart.forEach((item: CartProps) => {
             total += item.qty * (item.price - item.discount);
         })
         return total;

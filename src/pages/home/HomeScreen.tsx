@@ -9,7 +9,7 @@ import {
     LayoutStateProps,
     PaginationProps,
     ProductResultProps,
-    SalesCartStateProps,
+    CartStateProps,
     SearchStateProps
 } from '@types'
 import { SheetManager } from 'react-native-actions-sheet'
@@ -44,7 +44,7 @@ const HomeScreen = () => {
 
     // Cart Logical
     const dispatch = useDispatch();
-    const salesCartState: SalesCartStateProps = useSelector((state: State) => state.salesCart);
+    const salesCartState: CartStateProps = useSelector((state: State) => state.salesCart);
 
     const handleAddCart = (item: ProductResultProps) => {
         //Find Product in Cart

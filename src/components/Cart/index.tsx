@@ -3,11 +3,11 @@ import React, { FC } from 'react'
 import { Divider, Text } from '@ui-kitten/components'
 import { color, constant, helper, theme } from '@utils'
 import TouchableRipple from '../Touchable/TouchableRipple'
-import { SalesCartProps, useNavigationProps } from '@types'
+import { CartProps, useNavigationProps } from '@types'
 import { useNavigation } from '@react-navigation/native'
 
 interface Props {
-    data: SalesCartProps
+    data: CartProps
 }
 const Cart: FC<Props> = ({ data }) => {
     const navigation: useNavigationProps = useNavigation();

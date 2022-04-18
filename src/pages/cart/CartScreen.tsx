@@ -4,7 +4,7 @@ import { Cart, DetailLayout, Empty, SelectPeople, TouchableRipple } from '@compo
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon, Text } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
-import { SalesCartStateProps, useNavigationProps } from '@types'
+import { CartStateProps, useNavigationProps } from '@types'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -15,7 +15,7 @@ interface Props {
 }
 const CartScreen: FC<Props> = ({ disableLayout }) => {
     const navigation = useNavigation<useNavigationProps>()
-    const salesCartState: SalesCartStateProps = useSelector((state: State) => state.salesCart);
+    const salesCartState: CartStateProps = useSelector((state: State) => state.salesCart);
     const dispatch = useDispatch();
 
     const deleteById = (id: string) => {
