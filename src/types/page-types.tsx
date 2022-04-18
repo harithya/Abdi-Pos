@@ -1,3 +1,4 @@
+import { SalesCartProps } from "@types";
 
 
 type RootStackList = {
@@ -9,14 +10,17 @@ type RootStackList = {
     PasswordEdit: undefined,
     Cart: undefined,
     Customer: { withSelect?: boolean },
-    CartShow: undefined,
+    CartShow: { data: SalesCartProps },
     Checkout: undefined,
     Finish: undefined,
     Barcode: undefined,
     CustomerImport: undefined,
     CustomerCreate: {
         id?: number
-    }
+    },
+    Return: undefined,
+    ReturnCreate: undefined,
+    Product: undefined
 }
 
 

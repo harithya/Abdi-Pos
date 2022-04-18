@@ -18,6 +18,7 @@ const LoginScreen: FC<PageProps> = (props) => {
     const [error, setError] = useState<any>([])
     const [loading, setLoading] = useState(false)
     const handleChange = (name: string, value: string) => setData({ ...data, [name]: value })
+    const [isOpenPassword, setIsOpenPassword] = useState(false)
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -66,10 +67,12 @@ const LoginScreen: FC<PageProps> = (props) => {
                         leftIcon='key'
                         label='Password'
                         placeholder='your password'
-                        secureTextEntry
+                        secureTextEntry={!isOpenPassword}
                         autoCapitalize={'none'}
                         value={data.password}
                         error={error?.password}
+                        rightIcon={isOpenPassword ? 'eye-off' : 'eye'}
+                        righIconOnPress={() => setIsOpenPassword(!isOpenPassword)}
                         onChangeText={(value) => handleChange('password', value)}
                     />
                     <View style={styles.forgotPassword}>

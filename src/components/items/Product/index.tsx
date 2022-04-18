@@ -4,15 +4,30 @@ import { Divider, Text } from '@ui-kitten/components'
 import { helper, theme } from '@utils'
 import { listStyle, gridStyle } from './style';
 import TouchableRipple from 'src/components/Touchable/TouchableRipple';
-import { ProductResultProps } from '@types';
+import { ProductResultProps, SalesCartProps } from '@types';
 
 interface Props {
     data: ProductResultProps,
     layout: "grid" | "list",
-    onPress?: () => void
+    onPress?: () => void,
+    cart?: SalesCartProps
 }
-const Product: FC<Props> = ({ data, layout, onPress }) => {
+const Product: FC<Props> = ({ data, layout, onPress, cart }) => {
     const styles: any = layout == "grid" ? gridStyle : listStyle;
+
+    const getData = () => {
+        if (cart) {
+            return {
+                unit: cart.unit.name,
+                price: cart.price
+            }
+        } else {
+            return {
+                unit: data.satuan,
+                price: data.harga_jual
+            }
+        }
+    }
 
     return (
         <View style={styles.touchable}>
@@ -27,12 +42,12 @@ const Product: FC<Props> = ({ data, layout, onPress }) => {
                                     <Text
                                         appearance={"hint"}
                                         style={theme.marginTop5}
-                                        category={layout == "grid" ? "c2" : "c1"}>{parseInt(data.stok)} {data.satuan} Tersedia</Text>
-                                    {layout == "grid" && <Text category={"p2"}>{helper.formatNumber(data.harga_jual)}</Text>}
+                                        category={layout == "grid" ? "c2" : "c1"}>Satuan : {getData().unit}</Text>
+                                    {layout == "grid" && <Text category={"p2"}>{helper.formatNumber(getData().price)}</Text>}
                                 </View>
                             </View>
                         </View>
-                        {layout == "list" && <Text category={"p2"}>{helper.formatNumber(data.harga_jual)}</Text>}
+                        {layout == "list" && <Text category={"p2"}>{helper.formatNumber(getData().price)}</Text>}
                     </View>
                     {layout == "list" && <Divider />}
                 </View>

@@ -1,31 +1,125 @@
-import { StyleSheet, View } from 'react-native'
-import React from 'react'
-import { Cart, DetailLayout, Input } from '@components'
-import { color, constant, theme } from '@utils'
+import { Pressable, StyleSheet, View } from 'react-native'
+import React, { FC, useState } from 'react'
+import { BottomSheet, DetailLayout, Input, UnitSheet } from '@components'
+import { color, constant, helper, theme } from '@utils'
 import { Button, Icon, Text } from '@ui-kitten/components'
+import { PageProps, PriceProductResultProps, SalesCartProps, SalesCartStateProps } from '@types'
+import { SheetManager } from 'react-native-actions-sheet'
+import { useDispatch, useSelector } from 'react-redux'
+import { State } from 'src/redux/reducer'
+import { deleteSalesCart, updateSalesCart } from 'src/redux/actions/salesCartAction'
 
-const CartShowScreen = () => {
+const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
+    const dispatch = useDispatch();
+    const [data, setData] = useState({
+        price: route.params.data.price,
+        qty: route.params.data.qty,
+        discount: route.params.data.discount,
+        unit: {
+            id: route.params.data.unit.id,
+            name: route.params.data.unit.name
+        }
+    })
+
+    const handleInput = (key: string, value: string | number) => {
+        setData({
+            ...data,
+            [key]: value
+        })
+    }
+
+    const handleChangeUnit = (priceList: PriceProductResultProps) => {
+        setData({
+            ...data,
+            price: priceList.harga_jual,
+            unit: {
+                id: priceList.satuan_id,
+                name: priceList.satuan
+            },
+        })
+        SheetManager.hide("unitSheet")
+    }
+
+    const handleOpenSheet = () => {
+        SheetManager.show("unitSheet")
+    }
+
+    const salesCartState: SalesCartStateProps = useSelector((state: State) => state.salesCart);
+    const handleUpdateCart = () => {
+        const newCart = salesCartState.data.map((item: SalesCartProps) => {
+            let newItem: SalesCartProps = item;
+            if (item.id === route.params.data.id) {
+                newItem = {
+                    ...item,
+                    ...data
+                }
+            }
+            newItem.discount = newItem.discount.toString() === "" || newItem.discount == undefined
+                ? 0 : newItem.discount;
+            return newItem
+        })
+
+        dispatch(updateSalesCart(newCart))
+        navigation.goBack()
+    }
+
+
+    const handleDeleteCart = () => {
+        dispatch(deleteSalesCart(route.params.data.id));
+        navigation.goBack()
+    }
+
     return (
-        <DetailLayout title='Detail' back>
+        <DetailLayout title={route.params.data.name} back>
             {/* <Cart /> */}
-            <View style={theme.content}>
-                <Input placeholder='Harga' leftIcon='currency-usd' />
-                <Input placeholder='Diskon dalam rupiah' leftIcon='percent-outline' />
+            <View style={styles.container}>
+                <Input
+                    placeholder='Harga'
+                    value={helper.formatNumber(data.price, false)}
+                    leftIcon='currency-usd'
+                    onChangeText={(val) => handleInput('price', helper.inputNumber(val))}
+                />
+                <Input
+                    placeholder='Diskon dalam rupiah'
+                    leftIcon='percent-outline'
+                    onChangeText={(val) => handleInput('discount', helper.inputNumber(val))}
+                    value={helper.formatNumber(data.discount, false)}
+                />
                 <View style={styles.info}>
                     <Icon fill={color.default} name="info-outline" style={styles.icon} pack="eva" />
                     <Text appearance={"hint"} style={theme.fontRegular} category="c2">Masukan diskon dalam jumlah rupiah bukan persen</Text>
                 </View>
                 <View>
-                    <Button appearance={"ghost"} status="danger">Hapus Keranjang</Button>
+                    <Button appearance={"ghost"} onPress={handleDeleteCart} status="danger">Hapus Keranjang</Button>
                 </View>
             </View>
-            <View style={theme.footer}>
+            <View style={styles.footer}>
                 <View style={styles.qtyContainer}>
-                    <Button size={"small"} accessoryLeft={(eva) => <Icon {...eva} name="minus-outline" pack='eva' />} />
-                    <Input placeholder='Qty' containerStyle={styles.qty} textAlign='center' />
-                    <Button size={"small"} accessoryLeft={(eva) => <Icon {...eva} name="plus-outline" pack='eva' />} />
+                    <Input
+                        placeholder='Qty'
+                        value={data.qty.toString()}
+                        onChangeText={(val) => handleInput("qty", val)}
+                        containerStyle={styles.input}
+                        textAlign='center'
+                    />
+                    <Pressable style={styles.input} onPress={handleOpenSheet}>
+                        <Input
+                            placeholder='Satuan'
+                            value={data.unit.name}
+                            containerStyle={theme.marginBottom0}
+                            textAlign='center'
+                            disabled
+                            rightIcon='chevron-down'
+                        />
+                    </Pressable>
                 </View>
-                <Button>Simpan Perubahan</Button>
+                <Button onPress={handleUpdateCart}>Simpan Perubahan</Button>
+                <BottomSheet title='Satuan' id='unitSheet'>
+                    <UnitSheet
+                        data={route.params.data.priceList}
+                        onPress={handleChangeUnit}
+                    />
+                </BottomSheet>
             </View>
         </DetailLayout>
     )
@@ -34,10 +128,10 @@ const CartShowScreen = () => {
 export default CartShowScreen
 
 const styles = StyleSheet.create({
-    qty: {
-        ...theme.flex1,
+    input: {
+        // ...theme.flex1,
         ...theme.marginBottom0,
-        paddingHorizontal: 16
+        width: "49%"
     },
     qtyContainer: {
         ...theme.flexBetween,
@@ -52,5 +146,14 @@ const styles = StyleSheet.create({
         ...theme.flexStart,
         marginTop: -10,
         marginBottom: 16
+    },
+    container: {
+        ...theme.content,
+        paddingHorizontal: helper.isTablet() ? 150 : constant.container
+    },
+    footer: {
+        ...theme.footer,
+        right: helper.isTablet() ? 150 : constant.container,
+        left: helper.isTablet() ? 150 : constant.container
     }
 })

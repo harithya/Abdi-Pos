@@ -1,6 +1,6 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BarcodeScreen, CartScreen, CartShowScreen, CheckoutScreen, CustomerCreateScreen, CustomerImportScreen, CustomerScreen, FinishScreen, HomeScreen, PasswordEditScreen, ProfileEditScreen, SplashScreen, WelcomeScreen } from '@pages';
+import { BarcodeScreen, CartScreen, CartShowScreen, CheckoutScreen, CustomerCreateScreen, CustomerImportScreen, CustomerScreen, FinishScreen, HomeScreen, PasswordEditScreen, ProductScreen, ProfileEditScreen, ReturnCreateScreen, ReturnScreen, SplashScreen, WelcomeScreen } from '@pages';
 import LoginScreen from 'src/pages/auth/LoginScreen';
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +22,10 @@ const StackNavigation = () => {
             <Stack.Screen name="Barcode" component={BarcodeScreen} />
             <Stack.Screen name="CustomerImport" component={CustomerImportScreen} />
             <Stack.Screen name="CustomerCreate" component={CustomerCreateScreen} />
+            <Stack.Screen name="Return" component={ReturnScreen} />
+            <Stack.Screen name="ReturnCreate" component={ReturnCreateScreen} />
+            <Stack.Screen name="Product" component={ProductScreen} />
+
         </Stack.Navigator>
     )
 }

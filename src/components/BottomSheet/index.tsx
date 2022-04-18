@@ -9,9 +9,9 @@ interface Props {
     icon?: string,
     title: string
 }
-const BottomSheet: FC<Props> = ({ id, children, icon = 'filter-variant', title }) => {
+const BottomSheet: FC<Props> = ({ id = 'bottomSheet', children, icon = 'filter-variant', title }) => {
     return (
-        <ActionSheet id='bottomSheet' containerStyle={styles.container} gestureEnabled>
+        <ActionSheet id={id} containerStyle={styles.container} gestureEnabled>
             <View style={styles.header}>
                 <Icon name={icon} fill={"black"} style={styles.icon} />
                 <Text style={theme.fontMedium}>{title}</Text>

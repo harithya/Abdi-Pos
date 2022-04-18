@@ -6,9 +6,10 @@ import TouchableRipple from '../Touchable/TouchableRipple'
 
 interface Props {
     title: string,
-    subtitle: string,
+    subtitle?: string,
     useCheckbox?: boolean,
     checked?: boolean,
+    rightValue?: string,
     onChecked?: (checked: boolean) => void,
     onPress?: () => void,
 }
@@ -22,9 +23,12 @@ const List: FC<Props> = (props) => {
                         onChange={props.onChecked}>
                         <Text></Text>
                     </CheckBox>}
-                    <View>
-                        <Text>{props.title}</Text>
-                        <Text appearance={"hint"} category="c1">{props.subtitle}</Text>
+                    <View style={[theme.flex1, theme.flexBetween]}>
+                        <View>
+                            <Text>{props.title}</Text>
+                            {props.subtitle && <Text appearance={"hint"} category="c1">{props.subtitle}</Text>}
+                        </View>
+                        {props.rightValue && <Text>{props.rightValue}</Text>}
                     </View>
                 </View>
             </TouchableRipple>

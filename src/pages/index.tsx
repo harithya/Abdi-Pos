@@ -11,6 +11,9 @@ import FinishScreen from "./checkout/FinishScreen";
 import BarcodeScreen from "./barcode/BarcodeScreen";
 import CustomerImportScreen from "./customer/CustomerImportScreen";
 import CustomerCreateScreen from "./customer/CustomerCreateScreen";
+import ReturnScreen from "./return/ReturnScreen";
+import ReturnCreateScreen from "./return/ReturnCreateScreen";
+import ProductScreen from "./master/ProductScreen";
 
 export {
     SplashScreen,
@@ -25,6 +28,8 @@ export {
     FinishScreen,
     BarcodeScreen,
     CustomerImportScreen,
-    CustomerCreateScreen
-
+    CustomerCreateScreen,
+    ReturnScreen,
+    ReturnCreateScreen,
+    ProductScreen
 }

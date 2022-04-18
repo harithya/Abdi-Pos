@@ -13,7 +13,7 @@ const Cart: FC<Props> = ({ data }) => {
     const navigation: useNavigationProps = useNavigation();
     return (
         <>
-            <TouchableRipple onPress={() => navigation.navigate("CartShow")}>
+            <TouchableRipple onPress={() => navigation.navigate("CartShow", { data: data })}>
                 <View style={styles.list}>
                     <View style={styles.number}>
                         <Text style={theme.fontMedium} status={"control"}>{data.qty}</Text>
@@ -21,7 +21,9 @@ const Cart: FC<Props> = ({ data }) => {
                     <View style={theme.flex1}>
                         <Text>{data.name}</Text>
                         <View style={theme.flexBetween}>
-                            <Text appearance={"hint"} category="c2" style={theme.marginTop5}>Harga: {helper.formatNumber(data.price)} x {data.qty}, Diskon: -</Text>
+                            <Text appearance={"hint"} category="c2" style={theme.marginTop5}>
+                                Harga: {helper.formatNumber(data.price)} x {data.qty} {data.unit.name},
+                                Diskon: {helper.defaultNumber(helper.formatNumber(data.discount))}</Text>
                             <Text category={"p2"}>{helper.formatNumber(data.price)}</Text>
                         </View>
                     </View>
@@ -38,7 +40,8 @@ const styles = StyleSheet.create({
     list: {
         paddingHorizontal: constant.container,
         paddingVertical: 16,
-        ...theme.flexStart
+        ...theme.flexStart,
+        backgroundColor: color.white
     },
     number: {
         height: 40,

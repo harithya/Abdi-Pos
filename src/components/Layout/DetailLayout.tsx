@@ -18,9 +18,10 @@ interface Props {
     actionOnPress?: () => void,
     disableBubble?: boolean,
     disable?: boolean,
+    actionPack?: string
 }
 const DetailLayout: FC<Props> = (
-    { title, children, back, search, loading, action, actionIcon, actionOnPress, disableBubble, disable }
+    { title, children, back, search, loading, action, actionIcon, actionOnPress, disableBubble, disable, actionPack = "eva" }
 ) => {
     const navigation = useNavigation<useNavigationProps>()
     return (
@@ -35,7 +36,7 @@ const DetailLayout: FC<Props> = (
                             </TouchableOpacity>}
                             <Text status={"control"} category="h6" style={styles.title}>{title}</Text>
                             {action && <TouchableOpacity onPress={actionOnPress} style={styles.action}>
-                                <Icon name={actionIcon} pack='eva' fill={color.white} style={styles.icon} />
+                                <Icon name={actionIcon} pack={actionPack} fill={color.white} style={styles.icon} />
                             </TouchableOpacity>}
                         </View>
                     </ImageBackground>

@@ -1,8 +1,16 @@
+import { PriceProductResultProps, SalesCartProps } from "@types";
 import moment from "moment";
 import { Dimensions } from "react-native";
 import DeviceInfo from 'react-native-device-info';
 import store from "src/redux/store";
 
+
+interface StokProps {
+    qty: number,
+    priceList: PriceProductResultProps[],
+    unitID: number,
+    stok: string
+}
 const helper = {
     space: (index: number, marginValue = 20) => {
         if (index !== 0) {
@@ -57,11 +65,24 @@ const helper = {
     },
 
     // format number to idr
-    formatNumber: (number: number) => {
+    formatNumber: (number: number, prefix = true, defaultNumber = 0) => {
         var rupiah = '';
         var angkarev = number.toString().split('').reverse().join('');
         for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
-        return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+        return (prefix ? 'Rp. ' : '') + rupiah.split('', rupiah.length - 1).reverse().join('');
+    },
+
+    defaultNumber: (idr: string) => {
+        const data = idr.replace(/[^0-9]/g, '');
+        if (parseInt(data) === 0 || data === "") {
+            return '-';
+        } else {
+            return idr;
+        }
+    },
+
+    inputNumber: (value: string) => {
+        return value?.replace(/\./g, '')
     },
 
     isTablet: () => {
@@ -90,6 +111,23 @@ const helper = {
         } else {
             return 14
         }
+    },
+
+    // getStok: ({ qty, priceList, unitID, stok }: StokProps) => {
+    //     const unit = priceList.find(item => item.satuan_id == unitID);
+    //     const stokUnit = (unit?.jumlah ? parseInt(unit?.jumlah) : 1)
+    //     const stokMaster = (unit?.jumlah_satuan_utama ? parseInt(unit?.jumlah_satuan_utama) : 0);
+
+    //     return ((parseInt(stok) - qty) / stokUnit) / stokMaster;
+    // },
+
+    getTotalCart: () => {
+        const cart = store.getState().salesCart.data;
+        let total = 0;
+        cart.forEach((item: SalesCartProps) => {
+            total += item.qty * (item.price - item.discount);
+        })
+        return total;
     }
 
 }

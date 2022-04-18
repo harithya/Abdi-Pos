@@ -20,6 +20,7 @@ import List from "./items/List";
 import Empty from "./Status/Empty";
 import Customer from "./items/Customer";
 import Fab from "./Fab";
+import UnitSheet from "./BottomSheet/Items/UnitSheet";
 
 export {
     Layout,
@@ -43,5 +44,6 @@ export {
     List,
     Empty,
     Customer,
-    Fab
+    Fab,
+    UnitSheet
 }

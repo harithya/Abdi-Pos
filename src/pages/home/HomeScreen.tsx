@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, ToastAndroid, View } from 'react-native'
-import React from 'react'
+import { FlatList, StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
 import { BottomSheet, CategorySheet, HomeLayout, Product, SelectInfo, Empty } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
@@ -28,6 +28,7 @@ const HomeScreen = () => {
         return req.data.result ?? []
     }
 
+    const [isRefreshing, setIsRefreshing] = useState(false)
     const { data, isLoading, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery(
         ["product", searchState.data, categoryState.selected.id],
         fetchData, {
@@ -49,22 +50,22 @@ const HomeScreen = () => {
         //Find Product in Cart
         const find = salesCartState.data.find((data) => data.id === item.kode)
         if (!find) {
-            // Validation stok product
-            if (parseInt(item.stok) > 0) {
-                dispatch(addSalesCart(item))
-            }
+            dispatch(addSalesCart(item))
         } else {
-            // Validation stok product
-            if ((parseInt(item.stok) - find.qty) > 0) {
-                const cart = salesCartState.data.map((data) => {
-                    if (data.id === item.kode) {
-                        data.qty += 1
-                    }
-                    return data
-                })
-                dispatch(updateSalesCart(cart));
-            }
+            const cart = salesCartState.data.map((data) => {
+                if (data.id === item.kode) {
+                    data.qty += 1
+                }
+                return data
+            })
+            dispatch(updateSalesCart(cart));
         }
+    }
+
+    const handleRefresh = () => {
+        setIsRefreshing(true)
+        refetch()
+        setIsRefreshing(false)
     }
 
     return (
@@ -74,6 +75,8 @@ const HomeScreen = () => {
                     <FlatList
                         data={data?.pages}
                         key={layoutState.data}
+                        refreshing={isRefreshing}
+                        onRefresh={handleRefresh}
                         onEndReached={handleLoadMore}
                         style={theme.flatlist}
                         keyExtractor={(item: PaginationProps) => item.current_page.toString()}
@@ -90,6 +93,7 @@ const HomeScreen = () => {
                                             data={newData}
                                             onPress={() => handleAddCart(newData)}
                                             layout={layoutState.data}
+                                            cart={salesCartState.data.find((data) => data.id === newData.kode)}
                                         />)}
                                 </View>
                         }

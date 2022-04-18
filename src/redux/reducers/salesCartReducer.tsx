@@ -19,6 +19,18 @@ export default (state = initialState, { type, payload }: ReducerProps) => {
                 data: payload
             }
 
+        case "DELETE_SALES_CART":
+            return {
+                ...state,
+                data: payload
+            }
+
+        case "EMPTY_SALES_CART":
+            return {
+                ...state,
+                data: []
+            }
+
         default:
             return state
     }

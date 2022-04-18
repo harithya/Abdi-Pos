@@ -1,4 +1,5 @@
 import { ProductResultProps, SalesCartProps } from "@types";
+import store from "../store";
 
 const addSalesCart = (value: ProductResultProps) => {
     const data = {
@@ -11,6 +12,7 @@ const addSalesCart = (value: ProductResultProps) => {
             id: value.satuan_id,
             name: value.satuan
         },
+        discount: 0,
         total: value.harga_jual,
         stok: parseInt(value.stok)
     }
@@ -29,4 +31,20 @@ const updateSalesCart = (value: SalesCartProps[]) => {
     }
 }
 
-export { addSalesCart, updateSalesCart }
+const deleteSalesCart = (id: string) => {
+    const cart = store.getState().salesCart.data;
+    const data = cart.filter((item: SalesCartProps) => item.id !== id);
+    return {
+        type: "DELETE_SALES_CART",
+        payload: data
+    }
+}
+
+const emptySalesCart = () => {
+    return {
+        type: "EMPTY_SALES_CART",
+        payload: []
+    }
+}
+
+export { addSalesCart, updateSalesCart, deleteSalesCart, emptySalesCart }

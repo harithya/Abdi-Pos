@@ -21,9 +21,6 @@ const BarcodeScreen = () => {
                 />
 
             </RNCamera>
-            <View style={styles.footer}>
-                <SelectInfo value={3} />
-            </View>
         </DetailLayout>
     )
 }

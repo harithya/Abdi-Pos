@@ -49,17 +49,18 @@ export interface SalesCartStateProps {
     data: SalesCartProps[]
 }
 
-
+export interface UnitProps {
+    id: number,
+    name: string
+}
 export interface SalesCartProps {
     id: string,
     name: string,
     price: number,
     priceList: PriceProductResultProps[],
     qty: number,
-    unit: {
-        id: number,
-        name: string
-    },
+    unit: UnitProps,
+    discount: number,
     total: number,
     stok: number
 }

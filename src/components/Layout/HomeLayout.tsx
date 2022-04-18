@@ -40,7 +40,6 @@ const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory, onC
         setIsOpenDrawer(!isOpenDrawer)
     }
 
-
     return (
         <SideMenu menu={<Sidebar />} onChange={handleSideBarChange} openMenuOffset={275} autoClosing isOpen={isOpenDrawer} >
             <View style={[theme.flex1, styles.mainContent]}>
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         ...theme.flexStart,
-        marginLeft: constant.container
+        // marginLeft: constant.container
     },
     more: {
         height: 24,
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     },
     touchableTitle: {
         maxWidth: helper.isTablet() ? undefined : 220,
-        marginLeft: 20
+        marginLeft: constant.container,
     },
     mainContent: {
         backgroundColor: color.white,

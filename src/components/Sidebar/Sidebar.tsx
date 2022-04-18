@@ -45,6 +45,7 @@ const Sidebar = () => {
                 <Menu
                     title='Pengembalian'
                     icon='layout-outline'
+                    onPress={() => navigation.navigate("Return")}
                 />
             </View>
             <Divider />

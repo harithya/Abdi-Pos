@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { DetailLayout, Input } from '@components'
 import { helper, theme } from '@utils'
 import { Button, Divider, Text } from '@ui-kitten/components'
@@ -19,19 +19,43 @@ const Item: FC<Props> = ({ title, value }) => {
 }
 
 const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
+    const [discount, setDiscount] = useState(0)
+    const [paid, setPaid] = useState(0)
+
+    const handleSetPaid = (value: string) => {
+        (isNaN(parseInt(value))) ? setPaid(0) : setPaid(parseInt(helper.inputNumber(value)));
+    }
+
+    const handleSetDiscount = (value: string) => {
+        (isNaN(parseInt(value))) ? setDiscount(0) : setDiscount(parseInt(helper.inputNumber(value)));
+    }
+
     return (
         <DetailLayout title='Checkout' back>
             <View style={theme.content}>
-                <Input label='Total yang dibayar' placeholder='Masukan total dibayar' leftIcon='currency-usd' />
-                <Input label='Diskon' containerStyle={theme.marginBottom0} placeholder='Masukan jumlah diskon' leftIcon='percent-outline' />
+                <Input
+                    label='Total yang dibayar'
+                    placeholder='Masukan total dibayar'
+                    leftIcon='currency-usd'
+                    value={paid === 0 ? '' : helper.formatNumber(paid, false)}
+                    onChangeText={handleSetPaid}
+                />
+                <Input
+                    label='Diskon'
+                    containerStyle={theme.marginBottom0}
+                    placeholder='Masukan jumlah diskon'
+                    leftIcon='percent-outline'
+                    value={discount === 0 ? '' : helper.formatNumber(discount, false)}
+                    onChangeText={handleSetDiscount}
+                />
             </View>
             <Divider />
             <View style={theme.content}>
-                <Item title='Sub Total' value={17500} />
-                <Item title='Diskon' value={5000} />
-                <Item title='Yang harus dibayar' value={15000} />
-                <Item title='Dibayarkan' value={20000} />
-                <Item title='Kembalian' value={15000} />
+                <Item title='Sub Total' value={helper.getTotalCart()} />
+                <Item title='Diskon' value={discount} />
+                <Item title='Yang harus dibayar' value={helper.getTotalCart() - discount} />
+                <Item title='Dibayarkan' value={paid} />
+                <Item title='Kembalian' value={paid - (helper.getTotalCart() - discount)} />
             </View>
             <View style={theme.footer}>
                 <Button onPress={() => navigation.replace("Finish")}>Bayar Sekarang</Button>
