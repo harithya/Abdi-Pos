@@ -1,6 +1,6 @@
 import { http } from "@services"
 import { CategoryResultProps } from "@types";
-import store from "../store";
+import { store } from "../store";
 
 const fetchCategory = () => {
     return async (dispatch: any) => {

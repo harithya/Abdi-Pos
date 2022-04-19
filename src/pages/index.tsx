@@ -11,9 +11,14 @@ import FinishScreen from "./checkout/FinishScreen";
 import BarcodeScreen from "./barcode/BarcodeScreen";
 import CustomerImportScreen from "./customer/CustomerImportScreen";
 import CustomerCreateScreen from "./customer/CustomerCreateScreen";
-import ReturnScreen from "./return/ReturnScreen";
-import ReturnCreateScreen from "./return/ReturnCreateScreen";
 import ProductScreen from "./master/ProductScreen";
+import TransactionScreen from "./transaction/TransactionScreen";
+import TransactionShowScreen from "./transaction/TransactionShowScreen";
+import ReturnScreen from "./return/ReturnScreen";
+import SettingScreen from "./setting/SettingScreen";
+import LayoutScreen from "./setting/items/LayoutScreen";
+import PrinterScreen from "./setting/items/PrinterScreen";
+import ReceiptScreen from "./setting/items/ReceiptScreen";
 
 export {
     SplashScreen,
@@ -29,7 +34,12 @@ export {
     BarcodeScreen,
     CustomerImportScreen,
     CustomerCreateScreen,
+    ProductScreen,
+    TransactionScreen,
+    TransactionShowScreen,
     ReturnScreen,
-    ReturnCreateScreen,
-    ProductScreen
+    SettingScreen,
+    LayoutScreen,
+    PrinterScreen,
+    ReceiptScreen
 }

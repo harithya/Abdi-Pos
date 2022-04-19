@@ -260,7 +260,6 @@ dependencies {
     implementation project(':react-native-contacts')
     implementation project(':react-native-orientation')
     
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

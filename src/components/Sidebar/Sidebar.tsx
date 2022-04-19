@@ -39,13 +39,14 @@ const Sidebar = () => {
                     onPress={() => navigation.navigate("Customer", {})}
                 />
                 <Menu
-                    title='History Transaksi'
+                    title='Transaksi'
                     icon='refresh-outline'
+                    onPress={() => navigation.navigate("Transaction")}
                 />
                 <Menu
-                    title='Pengembalian'
-                    icon='layout-outline'
-                    onPress={() => navigation.navigate("Return")}
+                    title='Pengaturan'
+                    icon='settings-outline'
+                    onPress={() => navigation.navigate("Setting")}
                 />
             </View>
             <Divider />

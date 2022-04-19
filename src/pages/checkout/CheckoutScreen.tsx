@@ -1,9 +1,15 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { DetailLayout, Input } from '@components'
 import { helper, theme } from '@utils'
 import { Button, Divider, Text } from '@ui-kitten/components'
-import { PageProps } from '@types'
+import { CartStateProps, CustomerStateProps, PageProps } from '@types'
+import { useDispatch, useSelector } from 'react-redux'
+import { State } from 'src/redux/reducer'
+import { useMutation } from 'react-query'
+import { http } from '@services'
+import { removeCustomer } from 'src/redux/actions/customerAction'
+import { emptySalesCart } from 'src/redux/actions/salesCartAction'
 
 interface Props {
     title: string,
@@ -30,8 +36,37 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
         (isNaN(parseInt(value))) ? setDiscount(0) : setDiscount(parseInt(helper.inputNumber(value)));
     }
 
+    const saleCartState: CartStateProps = useSelector((state: State) => state.salesCart);
+    const customerState: CustomerStateProps = useSelector((state: State) => state.customer);
+
+    const postCheckout = async () => {
+        const data = {
+            discount: discount,
+            paid: paid,
+            cart: saleCartState.data,
+            subTotal: helper.getTotalCart(),
+            customer_id: customerState.data?.id ?? null
+        }
+        const req = http.post("/transaksi", data);
+        return req;
+    }
+
+    const dispatch = useDispatch();
+
+
+    const mutaion = useMutation(postCheckout, {
+        onSuccess: () => {
+            dispatch(removeCustomer());
+            dispatch(emptySalesCart());
+            navigation.replace("Finish");
+        },
+        onError: () => {
+            ToastAndroid.show("Gagal melakukan transaksi", ToastAndroid.SHORT);
+        }
+    })
+
     return (
-        <DetailLayout title='Checkout' back>
+        <DetailLayout title='Checkout' back loading={mutaion.isLoading}>
             <View style={theme.content}>
                 <Input
                     label='Total yang dibayar'
@@ -58,7 +93,7 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
                 <Item title='Kembalian' value={paid - (helper.getTotalCart() - discount)} />
             </View>
             <View style={theme.footer}>
-                <Button onPress={() => navigation.replace("Finish")}>Bayar Sekarang</Button>
+                <Button onPress={() => mutaion.mutate()}>Bayar Sekarang</Button>
             </View>
         </DetailLayout>
     )

@@ -98,7 +98,8 @@ const HomeScreen = () => {
                                 </View>
                         }
                     />
-                    {!helper.isTablet() && <SelectInfo value={5} />}
+                    {(!helper.isTablet() && salesCartState.data.length > 0) &&
+                        <SelectInfo value={salesCartState.data.length} />}
                     <BottomSheet id='bottomSheet' title='Category'>
                         <CategorySheet />
                     </BottomSheet>

@@ -65,6 +65,14 @@ export interface CartProps {
     stok: number
 }
 
+export interface BluetoothProps {
+    device_name: string,
+    inner_mac_address: string
+}
+export interface BluetoothStateProps {
+    data: BluetoothProps
+}
+
 //pagination
 export interface PaginationProps {
     current_page: number,

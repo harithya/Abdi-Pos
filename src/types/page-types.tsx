@@ -18,9 +18,14 @@ type RootStackList = {
     CustomerCreate: {
         id?: number
     },
+    Product: undefined,
+    Transaction: undefined,
+    TransactionShow: undefined,
     Return: undefined,
-    ReturnCreate: undefined,
-    Product: undefined
+    Setting: undefined,
+    Layout: undefined,
+    Receipt: undefined,
+    Printer: undefined
 }
 
 

@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: color.primary,
         backgroundColor: helper.hexToRgb(color.primary, 0.7),
-        marginRight: 20
+        marginRight: 16
     }
 })

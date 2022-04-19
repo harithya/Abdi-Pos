@@ -1,6 +1,28 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BarcodeScreen, CartScreen, CartShowScreen, CheckoutScreen, CustomerCreateScreen, CustomerImportScreen, CustomerScreen, FinishScreen, HomeScreen, PasswordEditScreen, ProductScreen, ProfileEditScreen, ReturnCreateScreen, ReturnScreen, SplashScreen, WelcomeScreen } from '@pages';
+import {
+    BarcodeScreen,
+    CartScreen,
+    CartShowScreen,
+    CheckoutScreen,
+    CustomerCreateScreen,
+    CustomerImportScreen,
+    CustomerScreen,
+    FinishScreen,
+    HomeScreen,
+    LayoutScreen,
+    PasswordEditScreen,
+    PrinterScreen,
+    ProductScreen,
+    ProfileEditScreen,
+    ReceiptScreen,
+    ReturnScreen,
+    SettingScreen,
+    SplashScreen,
+    TransactionScreen,
+    TransactionShowScreen,
+    WelcomeScreen
+} from '@pages';
 import LoginScreen from 'src/pages/auth/LoginScreen';
 
 const Stack = createNativeStackNavigator();
@@ -17,14 +39,19 @@ const StackNavigation = () => {
             <Stack.Screen name="Cart" component={CartScreen} />
             <Stack.Screen name="Customer" component={CustomerScreen} />
             <Stack.Screen name="CartShow" component={CartShowScreen} />
-            <Stack.Screen name="Checkout" component={CheckoutScreen} />
+            <Stack.Screen name="Checkout" component={CheckoutScreen} options={{ animation: "slide_from_right" }} />
             <Stack.Screen name="Finish" component={FinishScreen} />
             <Stack.Screen name="Barcode" component={BarcodeScreen} />
             <Stack.Screen name="CustomerImport" component={CustomerImportScreen} />
             <Stack.Screen name="CustomerCreate" component={CustomerCreateScreen} />
-            <Stack.Screen name="Return" component={ReturnScreen} />
-            <Stack.Screen name="ReturnCreate" component={ReturnCreateScreen} />
             <Stack.Screen name="Product" component={ProductScreen} />
+            <Stack.Screen name="Transaction" component={TransactionScreen} />
+            <Stack.Screen name="TransactionShow" component={TransactionShowScreen} />
+            <Stack.Screen name="Return" component={ReturnScreen} options={{ animation: "slide_from_right" }} />
+            <Stack.Screen name="Setting" component={SettingScreen} />
+            <Stack.Screen name="Layout" component={LayoutScreen} />
+            <Stack.Screen name="Receipt" component={ReceiptScreen} />
+            <Stack.Screen name="Printer" component={PrinterScreen} />
 
         </Stack.Navigator>
     )

@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Cart, DetailLayout, Empty, SelectPeople, TouchableRipple } from '@components'
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon, Text } from '@ui-kitten/components'
@@ -21,6 +21,12 @@ const CartScreen: FC<Props> = ({ disableLayout }) => {
     const deleteById = (id: string) => {
         dispatch(deleteSalesCart(id));
     }
+
+    useEffect(() => {
+        if (salesCartState.data.length === 0 && !helper.isTablet()) {
+            navigation.goBack();
+        }
+    }, [salesCartState.data.length])
 
     const emptyCart = () => dispatch(emptySalesCart());
 
@@ -62,7 +68,12 @@ const CartScreen: FC<Props> = ({ disableLayout }) => {
                             appearance={"outline"}>
                             Hapus Keranjang
                         </Button>
-                        <Button onPress={() => navigation.navigate("Checkout")} style={styles.button}>Bayar Sekarang</Button>
+                        <Button
+                            disabled={salesCartState.data.length === 0}
+                            onPress={() => navigation.navigate("Checkout")}
+                            style={styles.button}>
+                            Bayar Sekarang
+                        </Button>
                     </View>
                 </View>
             </View>

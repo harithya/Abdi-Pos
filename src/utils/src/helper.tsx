@@ -1,8 +1,9 @@
 import { PriceProductResultProps, CartProps } from "@types";
 import moment from "moment";
-import { Dimensions } from "react-native";
+import { Dimensions, PermissionsAndroid } from "react-native";
 import DeviceInfo from 'react-native-device-info';
-import store from "src/redux/store";
+import { store } from "src/redux/store";
+
 
 
 interface StokProps {
@@ -128,6 +129,18 @@ const helper = {
             total += item.qty * (item.price - item.discount);
         })
         return total;
+    },
+
+    requestPermissionBluetooth: () => {
+        return new Promise((resolve, reject) => {
+            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT).then(response => {
+                if (response === 'granted') {
+                    resolve(true);
+                } else {
+                    reject(false);
+                }
+            })
+        })
     }
 
 }

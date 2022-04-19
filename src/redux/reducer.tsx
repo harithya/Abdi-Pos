@@ -5,6 +5,7 @@ import customerReducer from "./reducers/customerReducer";
 import layoutReducer from "./reducers/layoutReducer";
 import searchReducer from "./reducers/searchReducer";
 import salesCartReducer from "./reducers/salesCartReducer";
+import bluetoothReducer from "./reducers/bluetoothReducer";
 
 const reducer = combineReducers({
     layout: layoutReducer,
@@ -12,7 +13,8 @@ const reducer = combineReducers({
     auth: authReducer,
     category: categoryReducer,
     customer: customerReducer,
-    salesCart: salesCartReducer
+    salesCart: salesCartReducer,
+    bluetooth: bluetoothReducer,
 })
 
 export default reducer;
