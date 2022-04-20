@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import { Cart, DetailLayout, Empty, SelectPeople, TouchableRipple } from '@components'
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon, Text } from '@ui-kitten/components'
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { deleteSalesCart, emptySalesCart } from 'src/redux/actions/salesCartAction'
+import { useFocusEffect } from '@react-navigation/native';
 
 interface Props {
     disableLayout?: boolean
@@ -22,11 +23,13 @@ const CartScreen: FC<Props> = ({ disableLayout }) => {
         dispatch(deleteSalesCart(id));
     }
 
-    useEffect(() => {
-        if (salesCartState.data.length === 0 && !helper.isTablet()) {
-            navigation.goBack();
-        }
-    }, [salesCartState.data.length])
+    useFocusEffect(
+        React.useCallback(() => {
+            if (salesCartState.data.length === 0 && !helper.isTablet()) {
+                navigation.goBack();
+            }
+        }, [salesCartState.data.length])
+    )
 
     const emptyCart = () => dispatch(emptySalesCart());
 

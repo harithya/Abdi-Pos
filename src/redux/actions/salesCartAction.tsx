@@ -1,5 +1,5 @@
 import { ProductResultProps, CartProps } from "@types";
-import store from "../store";
+import { store } from "../store";
 
 const addSalesCart = (value: ProductResultProps) => {
     const data = {

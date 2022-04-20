@@ -155,3 +155,24 @@ export interface PriceProductResultProps {
     jumlah_satuan_utama: string;
     satuan: string;
 }
+
+export interface TransactionResultProps {
+    kode: string;
+    tanggal: string;
+    status: number;
+    jumlah: number;
+    pasien: string;
+    status_kasir: number;
+}
+
+export interface TransactionDetailResultProps {
+    id: number;
+    jumlah: string;
+    jumlah_utama: number;
+    harga: number;
+    satuan_id: number;
+    produk_kode: string;
+    transaksi_kode: string;
+    produk: string;
+    satuan: string;
+}

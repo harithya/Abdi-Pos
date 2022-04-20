@@ -1,52 +1,58 @@
 import { ScrollView, StyleSheet, View } from 'react-native'
 import React, { FC } from 'react'
 import { BottomSheet, DetailLayout, List, ProductHistory, Section, Item } from '@components'
-import { color, constant, theme } from '@utils'
+import { color, constant, helper, theme } from '@utils'
 import { Button, Icon } from '@ui-kitten/components'
 import { SheetManager } from 'react-native-actions-sheet'
-import { PageProps } from '@types'
+import { PageProps, TransactionDetailResultProps } from '@types'
 import RootStackList from 'src/types/page-types'
+import { useQuery } from 'react-query'
+import { http, receipt } from '@services'
 
-const TransactionShowScreen: FC<PageProps> = ({ navigation }) => {
-    
+const fetchData = async (kode: string) => {
+    const req = await http.get("/transaksi/" + kode);
+    return req.data.result
+}
+const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, route }) => {
+
     const handleAction = (url: keyof RootStackList) => {
         navigation.navigate(url);
         SheetManager.hide("actionSheet")
     }
 
-    const handlePrintReceipt = async () => {
-
-    }
+    const { data, isLoading, isSuccess } = useQuery(['transactionDetail', route.params.kode],
+        () => fetchData(route.params.kode));
 
     return (
         <DetailLayout
             title='Detail'
             action
+            loading={isLoading}
             actionIcon='share-variant'
             actionPack='material-community'
             actionOnPress={() => { }}
             back>
-            <ScrollView contentContainerStyle={styles.container}>
+            {isSuccess && <ScrollView contentContainerStyle={styles.container}>
                 <Section title='Informasi Transaksi' style={styles.section}>
-                    <Item title='No Transaksi' value='OD-8JPXR-20220418' />
-                    <Item title='Nama Pelanggan' value='Harithya Wisesa' />
-                    <Item title='Tanggal' value='24 Agustus 2022' />
+                    <Item title='No Transaksi' value={data.kode} />
+                    <Item title='Nama Pelanggan' value={data.pasien ?? '-'} />
+                    <Item title='Tanggal' value={helper.date(data.tanggal)} />
                 </Section>
                 <Section title='Detail Produk' style={styles.section}>
                     <View style={styles.product}>
-                        <ProductHistory />
-                        <ProductHistory />
+                        {data.detail_transaksi.map((val: TransactionDetailResultProps, key: number) =>
+                            <ProductHistory key={key} data={val} />)}
                     </View>
                 </Section>
                 <Section title='Total Transaksi' style={styles.section}>
                     <View style={styles.product}>
-                        <Item title='Sub Total' value='Rp 35.000' />
-                        <Item title='Diskon' value='Rp 5.000' />
-                        <Item title='Dibayarkan' value='Rp 40.000' />
-                        <Item title='Kembalian' value='Rp 2.000' />
+                        <Item title='Sub Total' value={helper.formatNumber(data.jumlah)} />
+                        <Item title='Diskon' value={helper.formatNumber(data.diskon)} />
+                        <Item title='Dibayarkan' value={helper.formatNumber(data.dibayar)} />
+                        <Item title='Kembalian' value={helper.formatNumber(data.kembalian)} />
                     </View>
                 </Section>
-            </ScrollView>
+            </ScrollView>}
             <View style={styles.footer}>
                 <Button
                     status={"basic"}
@@ -54,7 +60,7 @@ const TransactionShowScreen: FC<PageProps> = ({ navigation }) => {
                     style={styles.action}
                     accessoryLeft={(eva) => <Icon {...eva} name="menu" />}
                 />
-                <Button onPress={handlePrintReceipt} style={theme.flex1}>Cetak Struk</Button>
+                <Button onPress={() => receipt.print(data)} style={theme.flex1}>Cetak Struk</Button>
             </View>
             <BottomSheet title='Lainnya' icon='information-outline' id='actionSheet'>
                 <List title='Pengajuan Pengembalian' onPress={() => handleAction("Return")} />

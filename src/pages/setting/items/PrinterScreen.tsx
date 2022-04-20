@@ -1,6 +1,6 @@
 import { ToastAndroid, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { DetailLayout, List } from '@components'
+import { DetailLayout, Empty, List } from '@components'
 import {
     BLEPrinter,
     IBLEPrinter
@@ -47,12 +47,20 @@ const PrinterScreen = () => {
     const bluetoothState: BluetoothStateProps = useSelector((state: State) => state.bluetooth)
     const handleSelectBluetooth = (device: IBLEPrinter) => {
         dispatch(setBluetooth(device))
+        BLEPrinter.connectPrinter(device.inner_mac_address)
     }
 
 
     return (
-        <DetailLayout title='Printer' back loading={loading}>
-            <FlatList
+        <DetailLayout
+            title='Printer'
+            back
+            action
+            actionIcon='refresh'
+            actionPack='material-community'
+            actionOnPress={handleRefresh}
+            loading={loading}>
+            {deviceList.length > 0 ? <FlatList
                 data={deviceList}
                 refreshing={isRefresh}
                 onRefresh={handleRefresh}
@@ -64,7 +72,11 @@ const PrinterScreen = () => {
                         rightValue={bluetoothState.data.inner_mac_address == item.inner_mac_address ? 'selected' : undefined}
                         onPress={() => handleSelectBluetooth(item)}
                     />}
-            />
+            /> :
+                <Empty
+                    title='Tidak ada perangkat terhubung'
+                    subtitle='Coba lakukan pindai ulang pada setting bluetooth anda'
+                />}
         </DetailLayout>
     )
 }

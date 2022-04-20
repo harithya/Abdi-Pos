@@ -12,7 +12,7 @@ type RootStackList = {
     Customer: { withSelect?: boolean },
     CartShow: { data: CartProps },
     Checkout: undefined,
-    Finish: undefined,
+    Finish: { kode: string },
     Barcode: undefined,
     CustomerImport: undefined,
     CustomerCreate: {
@@ -20,7 +20,7 @@ type RootStackList = {
     },
     Product: undefined,
     Transaction: undefined,
-    TransactionShow: undefined,
+    TransactionShow: { kode: string },
     Return: undefined,
     Setting: undefined,
     Layout: undefined,
