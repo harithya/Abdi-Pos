@@ -33,7 +33,7 @@ const receipt = {
                 BLEPrinter.printBill(design)
             }
         } catch (error) {
-            ToastAndroid.show("Printer tidak terhubung", ToastAndroid.SHORT);
+            ToastAndroid.show("Opps printer tidak terhubung", ToastAndroid.SHORT);
         }
 
     }

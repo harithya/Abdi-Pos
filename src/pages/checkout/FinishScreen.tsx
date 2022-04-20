@@ -16,8 +16,6 @@ const FinishScreen: FC<PageProps<'Finish'>> = ({ navigation, route }) => {
     const { data, isLoading } = useQuery(['transactionDetail', route.params.kode],
         () => fetchData(route.params.kode));
 
-    console.log(data);
-
     return (
         <DetailLayout title='Selesai' loading={isLoading} back>
             <View style={[theme.flex1, theme.toCenter]}>
