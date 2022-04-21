@@ -161,8 +161,15 @@ export interface TransactionResultProps {
     tanggal: string;
     status: number;
     jumlah: number;
-    pasien: string;
+    dibayar: number;
+    kembalian: number;
+    diskon: number;
+    is_tagihan_awal: number;
+    keterangan: string;
+    pengembalian_id?: number;
     status_kasir: number;
+    pasien: string;
+    detail_transaksi: TransactionDetailResultProps[];
 }
 
 export interface TransactionDetailResultProps {
@@ -175,4 +182,8 @@ export interface TransactionDetailResultProps {
     transaksi_kode: string;
     produk: string;
     satuan: string;
+    diskon: number;
+    foto: string;
+    checked: boolean;
+    qty: number;
 }

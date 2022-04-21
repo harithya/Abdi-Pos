@@ -44,13 +44,18 @@ const Sidebar = () => {
                     onPress={() => navigation.navigate("Transaction")}
                 />
                 <Menu
-                    title='Pengaturan'
-                    icon='settings-outline'
-                    onPress={() => navigation.navigate("Setting")}
+                    title='Antrian Klinik'
+                    icon='activity-outline'
+                    onPress={() => navigation.navigate("Transaction")}
                 />
             </View>
             <Divider />
             <View style={styles.section}>
+                <Menu
+                    title='Pengaturan'
+                    icon='settings-outline'
+                    onPress={() => navigation.navigate("Setting")}
+                />
                 <Menu
                     title='Log Out'
                     icon='log-out-outline'

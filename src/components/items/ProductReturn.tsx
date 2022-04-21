@@ -1,38 +1,41 @@
 import { Image, StyleSheet, View } from 'react-native'
-import React, { FC } from 'react'
-import { constant, theme } from '@utils'
+import React, { FC, memo } from 'react'
+import { constant, helper, theme } from '@utils'
 import { CheckBox, Divider } from '@ui-kitten/components'
 import { Text } from '@ui-kitten/components'
 import TouchableRipple from '../Touchable/TouchableRipple'
+import { TransactionDetailResultProps } from '@types'
 
 interface Props {
-    title: string,
-    onPress?: () => void
+    data: TransactionDetailResultProps,
+    onPress?: () => void,
+    onChecked?: () => void
 }
-const ProductReturn: FC<Props> = ({ title, onPress }) => {
+const ProductReturn: FC<Props> = ({ data, onPress, onChecked }) => {
     return (
         <TouchableRipple onPress={onPress}>
             <View style={styles.item}>
                 <View style={theme.flexStart}>
                     <CheckBox
-                        checked={false}
+                        checked={data.checked}
+                        onChange={onChecked}
                         style={styles.checkbox}
                     />
                     <View style={theme.flexStart}>
-                        <Image source={{ uri: "https://via.placeholder.com/150" }} style={styles.img} />
+                        <Image source={{ uri: data.foto }} style={styles.img} />
                         <View>
-                            <Text>{title}</Text>
-                            <Text appearance={"hint"} style={theme.marginTop5} category="c1">1 Box x Rp 18.000</Text>
+                            <Text>{data.produk}</Text>
+                            <Text appearance={"hint"} style={theme.marginTop5} category="c1">{parseInt(data.jumlah)} {data.satuan} x {helper.formatNumber(data.harga)}</Text>
                         </View>
                     </View>
                 </View>
-                <Text>3 Box</Text>
+                <Text>{data.qty} {data.satuan}</Text>
             </View>
         </TouchableRipple>
     )
 }
 
-export default ProductReturn
+export default memo(ProductReturn)
 
 const styles = StyleSheet.create({
     item: {

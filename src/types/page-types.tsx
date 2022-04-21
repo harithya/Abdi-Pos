@@ -1,4 +1,4 @@
-import { CartProps } from "@types";
+import { CartProps, TransactionResultProps } from "@types";
 
 
 type RootStackList = {
@@ -21,7 +21,7 @@ type RootStackList = {
     Product: undefined,
     Transaction: undefined,
     TransactionShow: { kode: string },
-    Return: undefined,
+    Return: { data: TransactionResultProps },
     Setting: undefined,
     Layout: undefined,
     Receipt: undefined,

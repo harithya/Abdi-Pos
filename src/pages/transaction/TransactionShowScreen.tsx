@@ -4,7 +4,7 @@ import { BottomSheet, DetailLayout, List, ProductHistory, Section, Item } from '
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon } from '@ui-kitten/components'
 import { SheetManager } from 'react-native-actions-sheet'
-import { PageProps, TransactionDetailResultProps } from '@types'
+import { PageProps, TransactionDetailResultProps, TransactionResultProps } from '@types'
 import RootStackList from 'src/types/page-types'
 import { useQuery } from 'react-query'
 import { http, receipt } from '@services'
@@ -15,8 +15,8 @@ const fetchData = async (kode: string) => {
 }
 const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, route }) => {
 
-    const handleAction = (url: keyof RootStackList) => {
-        navigation.navigate(url);
+    const handleAction = (url: keyof RootStackList, param = {}) => {
+        navigation.navigate(url, param);
         SheetManager.hide("actionSheet")
     }
 
@@ -63,7 +63,7 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
                 <Button onPress={() => receipt.print(data)} style={theme.flex1}>Cetak Struk</Button>
             </View>
             <BottomSheet title='Lainnya' icon='information-outline' id='actionSheet'>
-                <List title='Pengajuan Pengembalian' onPress={() => handleAction("Return")} />
+                <List title='Pengajuan Pengembalian' onPress={() => handleAction("Return", { data: data })} />
                 <List title='Batalkan Transaksi' />
             </BottomSheet>
         </DetailLayout>
