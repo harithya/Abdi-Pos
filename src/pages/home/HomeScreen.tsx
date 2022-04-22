@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { BottomSheet, CategorySheet, HomeLayout, Product, SelectInfo, Empty } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
@@ -10,7 +10,8 @@ import {
     PaginationProps,
     ProductResultProps,
     CartStateProps,
-    SearchStateProps
+    SearchStateProps,
+    PageProps
 } from '@types'
 import { SheetManager } from 'react-native-actions-sheet'
 import CartScreen from '../cart/CartScreen'
@@ -18,7 +19,7 @@ import { useInfiniteQuery } from 'react-query'
 import { http } from '@services'
 import { addSalesCart, updateSalesCart } from 'src/redux/actions/salesCartAction'
 
-const HomeScreen = () => {
+const HomeScreen: FC<PageProps> = ({ navigation }) => {
     //FETCH DATA
     const searchState: SearchStateProps = useSelector((state: State) => state.search)
     const categoryState: CategoryStateProps = useSelector((state: State) => state.category)
@@ -99,7 +100,11 @@ const HomeScreen = () => {
                         }
                     />
                     {(!helper.isTablet() && salesCartState.data.length > 0) &&
-                        <SelectInfo value={salesCartState.data.length} />}
+                        <SelectInfo
+                            value={salesCartState.data.length}
+                            total={helper.getTotalCart()}
+                            onPress={() => navigation.navigate("Cart")}
+                        />}
                     <BottomSheet id='bottomSheet' title='Category'>
                         <CategorySheet />
                     </BottomSheet>

@@ -13,7 +13,7 @@ const Sidebar = () => {
     const navigation: useNavigationProps = useNavigation();
     const authState: AuthStateProps = useSelector((state: State) => state.auth);
     return (
-        <ScrollView scrollsToTop={false} >
+        <ScrollView scrollsToTop={false} showsVerticalScrollIndicator={false}>
             <View style={styles.profile}>
                 <Image source={{ uri: authState.avatar }} style={styles.img} />
                 <View>
@@ -46,7 +46,7 @@ const Sidebar = () => {
                 <Menu
                     title='Antrian Klinik'
                     icon='activity-outline'
-                    onPress={() => navigation.navigate("Transaction")}
+                    onPress={() => navigation.navigate("Queue")}
                 />
             </View>
             <Divider />

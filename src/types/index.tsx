@@ -55,14 +55,15 @@ export interface UnitProps {
 }
 export interface CartProps {
     id: string,
+    img: string,
     name: string,
     price: number,
     priceList: PriceProductResultProps[],
     qty: number,
     unit: UnitProps,
     discount: number,
-    total: number,
-    stok: number
+    stok: number,
+    description?: string
 }
 
 export interface BluetoothProps {
@@ -143,6 +144,7 @@ export interface ProductResultProps {
     satuan_id: number;
     harga_jual: number;
     harga: PriceProductResultProps[];
+    keterangan?: string
 }
 
 export interface PriceProductResultProps {
@@ -169,6 +171,7 @@ export interface TransactionResultProps {
     pengembalian_id?: number;
     status_kasir: number;
     pasien: string;
+    asuransi: number;
     detail_transaksi: TransactionDetailResultProps[];
 }
 
@@ -186,4 +189,18 @@ export interface TransactionDetailResultProps {
     foto: string;
     checked: boolean;
     qty: number;
+}
+
+export interface QueueResultProps {
+    dokter: string,
+    kode_transaksi: string,
+    no_identitas: string,
+    pasien: string,
+    id: number,
+}
+
+export interface ServiceResultProps {
+    harga: number
+    id: number
+    layanan: string
 }

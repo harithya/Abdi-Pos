@@ -3,23 +3,22 @@ import React, { FC } from 'react'
 import { color, helper, theme } from '@utils'
 import { Icon, Text } from '@ui-kitten/components'
 import TouchableRipple from '../Touchable/TouchableRipple'
-import { useNavigation } from '@react-navigation/native'
-import { useNavigationProps } from '@types'
 
 interface Props {
-    value: number
+    value: number,
+    total?: number,
+    onPress?: () => void
 }
-const SelectInfo: FC<Props> = ({ value }) => {
-    const navigation: useNavigationProps = useNavigation()
+const SelectInfo: FC<Props> = ({ value, total, onPress }) => {
     return (
         <View style={styles.card}>
-            <TouchableRipple onPress={() => navigation.navigate("Cart")}>
+            <TouchableRipple onPress={onPress}>
                 <View style={styles.info}>
                     <View style={theme.flexStart}>
                         <Icon name='cart' fill={color.white} style={styles.icon} />
                         <Text status={"control"} style={theme.fontSemiBold}>{value}  Item</Text>
                     </View>
-                    <Text status={"control"} style={theme.fontSemiBold}>{helper.formatNumber(helper.getTotalCart())}</Text>
+                    {total && <Text status={"control"} style={theme.fontSemiBold}>{helper.formatNumber(total)}</Text>}
                 </View>
             </TouchableRipple>
         </View>

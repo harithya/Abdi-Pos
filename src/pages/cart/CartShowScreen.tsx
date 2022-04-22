@@ -77,11 +77,13 @@ const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
                     placeholder='Harga'
                     value={helper.formatNumber(data.price, false)}
                     leftIcon='currency-usd'
+                    keyboardType='number-pad'
                     onChangeText={(val) => handleInput('price', helper.inputNumber(val))}
                 />
                 <Input
                     placeholder='Diskon dalam rupiah'
                     leftIcon='percent-outline'
+                    keyboardType='number-pad'
                     onChangeText={(val) => handleInput('discount', helper.inputNumber(val))}
                     value={helper.formatNumber(data.discount, false)}
                 />
@@ -97,6 +99,7 @@ const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
                 <View style={styles.qtyContainer}>
                     <Input
                         placeholder='Qty'
+                        keyboardType='number-pad'
                         value={data.qty.toString()}
                         onChangeText={(val) => handleInput("qty", val)}
                         containerStyle={styles.input}

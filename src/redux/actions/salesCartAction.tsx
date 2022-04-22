@@ -14,7 +14,8 @@ const addSalesCart = (value: ProductResultProps) => {
         },
         discount: 0,
         total: value.harga_jual,
-        stok: parseInt(value.stok)
+        stok: parseInt(value.stok),
+        img: value.foto
     }
 
     return {

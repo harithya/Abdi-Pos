@@ -40,8 +40,9 @@ const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory, onC
         setIsOpenDrawer(!isOpenDrawer)
     }
 
+
     return (
-        <SideMenu menu={<Sidebar />} onChange={handleSideBarChange} openMenuOffset={275} autoClosing isOpen={isOpenDrawer} >
+        <SideMenu menu={<Sidebar />} onChange={handleSideBarChange} openMenuOffset={275} isOpen={isOpenDrawer} >
             <View style={[theme.flex1, styles.mainContent]}>
                 <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch]}>
                     <Bubble />

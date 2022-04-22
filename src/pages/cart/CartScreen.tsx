@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import React, { FC } from 'react'
-import { Cart, DetailLayout, Empty, SelectPeople, TouchableRipple } from '@components'
+import { Cart, DeleteSwipe, DetailLayout, Empty, SelectPeople } from '@components'
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon, Text } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
@@ -42,15 +42,7 @@ const CartScreen: FC<Props> = ({ disableLayout }) => {
                         data={salesCartState.data}
                         keyExtractor={(val) => val.id.toString()}
                         renderItem={({ item }) => <Cart key={`cart-${item.id}`} data={item} />}
-                        renderHiddenItem={(data, rowMap) => (
-                            <TouchableRipple onPress={() => deleteById(data.item.id)}>
-                                <View style={styles.action}>
-                                    <View style={styles.actionBody}>
-                                        <Icon name='delete' fill={color.white} style={theme.icon} />
-                                    </View>
-                                </View>
-                            </TouchableRipple>
-                        )}
+                        renderHiddenItem={(data, rowMap) => <DeleteSwipe onPress={() => deleteById(data.item.id)} />}
                         disableRightSwipe={true}
                         rightOpenValue={-75}
                     /> :
@@ -101,16 +93,6 @@ const styles = StyleSheet.create({
     },
     button: {
         width: "48%"
-    },
-    action: {
-        flex: 1,
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        backgroundColor: color.danger,
-    },
-    actionBody: {
-        flex: 1,
-        width: 75,
-        ...theme.toCenter
     }
+
 })

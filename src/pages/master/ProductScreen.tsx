@@ -1,12 +1,13 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import React, { FC, useState } from 'react'
-import { DetailLayout, Empty, Product } from '@components'
-import { PageProps, PaginationProps, ProductResultProps, SearchStateProps } from '@types'
+import { FlatList, StyleSheet } from 'react-native'
+import React, { FC } from 'react'
+import { DetailLayout, Empty, ProductMaster, SelectInfo } from '@components'
+import { CartStateProps, PageProps, PaginationProps, ProductResultProps, SearchStateProps } from '@types'
 import { http } from '@services'
 import { useInfiniteQuery } from 'react-query'
 import { State } from 'src/redux/reducer'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { theme } from '@utils'
+import { addQueueCart, deleteQueueCart } from 'src/redux/actions/queueCartAction'
 
 const ProductScreen: FC<PageProps> = ({ navigation }) => {
     const searchState: SearchStateProps = useSelector((state: State) => state.search)
@@ -16,17 +17,26 @@ const ProductScreen: FC<PageProps> = ({ navigation }) => {
         return req.data.result ?? []
     }
 
-    const [isRefreshing, setIsRefreshing] = useState(false)
     const { data, isLoading, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery(
-        ["product", searchState.data, 0], fetchData, {
+        ["product-master", searchState.data, 0], fetchData, {
         getNextPageParam: (page) => (page.current_page == page.last_page) ? undefined : page.current_page + 1
     })
     const handleLoadMore = () => hasNextPage ? fetchNextPage() : undefined
 
-    const handleRefresh = () => {
-        setIsRefreshing(true)
-        refetch()
-        setIsRefreshing(false)
+    const dispatch = useDispatch();
+    const queueCartState: CartStateProps = useSelector((state: State) => state.queueCart);
+    const handleAddQueueCart = (val: ProductResultProps) => {
+        // Find Product in Cart
+        const find = queueCartState.data.find((data) => data.id === val.kode)
+        if (!find) {
+            const data = val;
+            val.harga_jual = 0;
+            val.satuan_id = 0;
+            val.satuan = '';
+            dispatch(addQueueCart(data))
+        } else {
+            dispatch(deleteQueueCart(find.id))
+        }
     }
 
     return (
@@ -41,8 +51,6 @@ const ProductScreen: FC<PageProps> = ({ navigation }) => {
             search>
             <FlatList
                 data={data?.pages}
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
                 onEndReached={handleLoadMore}
                 style={theme.flatlist}
                 keyExtractor={(item: PaginationProps) => item.current_page.toString()}
@@ -54,17 +62,16 @@ const ProductScreen: FC<PageProps> = ({ navigation }) => {
                         /> :
                         <React.Fragment key={item.current_page}>
                             {item.data?.map((newData: ProductResultProps) =>
-                                <Product
+                                <ProductMaster
                                     key={newData.kode}
                                     data={newData}
-                                    onPress={() => { }}
-                                    layout={"list"}
+                                    checked={Boolean(queueCartState.data.find((data) => data.id === newData.kode))}
+                                    onPress={() => handleAddQueueCart(newData)}
                                 />)}
                         </React.Fragment>
-
                 }
             />
-
+            {queueCartState.data.length > 0 && <SelectInfo value={queueCartState.data.length} />}
         </DetailLayout>
     )
 }

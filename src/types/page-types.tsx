@@ -25,7 +25,9 @@ type RootStackList = {
     Setting: undefined,
     Layout: undefined,
     Receipt: undefined,
-    Printer: undefined
+    Printer: undefined,
+    Queue: undefined,
+    QueueShow: { id: number },
 }
 
 
