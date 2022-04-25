@@ -5,12 +5,12 @@ const addQueueCart = (value: ProductResultProps) => {
     const data = {
         id: value.kode,
         name: value.nama,
-        price: value.harga[0].harga_jual,
+        price: (value.harga[0]) ? value.harga[0].harga_jual : 0,
         priceList: value.harga,
         qty: 1,
         unit: {
-            id: value.harga[0].satuan_id,
-            name: value.harga[0].satuan
+            id: (value.harga[0]) ? value.harga[0].satuan_id : 0,
+            name: (value.harga[0]) ? value.harga[0].satuan : ''
         },
         discount: 0,
         total: value.harga_jual,

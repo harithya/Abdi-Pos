@@ -30,6 +30,7 @@ import ProductQueue from "./items/ProductQueue";
 import Radio from "./Form/Radio";
 import ProductMaster from "./items/ProductMaster";
 import DeleteSwipe from "./Touchable/DeleteSwipe";
+import ProductReturnHistory from "./items/ProductReturnHistory";
 
 export {
     Layout,
@@ -63,5 +64,6 @@ export {
     ProductQueue,
     Radio,
     ProductMaster,
-    DeleteSwipe
+    DeleteSwipe,
+    ProductReturnHistory
 }

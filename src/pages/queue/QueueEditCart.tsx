@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import React, { FC, useState } from 'react'
-import { constant, theme } from '@utils'
+import { constant, helper, theme } from '@utils'
 import { Radio, Input } from '@components'
 import { Text, Button } from '@ui-kitten/components'
 import { CartProps, CartStateProps, PriceProductResultProps } from '@types'
@@ -22,7 +22,7 @@ const QueueEditCart: FC<Props> = ({ cart }) => {
             id: val.satuan_id,
             name: val.satuan
         })
-        setPrice(cart.price)
+        setPrice(val.harga_jual)
     }
 
     const dispatch = useDispatch();
@@ -47,6 +47,11 @@ const QueueEditCart: FC<Props> = ({ cart }) => {
         (isNaN(parseInt(value))) ? setQty(0) : setQty(parseInt(value));
     }
 
+    const handleSetPrice = (value: string) => {
+        value = helper.inputNumber(value);
+        (isNaN(parseInt(value))) ? setPrice(0) : setPrice(parseInt(value));
+    }
+
     return (
         <View style={[styles.form, theme.marginBottom10]}>
             <Input
@@ -54,6 +59,12 @@ const QueueEditCart: FC<Props> = ({ cart }) => {
                 onChangeText={handleSetQty}
                 keyboardType="number-pad"
                 value={qty === 0 ? '' : qty.toString()}
+            />
+            <Input
+                label='Harga'
+                onChangeText={handleSetPrice}
+                keyboardType="number-pad"
+                value={price === 0 ? '' : helper.formatNumber(price, false)}
             />
             <View style={theme.input}>
                 <Text style={styles.label} category={"label"}>Satuan</Text>

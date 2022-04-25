@@ -15,13 +15,36 @@ const fetchData = async (kode: string) => {
 }
 const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, route }) => {
 
-    const handleAction = (url: keyof RootStackList, param = {}) => {
-        navigation.navigate(url, param);
+    const handleAction = (url: keyof RootStackList, param: any) => {
+        if (url === "Return") {
+            navigation.replace(url, param);
+        } else {
+            navigation.navigate(url, param);
+        }
         SheetManager.hide("actionSheet")
     }
 
     const { data, isLoading, isSuccess } = useQuery(['transactionDetail', route.params.kode],
         () => fetchData(route.params.kode));
+
+
+    const returnAction = () => {
+        if (data.status_kasir == constant.transactionSuccess) {
+            return (
+                <List
+                    title='Pengajuan Pengembalian'
+                    onPress={() => handleAction("Return", { data: data })}
+                />
+            )
+        } else if (data.status_kasir === constant.transactionReturn) {
+            return (
+                <List
+                    title='Rincian Pengembalian'
+                    onPress={() => handleAction("ReturnShow", { kode: data.kode })}
+                />
+            )
+        }
+    }
 
     return (
         <DetailLayout
@@ -32,40 +55,43 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
             actionPack='material-community'
             actionOnPress={() => { }}
             back>
-            {isSuccess && <ScrollView contentContainerStyle={styles.container}>
-                <Section title='Informasi Transaksi' style={styles.section}>
-                    <Item title='No Transaksi' value={data.kode} />
-                    <Item title='Nama Pelanggan' value={data.pasien ?? '-'} />
-                    <Item title='Tanggal' value={helper.date(data.tanggal)} />
-                </Section>
-                <Section title='Detail Produk' style={styles.section}>
-                    <View style={styles.product}>
-                        {data.detail_transaksi.map((val: TransactionDetailResultProps, key: number) =>
-                            <ProductHistory key={key} data={val} />)}
-                    </View>
-                </Section>
-                <Section title='Total Transaksi' style={styles.section}>
-                    <View style={styles.product}>
-                        <Item title='Sub Total' value={helper.formatNumber(data.jumlah)} />
-                        <Item title='Diskon' value={helper.formatNumber(data.diskon)} />
-                        <Item title='Dibayarkan' value={helper.formatNumber(data.dibayar)} />
-                        <Item title='Kembalian' value={helper.formatNumber(data.kembalian)} />
-                    </View>
-                </Section>
-            </ScrollView>}
-            <View style={styles.footer}>
-                <Button
-                    status={"basic"}
-                    onPress={() => SheetManager.show("actionSheet")}
-                    style={styles.action}
-                    accessoryLeft={(eva) => <Icon {...eva} name="menu" />}
-                />
-                <Button onPress={() => receipt.print(data)} style={theme.flex1}>Cetak Struk</Button>
-            </View>
-            <BottomSheet title='Lainnya' icon='information-outline' id='actionSheet'>
-                <List title='Pengajuan Pengembalian' onPress={() => handleAction("Return", { data: data })} />
-                <List title='Batalkan Transaksi' />
-            </BottomSheet>
+            {isSuccess && <>
+                <ScrollView contentContainerStyle={styles.container}>
+                    <Section title='Informasi Transaksi' style={styles.section}>
+                        <Item title='No Transaksi' value={data.kode} />
+                        <Item title='Nama Pelanggan' value={data.pasien ?? '-'} />
+                        <Item title='Tanggal' value={helper.date(data.tanggal)} />
+                    </Section>
+                    <Section title='Detail Produk' style={styles.section}>
+                        <View style={styles.product}>
+                            {data.detail_transaksi.map((val: TransactionDetailResultProps, key: number) =>
+                                <ProductHistory key={key} data={val} />)}
+                        </View>
+                    </Section>
+                    <Section title='Total Transaksi' style={styles.section}>
+                        <View style={styles.product}>
+                            <Item title='Sub Total' value={helper.formatNumber(data.jumlah)} />
+                            <Item title='Diskon' value={helper.formatNumber(data.diskon)} />
+                            <Item title='Dibayarkan' value={helper.formatNumber(data.dibayar)} />
+                            <Item title='Kembalian' value={helper.formatNumber(data.kembalian)} />
+                        </View>
+                    </Section>
+                </ScrollView>
+                <View style={styles.footer}>
+                    <Button
+                        status={"basic"}
+                        onPress={() => SheetManager.show("actionSheet")}
+                        style={styles.action}
+                        accessoryLeft={(eva) => <Icon {...eva} name="menu" />}
+                    />
+                    <Button onPress={() => receipt.print(data)} style={theme.flex1}>Cetak Struk</Button>
+                </View>
+                <BottomSheet title='Lainnya' icon='information-outline' id='actionSheet'>
+                    {returnAction()}
+                    <List title='Batalkan Transaksi' />
+                </BottomSheet>
+            </>}
+
         </DetailLayout>
     )
 }

@@ -40,15 +40,7 @@ const ProductScreen: FC<PageProps> = ({ navigation }) => {
     }
 
     return (
-        <DetailLayout
-            title='Produk'
-            back
-            action
-            loading={isLoading}
-            actionIcon='barcode-scan'
-            actionOnPress={() => navigation.navigate("Barcode")}
-            actionPack="material-community"
-            search>
+        <DetailLayout title='Produk' back loading={isLoading} search>
             <FlatList
                 data={data?.pages}
                 onEndReached={handleLoadMore}

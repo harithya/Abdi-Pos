@@ -28,6 +28,8 @@ type RootStackList = {
     Printer: undefined,
     Queue: undefined,
     QueueShow: { id: number },
+    ReturnShow: { kode: string },
+    QueueFinish: { kode: string }
 }
 
 

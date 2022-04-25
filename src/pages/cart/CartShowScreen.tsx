@@ -92,7 +92,7 @@ const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
                     <Text appearance={"hint"} style={theme.fontRegular} category="c2">Masukan diskon dalam jumlah rupiah bukan persen</Text>
                 </View>
                 <View>
-                    <Button appearance={"ghost"} onPress={handleDeleteCart} status="danger">Hapus Keranjang</Button>
+                    <Button appearance={"ghost"} style={theme.marginTop10} onPress={handleDeleteCart} status="danger">Hapus Keranjang</Button>
                 </View>
             </View>
             <View style={styles.footer}>

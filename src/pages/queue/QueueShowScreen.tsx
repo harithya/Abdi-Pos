@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { FC, useState, useEffect } from 'react'
 import { BottomSheet, DetailLayout, Input, Item, Section, Radio, ProductQueue } from '@components'
 import { color, constant, helper, theme } from '@utils'
@@ -6,7 +6,7 @@ import { Button, Icon, Text } from '@ui-kitten/components'
 import { CartProps, CartStateProps, PageProps, ProductResultProps, ServiceResultProps } from '@types'
 import { SheetManager } from 'react-native-actions-sheet'
 import { http } from '@services'
-import { useQuery } from 'react-query'
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { addQueueCart } from 'src/redux/actions/queueCartAction'
@@ -24,8 +24,18 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
     const queueCartState: CartStateProps = useSelector((state: State) => state.queueCart);
     const dispatch = useDispatch();
 
+    const [discount, setDiscount] = useState(0)
+    const [paid, setPaid] = useState(0)
 
-    const [cartSelected, setcartSelected] = useState<CartProps>(queueCartState.data[0]);
+    const handleSetPaid = (value: string) => {
+        (isNaN(parseInt(value))) ? setPaid(0) : setPaid(parseInt(helper.inputNumber(value)));
+    }
+
+    const handleSetDiscount = (value: string) => {
+        (isNaN(parseInt(value))) ? setDiscount(0) : setDiscount(parseInt(helper.inputNumber(value)));
+    }
+
+    const [cartSelected, setcartSelected] = useState<CartProps>(queueCartState.data[0] ?? []);
 
     useEffect(() => {
         if (isSuccess && queueCartState.data.length === 0) {
@@ -40,8 +50,53 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
         SheetManager.show("productSheet");
     }
 
+    const getTotalAll = () => {
+        let total = 0;
+        queueCartState.data.map((val: CartProps) => {
+            total += val.qty * val.price;
+        })
+        data.layanan.map((val: ServiceResultProps) => {
+            total += val.harga;
+        })
+
+        total -= data.antrian.jumlah_asuransi ?? 0;
+        total -= discount;
+        return total;
+    }
+
+    const postTransaction = async () => {
+        let service = 0;
+        data.layanan.map((val: ServiceResultProps) => {
+            service += val.harga;
+        })
+        const prepare = {
+            discount: discount,
+            paid: paid,
+            insurance: data.antrian.jumlah_asuransi ?? 0,
+            antrianId: route.params.id,
+            serviceCost: service,
+            noRekap: data.antrian.no_rekap,
+            metodePembayaran: paid > 0 ? 1 : 0,
+            cart: queueCartState.data
+        }
+        const req = await http.post('antrian/selesai', prepare);
+        return req;
+    }
+
+    const queryClient = useInfiniteQuery(['queue', '', 0])
+    const transactionMutate = useMutation(postTransaction, {
+        onSuccess: () => {
+            ToastAndroid.show("Transaksi berhasil", ToastAndroid.SHORT);
+            navigation.replace("QueueFinish", { kode: data.antrian.kode_transaksi });
+            queryClient.refetch();
+        },
+        onError: (err) => {
+            ToastAndroid.show("Transaksi tidak berhasil", ToastAndroid.SHORT);
+        }
+    })
+
     return (
-        <DetailLayout title='Detail' back loading={isLoading}>
+        <DetailLayout title='Detail' back loading={isLoading || transactionMutate.isLoading}>
             {isSuccess && <ScrollView contentContainerStyle={styles.container}>
                 <Section title='Informasi Antrian' style={styles.section}>
                     <Item title='Nama Lengkap' value={data.antrian.pasien} />
@@ -80,23 +135,29 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
                             label='Total yang dibayar'
                             placeholder='Masukan total dibayar'
                             leftIcon='currency-usd'
-                            value='0'
+                            keyboardType='number-pad'
+                            value={paid === 0 ? '' : helper.formatNumber(paid, false)}
+                            onChangeText={handleSetPaid}
                         />
                         <Input
                             label='Diskon'
                             leftIcon='percent-outline'
                             keyboardType='number-pad'
-                            value='0'
+                            placeholder='Masukan total diskon (Rupiah)'
+                            value={discount === 0 ? '' : helper.formatNumber(discount, false)}
+                            onChangeText={handleSetDiscount}
                         />
                     </View>
                 </Section>
                 <Section title='Total Akhir' style={styles.section}>
-                    <Item title='Sub Total' value='Rp 258.000' />
-                    <Item title='Asuransi' value='Rp 0' />
-                    <Item title='Diskon' value='Rp 150.000' />
+                    <Item title='Diskon' value={helper.formatNumber(discount)} />
+                    {data.antrian.asuransi &&
+                        <Item title={data.antrian.asuransi} value={helper.formatNumber(data.antrian.jumlah_asuransi)} />}
+                    <Item title='Yang harus dibayar' value={helper.formatNumber(getTotalAll())} />
+                    <Item title='Kembalian' value={helper.formatNumber(paid - getTotalAll())} />
                 </Section>
                 <View style={styles.form}>
-                    <Button>Simpan Perubahan</Button>
+                    <Button onPress={() => transactionMutate.mutate()}>Simpan Perubahan</Button>
                 </View>
             </ScrollView>}
             <BottomSheet id='productSheet' title='Produk Detail'>

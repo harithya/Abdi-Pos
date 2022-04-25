@@ -134,6 +134,9 @@ const theme = StyleSheet.create({
     },
     flatlist: {
         height: Dimensions.get("window").height
+    },
+    section: {
+        marginBottom: constant.container
     }
 })
 

@@ -1,12 +1,14 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { FC, useState, useEffect } from 'react'
 import { BottomSheet, DetailLayout, Input, Item, ProductReturn } from '@components'
 import { constant, helper, theme } from '@utils'
 import { Button, Divider, Text } from '@ui-kitten/components'
 import { SheetManager } from 'react-native-actions-sheet'
 import { PageProps, TransactionDetailResultProps } from '@types'
+import { http } from '@services'
+import { useInfiniteQuery, useMutation } from 'react-query'
 
-const ReturnScreen: FC<PageProps<'Return'>> = ({ route }) => {
+const ReturnScreen: FC<PageProps<'Return'>> = ({ route, navigation }) => {
 
     const [transaction] = useState(route.params.data)
     const [cart, setCart] = useState<TransactionDetailResultProps[]>([])
@@ -21,7 +23,7 @@ const ReturnScreen: FC<PageProps<'Return'>> = ({ route }) => {
     useEffect(() => {
         setCart(route.params.data.detail_transaksi.map((val) => {
             val.checked = false;
-            val.harga = val.harga - val.diskon;
+            // val.harga = val.harga - val.diskon;
             val.qty = parseInt(val.jumlah)
             return val;
         }))
@@ -58,17 +60,32 @@ const ReturnScreen: FC<PageProps<'Return'>> = ({ route }) => {
         }))
     }
 
-    const onSubmitReturnProduct = () => {
+    const postReturn = async () => {
         let cartSelected = cart.filter((val) => val.checked)
         const data = {
             invoice: transaction.kode,
             total: getTotal(),
-            cart: cartSelected
+            cart: cartSelected,
+            alasan: reason
         }
+        const req = await http.post("pengembalian", data)
+        return req;
     }
 
+    const queryClient = useInfiniteQuery(['transaction', '', '']);
+    const post = useMutation(postReturn, {
+        onSuccess: (res) => {
+            ToastAndroid.show("Berhasil membuat pengembalian", ToastAndroid.SHORT)
+            queryClient.refetch();
+            navigation.goBack();
+        },
+        onError: (err) => {
+            ToastAndroid.show("Gagal membuat pengembalian", ToastAndroid.SHORT)
+        }
+    })
+
     return (
-        <DetailLayout title='Pengembalian' back>
+        <DetailLayout title='Pengembalian' back loading={post.isLoading}>
             <ScrollView contentContainerStyle={styles.scrollview}>
                 <View style={styles.section}>
                     <Item title='No Transakasi' value={transaction.kode} />
@@ -98,7 +115,7 @@ const ReturnScreen: FC<PageProps<'Return'>> = ({ route }) => {
                     <Item title='Sub Total' value={helper.formatNumber(getTotal())} />
                 </View>
                 <View style={styles.form}>
-                    <Button onPress={onSubmitReturnProduct} disabled={cart.filter((x) => x.checked).length === 0}>Kirimkan</Button>
+                    <Button onPress={() => post.mutate()} disabled={cart.filter((x) => x.checked).length === 0}>Kirimkan</Button>
                 </View>
             </ScrollView>
             <BottomSheet title='Ubah Jumlah' id='returnSheet'>

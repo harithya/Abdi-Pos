@@ -15,10 +15,12 @@ import {
     PrinterScreen,
     ProductScreen,
     ProfileEditScreen,
+    QueueFinishScreen,
     QueueScreen,
     QueueShowScreen,
     ReceiptScreen,
     ReturnScreen,
+    ReturnShowScreen,
     SettingScreen,
     SplashScreen,
     TransactionScreen,
@@ -56,6 +58,8 @@ const StackNavigation = () => {
             <Stack.Screen name="Printer" component={PrinterScreen} />
             <Stack.Screen name="Queue" component={QueueScreen} />
             <Stack.Screen name="QueueShow" component={QueueShowScreen} />
+            <Stack.Screen name="ReturnShow" component={ReturnShowScreen} />
+            <Stack.Screen name="QueueFinish" component={QueueFinishScreen} />
 
         </Stack.Navigator>
     )

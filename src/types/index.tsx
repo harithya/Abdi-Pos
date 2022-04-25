@@ -197,10 +197,32 @@ export interface QueueResultProps {
     no_identitas: string,
     pasien: string,
     id: number,
+    asuransi: string,
+    jumlah_asuransi: number,
 }
 
 export interface ServiceResultProps {
     harga: number
     id: number
     layanan: string
+}
+
+export interface ReturnResultProps {
+    transaksi_kode: string;
+    tanggal: string;
+    jumlah: number;
+    id: number;
+    detail_pengembalian: ProductReturnResultProps[];
+}
+
+export interface ProductReturnResultProps {
+    id: number;
+    jumlah: number;
+    harga: number;
+    pengembalian_id: number;
+    produk_kode: string;
+    satuan_id: number;
+    produk: string;
+    foto: string;
+    satuan: string;
 }

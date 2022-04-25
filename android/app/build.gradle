@@ -259,7 +259,9 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-contacts')
     implementation project(':react-native-orientation')
-    
+    implementation project(':react-native-html-to-pdf')
+    implementation project(':react-native-file-viewer')
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

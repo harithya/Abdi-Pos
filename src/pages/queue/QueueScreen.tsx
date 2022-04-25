@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { DetailLayout, Empty, List } from '@components'
 import { http } from '@services'
@@ -6,20 +6,23 @@ import { PaginationProps, QueueResultProps, PageProps, SearchStateProps } from '
 import { State } from 'src/redux/reducer'
 import { useInfiniteQuery } from 'react-query'
 import { useSelector } from 'react-redux'
-import { theme } from '@utils'
+import { color, theme } from '@utils'
+import { BottomNavigation, BottomNavigationTab, Text } from '@ui-kitten/components'
 
 const QueueScreen: FC<PageProps> = ({ navigation }) => {
 
     const searchState: SearchStateProps = useSelector((state: State) => state.search)
 
     const fetchData = async ({ pageParam = 1 }) => {
-        const req = await http.get(`antrian?page=${pageParam}&search=${searchState.data}&status=1`);
+        const req = await http.get(`antrian?page=${pageParam}&search=${searchState.data}&status=1&is_selesai=${tabActive}`);
         return req.data.result ?? []
     }
 
+    const [tabActive, setTabActive] = useState(0)
+
     const [isRefreshing, setIsRefreshing] = useState(false)
     const { data, isLoading, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery(
-        ["queue", searchState.data], fetchData, {
+        ["queue", searchState.data, tabActive], fetchData, {
         getNextPageParam: (page) => (page.current_page == page.last_page) ? undefined : page.current_page + 1
     })
     const handleLoadMore = () => hasNextPage ? fetchNextPage() : undefined
@@ -28,6 +31,26 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
         setIsRefreshing(true)
         refetch()
         setIsRefreshing(false)
+    }
+
+    const getStatus = (value: number) => {
+        if (value === tabActive) {
+            return {
+                status: "primary",
+            }
+        } else {
+            return {
+                status: "basic",
+            }
+        }
+    }
+
+    const handleNavigate = (val: QueueResultProps) => {
+        if (tabActive === 0) {
+            navigation.navigate('QueueShow', { id: val.id })
+        } else {
+            navigation.navigate('QueueFinish', { kode: val.kode_transaksi })
+        }
     }
 
     return (
@@ -50,11 +73,20 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
                                 <List
                                     key={newData.id}
                                     title={newData.pasien}
-                                    onPress={() => navigation.navigate('QueueShow', { id: newData.id })}
+                                    onPress={() => handleNavigate(newData)}
                                 />)}
                         </React.Fragment>
                 }
             />
+            <BottomNavigation
+                selectedIndex={tabActive}
+                onSelect={(val) => setTabActive(val)}>
+                <BottomNavigationTab title={(eva) =>
+                    <Text appearance={'hint'} status={getStatus(0).status}>Antrian</Text>}
+                />
+                <BottomNavigationTab title={() =>
+                    <Text appearance={'hint'} status={getStatus(1).status}>History</Text>} />
+            </BottomNavigation>
         </DetailLayout>
     )
 }

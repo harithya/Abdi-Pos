@@ -21,6 +21,8 @@ import PrinterScreen from "./setting/items/PrinterScreen";
 import ReceiptScreen from "./setting/items/ReceiptScreen";
 import QueueScreen from "./queue/QueueScreen";
 import QueueShowScreen from "./queue/QueueShowScreen";
+import ReturnShowScreen from "./return/ReturnShowScreen";
+import QueueFinishScreen from "./queue/QueueFinishScreen";
 
 export {
     SplashScreen,
@@ -45,5 +47,7 @@ export {
     PrinterScreen,
     ReceiptScreen,
     QueueScreen,
-    QueueShowScreen
+    QueueShowScreen,
+    ReturnShowScreen,
+    QueueFinishScreen
 }
