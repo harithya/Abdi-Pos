@@ -1,5 +1,5 @@
-import { View, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Image, StyleSheet, Alert } from 'react-native'
+import React, { useState } from 'react'
 import { theme } from '@utils'
 import { Divider, Text } from '@ui-kitten/components'
 import Menu from './Menu'
@@ -8,10 +8,35 @@ import { AuthStateProps, useNavigationProps } from '@types'
 import { useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { ScrollView } from 'react-native-gesture-handler'
+import { http } from '@services'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Sidebar = () => {
     const navigation: useNavigationProps = useNavigation();
     const authState: AuthStateProps = useSelector((state: State) => state.auth);
+
+    const [loading, setLoading] = useState(false)
+    // Fetch to url logout
+    const onLogout = async () => {
+        setLoading(true)
+        await http.post('profile/logout');
+        await AsyncStorage.removeItem("token");
+        setLoading(false)
+        navigation.navigate('Login');
+    }
+
+    const handleLogout = () => {
+        Alert.alert("Konfirmasi",
+            "Apakah yakin ingin logout ?",
+            [
+                {
+                    text: "Cancel", style: "cancel"
+                },
+                { text: "OK", onPress: () => onLogout() }
+            ]
+        );
+    }
+
     return (
         <ScrollView scrollsToTop={false} showsVerticalScrollIndicator={false}>
             <View style={styles.profile}>
@@ -58,6 +83,7 @@ const Sidebar = () => {
                 />
                 <Menu
                     title='Log Out'
+                    onPress={handleLogout}
                     icon='log-out-outline'
                 />
             </View>

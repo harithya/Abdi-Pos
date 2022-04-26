@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '11.0'
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'ApotekKasir' do
+target 'Abdi' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -32,7 +32,7 @@ target 'ApotekKasir' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
-  target 'ApotekKasirTests' do
+  target 'AbdiTests' do
     inherit! :complete
     # Pods for testing
   end

@@ -1,4 +1,4 @@
-package com.apotekkasir.newarchitecture;
+package com.abdicreative.pos.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.apotekkasir.BuildConfig;
-import com.apotekkasir.newarchitecture.components.MainComponentsRegistry;
-import com.apotekkasir.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.abdicreative.pos.BuildConfig;
+import com.abdicreative.pos.newarchitecture.components.MainComponentsRegistry;
+import com.abdicreative.pos.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
