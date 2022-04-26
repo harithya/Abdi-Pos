@@ -1,4 +1,4 @@
-import { TransactionDetailResultProps, TransactionResultProps } from "@types";
+import { SettingStateProps, TransactionDetailResultProps, TransactionResultProps } from "@types";
 import { helper } from "@utils";
 import { ToastAndroid } from "react-native";
 import { BLEPrinter } from "react-native-thermal-receipt-printer"
@@ -10,9 +10,10 @@ const receipt = {
             await BLEPrinter.init();
             const req = await BLEPrinter.connectPrinter(store.getState().bluetooth.data.inner_mac_address)
             if (req) {
+                let setting: SettingStateProps = store.getState().setting
                 let design =
-                    `<C>Klinik Herbal</C>\n` +
-                    `<C>Jl. Raya Kedungwuni No.1</C>\n` +
+                    `<C>${setting.data.name}</C>\n` +
+                    `<C>${setting.data.adress}</C>\n` +
                     `<C>--------------------------------</C>\n\n` +
                     `No.Transaksi : ${data.kode}\n` +
                     `Pelanggan    : ${data.pasien !== null ? data.pasien.substring(0, 12) + '...' : '-'}\n` +
@@ -28,7 +29,9 @@ const receipt = {
                     `Total       : ${helper.formatNumber(data.jumlah)}\n` +
                     `Diskon      : ${helper.formatNumber(data.diskon)}\n` +
                     `Bayar       : ${helper.formatNumber(data.dibayar)}\n` +
-                    `Kembali     : ${helper.formatNumber(data.kembalian)}`;
+                    `Kembali     : ${helper.formatNumber(data.kembalian)}\n` +
+                    `<C>--------------------------------</C>\n\n` +
+                    `<C>${setting.data.footer}</C>\n`;
                 BLEPrinter.printBill(design)
             }
         } catch (error) {

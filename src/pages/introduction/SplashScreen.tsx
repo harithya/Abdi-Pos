@@ -7,6 +7,7 @@ import { http } from '@services'
 import { useDispatch } from 'react-redux'
 import { setProfile } from 'src/redux/actions/authAction'
 import { fetchCategory } from 'src/redux/actions/categoryAction'
+import { fetchSetting } from 'src/redux/actions/settingAction'
 
 const SplashScreen: FC<PageProps> = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const SplashScreen: FC<PageProps> = ({ navigation }) => {
                 const profile: UserResultProps = res.data.result
                 dispatch(setProfile(profile));
                 dispatch(fetchCategory());
+                dispatch(fetchSetting());
                 navigation.replace("Home")
             }).catch((err) => {
                 navigation.replace("Welcome")

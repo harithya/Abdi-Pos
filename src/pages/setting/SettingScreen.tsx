@@ -5,6 +5,7 @@ import { Divider, Icon, Text } from '@ui-kitten/components'
 import { color, constant, theme } from '@utils'
 import { PageProps } from '@types'
 
+
 interface Props {
     title: string,
     icon: string,
@@ -12,6 +13,7 @@ interface Props {
     onPress: () => void
 }
 const Item: FC<Props> = ({ title, icon, subtitle, onPress }) => {
+
     return (
         <TouchableRipple onPress={onPress}>
             <View style={styles.list}>

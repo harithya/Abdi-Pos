@@ -6,7 +6,7 @@ import { PaginationProps, QueueResultProps, PageProps, SearchStateProps } from '
 import { State } from 'src/redux/reducer'
 import { useInfiniteQuery } from 'react-query'
 import { useSelector } from 'react-redux'
-import { color, theme } from '@utils'
+import { color, helper, theme } from '@utils'
 import { BottomNavigation, BottomNavigationTab, Text } from '@ui-kitten/components'
 
 const QueueScreen: FC<PageProps> = ({ navigation }) => {
@@ -40,7 +40,7 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
             }
         } else {
             return {
-                status: "basic",
+                status: undefined,
             }
         }
     }
@@ -80,12 +80,13 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
             />
             <BottomNavigation
                 selectedIndex={tabActive}
+                style={styles.bottomNavigation}
                 onSelect={(val) => setTabActive(val)}>
                 <BottomNavigationTab title={(eva) =>
-                    <Text appearance={'hint'} status={getStatus(0).status}>Antrian</Text>}
+                    <Text appearance={'hint'} style={theme.fontMedium} status={getStatus(0).status}>Antrian</Text>}
                 />
                 <BottomNavigationTab title={() =>
-                    <Text appearance={'hint'} status={getStatus(1).status}>History</Text>} />
+                    <Text appearance={'hint'} style={theme.fontMedium} status={getStatus(1).status}>History</Text>} />
             </BottomNavigation>
         </DetailLayout>
     )
@@ -93,4 +94,8 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
 
 export default QueueScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    bottomNavigation: {
+        ...theme.boxShadow,
+    }
+})

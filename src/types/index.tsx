@@ -74,6 +74,19 @@ export interface BluetoothStateProps {
     data: BluetoothProps
 }
 
+export interface SettingStateProps {
+    data: SettingProps
+}
+
+export interface SettingProps {
+    id: number;
+    name: string;
+    phone: string;
+    adress: string;
+    logo: string;
+    footer: string;
+}
+
 //pagination
 export interface PaginationProps {
     current_page: number,
@@ -201,6 +214,8 @@ export interface QueueResultProps {
     jumlah_asuransi: number,
 }
 
+
+
 export interface ServiceResultProps {
     harga: number
     id: number
@@ -226,3 +241,14 @@ export interface ProductReturnResultProps {
     foto: string;
     satuan: string;
 }
+
+
+export interface SettingResultProps {
+    id: number;
+    nama: string;
+    no_hp: string;
+    alamat: string;
+    logo: string;
+    footer: string;
+}
+

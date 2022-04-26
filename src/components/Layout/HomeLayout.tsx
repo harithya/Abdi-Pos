@@ -1,5 +1,5 @@
-import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React, { FC, useState } from 'react'
+import { ImageBackground, StyleSheet, BackHandler, TouchableOpacity, View } from 'react-native'
+import React, { FC, useState, useEffect } from 'react'
 import Bubble from '../Bubble'
 import { Icon, Text } from '@ui-kitten/components'
 import { color, constant, helper, theme } from '@utils'
@@ -40,9 +40,23 @@ const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory, onC
         setIsOpenDrawer(!isOpenDrawer)
     }
 
+    useEffect(() => {
+        const handleBack = () => {
+            if (isOpenDrawer) {
+                setIsOpenDrawer(false)
+                return true
+            }
+            return false
+        }
+        BackHandler.addEventListener('hardwareBackPress', handleBack)
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBack)
+        }
+    }, [isOpenDrawer])
+
 
     return (
-        <SideMenu menu={<Sidebar />} onChange={handleSideBarChange} openMenuOffset={275} isOpen={isOpenDrawer} >
+        <SideMenu menu={<Sidebar />} onChange={handleSideBarChange} autoClosing openMenuOffset={275} isOpen={isOpenDrawer} >
             <View style={[theme.flex1, styles.mainContent]}>
                 <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch]}>
                     <Bubble />

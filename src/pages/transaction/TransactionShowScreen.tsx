@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { FC } from 'react'
 import { BottomSheet, DetailLayout, List, ProductHistory, Section, Item } from '@components'
 import { color, constant, helper, theme } from '@utils'
@@ -6,7 +6,7 @@ import { Button, Icon } from '@ui-kitten/components'
 import { SheetManager } from 'react-native-actions-sheet'
 import { PageProps, TransactionDetailResultProps, TransactionResultProps } from '@types'
 import RootStackList from 'src/types/page-types'
-import { useQuery } from 'react-query'
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
 import { http, receipt } from '@services'
 
 const fetchData = async (kode: string) => {
@@ -46,15 +46,25 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
         }
     }
 
+    const queryClient = useInfiniteQuery(['transaction', '', ''])
+    const cancleMutation = useMutation(async () => {
+        const req = http.post("transaksi/" + data.kode)
+        return req;
+    }, {
+        onSuccess: () => {
+            SheetManager.hide("actionSheet")
+            ToastAndroid.show("Transaksi berhasil dibatalkan", ToastAndroid.SHORT);
+            navigation.goBack();
+            queryClient.refetch();
+        },
+        onError: (err: any) => {
+            ToastAndroid.show("Opps terjadi kesalahan", ToastAndroid.SHORT);
+            SheetManager.hide("actionSheet")
+        }
+    })
+
     return (
-        <DetailLayout
-            title='Detail'
-            action
-            loading={isLoading}
-            actionIcon='share-variant'
-            actionPack='material-community'
-            actionOnPress={() => { }}
-            back>
+        <DetailLayout title='Detail' loading={isLoading || cancleMutation.isLoading} back>
             {isSuccess && <>
                 <ScrollView contentContainerStyle={styles.container}>
                     <Section title='Informasi Transaksi' style={styles.section}>
@@ -88,7 +98,8 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
                 </View>
                 <BottomSheet title='Lainnya' icon='information-outline' id='actionSheet'>
                     {returnAction()}
-                    <List title='Batalkan Transaksi' />
+                    {data.status_kasir == constant.transactionSuccess &&
+                        <List title='Batalkan Transaksi' onPress={() => cancleMutation.mutate()} />}
                 </BottomSheet>
             </>}
 
