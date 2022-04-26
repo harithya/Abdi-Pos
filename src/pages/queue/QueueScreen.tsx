@@ -6,7 +6,7 @@ import { PaginationProps, QueueResultProps, PageProps, SearchStateProps } from '
 import { State } from 'src/redux/reducer'
 import { useInfiniteQuery } from 'react-query'
 import { useSelector } from 'react-redux'
-import { color, helper, theme } from '@utils'
+import { theme } from '@utils'
 import { BottomNavigation, BottomNavigationTab, Text } from '@ui-kitten/components'
 
 const QueueScreen: FC<PageProps> = ({ navigation }) => {

@@ -102,7 +102,6 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
                         <List title='Batalkan Transaksi' onPress={() => cancleMutation.mutate()} />}
                 </BottomSheet>
             </>}
-
         </DetailLayout>
     )
 }
