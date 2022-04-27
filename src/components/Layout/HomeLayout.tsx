@@ -1,5 +1,5 @@
 import { ImageBackground, StyleSheet, BackHandler, TouchableOpacity, View } from 'react-native'
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import Bubble from '../Bubble'
 import { Icon, Text } from '@ui-kitten/components'
 import { color, constant, helper, theme } from '@utils'
@@ -9,7 +9,7 @@ import { CategoryStateProps, LayoutStateProps } from '@types'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { changeLayout } from 'src/redux/actions/layoutAction'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import SideMenu from 'react-native-side-menu-updated'
 import Sidebar from '../Sidebar/Sidebar'
 
@@ -40,19 +40,21 @@ const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory, onC
         setIsOpenDrawer(!isOpenDrawer)
     }
 
-    useEffect(() => {
-        const handleBack = () => {
-            if (isOpenDrawer) {
-                setIsOpenDrawer(false)
-                return true
+    useFocusEffect(
+        useCallback(() => {
+            const handleBack = () => {
+                if (isOpenDrawer) {
+                    setIsOpenDrawer(false)
+                    return true
+                }
+                return false
             }
-            return false
-        }
-        BackHandler.addEventListener('hardwareBackPress', handleBack)
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handleBack)
-        }
-    }, [isOpenDrawer])
+            BackHandler.addEventListener('hardwareBackPress', handleBack)
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', handleBack)
+            }
+        }, [isOpenDrawer])
+    )
 
 
     return (

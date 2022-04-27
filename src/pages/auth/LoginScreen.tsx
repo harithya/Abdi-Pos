@@ -38,7 +38,7 @@ const LoginScreen: FC<PageProps> = (props) => {
                 await AsyncStorage.setItem("token", res.data.token);
                 const result: UserResultProps = res.data.user
                 dispatch(setProfile(result))
-                props.navigation.replace("Home");
+                props.navigation.replace("Splash");
             }).catch(err => {
                 if (err.response.status == 400) {
                     Alert.alert("Kata Sandi Salah", "Kata sandi yang anda masukan salah. Harap coba lagi")

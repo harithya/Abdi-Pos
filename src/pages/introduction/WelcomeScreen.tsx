@@ -17,7 +17,7 @@ const WelcomeScreen: FC<PageProps> = ({ navigation }) => {
                 </Text>
             </View>
             <View style={theme.footer}>
-                <Button status={"basic"} onPress={() => navigation.navigate("Login")}>Get Started</Button>
+                <Button status={"basic"} onPress={() => navigation.replace("Login")}>Get Started</Button>
             </View>
         </IntroLayout>
     )
