@@ -85,7 +85,6 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
                     value={discount === 0 ? '' : helper.formatNumber(discount, false)}
                     onChangeText={handleSetDiscount}
                 />
-                <Divider />
                 <View style={styles.info}>
                     <Item title='Sub Total' value={helper.getTotalCart()} />
                     <Item title='Diskon' value={discount} />

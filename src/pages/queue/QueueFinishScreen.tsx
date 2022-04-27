@@ -42,7 +42,7 @@ const QueueFinishScreen: FC<PageProps<'QueueFinish'>> = ({ route }) => {
             back>
             <WebView
                 source={{ uri: url }}
-                style={{ height: Dimensions.get("window").height }}
+                style={styles.web}
                 startInLoadingState={true}
                 renderLoading={() => <Loading />}
             />
@@ -52,4 +52,8 @@ const QueueFinishScreen: FC<PageProps<'QueueFinish'>> = ({ route }) => {
 
 export default QueueFinishScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    web: {
+        height: Dimensions.get("window").height
+    }
+})
