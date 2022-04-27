@@ -1,41 +1,97 @@
-import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React, { FC } from 'react'
+import { ImageBackground, StyleSheet, BackHandler, TouchableOpacity, View } from 'react-native'
+import React, { FC, useState, useCallback } from 'react'
 import Bubble from '../Bubble'
 import { Icon, Text } from '@ui-kitten/components'
-import { color, theme } from '@utils'
-import { useNavigation } from '@react-navigation/native'
-import { useNavigationProps } from '@types'
+import { color, constant, helper, theme } from '@utils'
 import SearchBar from '../Form/SearchBar'
 import Loading from '../Loading'
+import { CategoryStateProps, LayoutStateProps } from '@types'
+import { useDispatch, useSelector } from 'react-redux'
+import { State } from 'src/redux/reducer'
+import { changeLayout } from 'src/redux/actions/layoutAction'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import SideMenu from 'react-native-side-menu-updated'
+import Sidebar from '../Sidebar/Sidebar'
 
 interface Props {
     search?: boolean,
-    loading?: boolean
+    loading?: boolean,
+    onPressCategory?: () => void,
+    onChangeLayout?: () => void,
 }
-const HomeLayout: FC<Props> = ({ children, search, loading }) => {
-    const navigation = useNavigation<useNavigationProps>()
+const HomeLayout: FC<Props> = ({ children, search, loading, onPressCategory, onChangeLayout }) => {
+    const navigation: any = useNavigation();
+    const layoutState: LayoutStateProps = useSelector((state: State) => state.layout);
+    const dispatch = useDispatch();
+
+    const handleChangeLayout = () => {
+        const value = layoutState.data === 'list' ? 'grid' : 'list';
+        dispatch(changeLayout(value))
+        if (onChangeLayout) {
+            onChangeLayout()
+        }
+    }
+
+    const categoryState: CategoryStateProps = useSelector((state: State) => state.category);
+
+    // Handle drawer
+    const [isOpenDrawer, setIsOpenDrawer] = useState(false)
+    const handleSideBarChange = () => {
+        setIsOpenDrawer(!isOpenDrawer)
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            const handleBack = () => {
+                if (isOpenDrawer) {
+                    setIsOpenDrawer(false)
+                    return true
+                }
+                return false
+            }
+            BackHandler.addEventListener('hardwareBackPress', handleBack)
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', handleBack)
+            }
+        }, [isOpenDrawer])
+    )
+
+
     return (
-        <View style={theme.flex1}>
-            <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch]}>
-                <Bubble />
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.menu}>
-                        <Icon name='menu-2-outline' fill={color.white} style={styles.icon} />
-                    </TouchableOpacity>
-                    <View style={styles.titleContainer}>
-                        <Text status={"control"} category="h6" style={styles.title}>{'Semuanya'}</Text>
-                        <Icon name='arrow-ios-downward-outline' fill={color.white} style={styles.more} />
+        <SideMenu menu={<Sidebar />} onChange={handleSideBarChange} autoClosing openMenuOffset={275} isOpen={isOpenDrawer} >
+            <View style={[theme.flex1, styles.mainContent]}>
+                <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch]}>
+                    <Bubble />
+                    <View style={styles.header}>
+                        <View style={theme.flexStart}>
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => setIsOpenDrawer(true)}>
+                                <Icon name='menu-2-outline' pack='eva' fill={color.white} style={styles.icon} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.touchableTitle} onPress={onPressCategory} activeOpacity={0.8}>
+                                <View style={[styles.titleContainer, theme.flex1]}>
+                                    <Text status={"control"} numberOfLines={1} category="h6" style={styles.title}>
+                                        {categoryState.selected.nama === '' ? 'Semuanya' : categoryState.selected.nama}
+                                    </Text>
+                                    <Icon name='chevron-down' fill={color.white} style={styles.more} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={theme.flexStart}>
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("Barcode")} style={styles.right}>
+                                <Icon name='barcode-scan' fill={color.white} style={styles.icon} />
+                            </TouchableOpacity>
+                            <TouchableOpacity activeOpacity={0.8} onPress={handleChangeLayout} style={styles.right}>
+                                <Icon name={layoutState.data == "grid" ? "format-list-bulleted-square" : "view-grid-outline"} fill={color.white} style={styles.icon} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <TouchableOpacity style={styles.option}>
-                        <Icon name='grid-outline' fill={color.white} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
-            {search && <SearchBar style={styles.searchBar} inputStyle={styles.inputSearch} />}
-            {loading ? <View style={styles.loading}>
-                <Loading />
-            </View> : children}
-        </View>
+                </ImageBackground>
+                {search && <SearchBar style={styles.searchBar} inputStyle={styles.inputSearch} />}
+                {loading ? <View style={styles.loading}>
+                    <Loading />
+                </View> : children}
+            </View>
+        </SideMenu>
     )
 }
 
@@ -49,16 +105,15 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 1,
-        marginTop: 42,
-        alignItems: "flex-start"
+        ...theme.flexBetween,
+        paddingHorizontal: constant.container
     },
     title: {
         fontSize: 18,
     },
     titleContainer: {
-        marginLeft: 75,
-        marginTop: -1,
-        ...theme.flexStart
+        ...theme.flexStart,
+        // marginLeft: constant.container
     },
     more: {
         height: 24,
@@ -69,14 +124,6 @@ const styles = StyleSheet.create({
     icon: {
         height: 24,
         width: 24
-    },
-    menu: {
-        position: "absolute",
-        left: 18
-    },
-    option: {
-        position: "absolute",
-        right: 18
     },
     withSearch: {
         height: 110
@@ -90,5 +137,17 @@ const styles = StyleSheet.create({
     loading: {
         flex: 1,
         ...theme.toCenter
+    },
+    right: {
+        marginLeft: 16
+    },
+    touchableTitle: {
+        maxWidth: helper.isTablet() ? undefined : 220,
+        marginLeft: constant.container,
+    },
+    mainContent: {
+        backgroundColor: color.white,
+        borderLeftWidth: 1,
+        borderLeftColor: color.border
     }
 })

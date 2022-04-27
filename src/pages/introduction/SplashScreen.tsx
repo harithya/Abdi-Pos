@@ -1,13 +1,27 @@
-import { StyleSheet, Image } from 'react-native'
-import React, { FC, useEffect } from 'react'
-import { IntroLayout } from '@components'
+import { Image, StyleSheet } from 'react-native'
+import React, { useEffect, FC } from 'react'
 import { theme } from '@utils'
-import { PageProps } from '@types'
+import { PageProps, UserResultProps } from '@types'
+import { IntroLayout } from '@components'
+import { http } from '@services'
+import { useDispatch } from 'react-redux'
+import { setProfile } from 'src/redux/actions/authAction'
+import { fetchCategory } from 'src/redux/actions/categoryAction'
+import { fetchSetting } from 'src/redux/actions/settingAction'
 
 const SplashScreen: FC<PageProps> = ({ navigation }) => {
+    const dispatch = useDispatch();
     useEffect(() => {
         setTimeout(() => {
-            navigation.replace("Welcome");
+            http.get("profile").then((res) => {
+                const profile: UserResultProps = res.data.result
+                dispatch(setProfile(profile));
+                dispatch(fetchCategory());
+                dispatch(fetchSetting());
+                navigation.replace("Home")
+            }).catch((err) => {
+                navigation.replace("Welcome")
+            })
         }, 1500);
     }, [])
 

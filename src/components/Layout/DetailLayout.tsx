@@ -12,26 +12,41 @@ interface Props {
     title: string,
     back?: boolean,
     search?: boolean,
-    loading?: boolean
+    loading?: boolean,
+    action?: boolean,
+    actionIcon?: string,
+    actionOnPress?: () => void,
+    disableBubble?: boolean,
+    disable?: boolean,
+    actionPack?: string
 }
-const DetailLayout: FC<Props> = ({ title, children, back, search, loading }) => {
+const DetailLayout: FC<Props> = (
+    { title, children, back, search, loading, action, actionIcon, actionOnPress, disableBubble, disable, actionPack = "eva" }
+) => {
     const navigation = useNavigation<useNavigationProps>()
     return (
-        <View style={theme.flex1}>
-            <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch]}>
-                <Bubble />
-                <View style={styles.header}>
-                    {back && <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-                        <Icon name='arrow-ios-back-outline' fill={color.white} style={styles.icon} />
-                    </TouchableOpacity>}
-                    <Text status={"control"} category="h6" style={styles.title}>{title}</Text>
-                </View>
-            </ImageBackground>
-            {search && <SearchBar style={styles.searchBar} inputStyle={styles.inputSearch} />}
-            {loading ? <View style={styles.loading}>
-                <Loading />
-            </View> : children}
-        </View>
+        <>
+            {!disable ?
+                <View style={theme.flex1}>
+                    <ImageBackground source={require("../../assets/img/background.png")} style={[styles.background, search && styles.withSearch, disableBubble && styles.disableBubble]}>
+                        {!disableBubble && <Bubble />}
+                        <View style={styles.header}>
+                            {back && <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
+                                <Icon name='arrow-ios-back-outline' pack='eva' fill={color.white} style={styles.icon} />
+                            </TouchableOpacity>}
+                            <Text status={"control"} category="h6" style={styles.title}>{title}</Text>
+                            {action && <TouchableOpacity onPress={actionOnPress} style={styles.action}>
+                                <Icon name={actionIcon} pack={actionPack} fill={color.white} style={styles.icon} />
+                            </TouchableOpacity>}
+                        </View>
+                    </ImageBackground>
+                    {search && <SearchBar style={styles.searchBar} inputStyle={styles.inputSearch} />}
+                    {loading ? <View style={styles.loading}>
+                        <Loading />
+                    </View> : children}
+                </View> :
+                children}
+        </>
     )
 }
 
@@ -41,7 +56,7 @@ const styles = StyleSheet.create({
     background: {
         height: 85,
         resizeMode: "cover",
-        position: "relative"
+        position: "relative",
     },
     header: {
         flex: 1,
@@ -59,6 +74,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 18
     },
+    action: {
+        position: "absolute",
+        right: 18
+    },
     withSearch: {
         height: 110
     },
@@ -71,5 +90,8 @@ const styles = StyleSheet.create({
     loading: {
         flex: 1,
         ...theme.toCenter
+    },
+    disableBubble: {
+        zIndex: 1
     }
 })

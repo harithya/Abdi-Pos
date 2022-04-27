@@ -4,6 +4,11 @@ import RootStackList from './page-types';
 export type PageProps<RouteName extends keyof RootStackList = keyof RootStackList> = NativeStackScreenProps<RootStackList, RouteName>;
 export type useNavigationProps = NativeStackNavigationProp<RootStackList>;
 
+export interface ReducerProps {
+    type: string,
+    payload: any
+}
+
 export interface FileProps {
     id?: number,
     name: string,
@@ -11,66 +16,13 @@ export interface FileProps {
     uri: string
 }
 
-export interface BodyCheckProps {
-    id: number,
-    name: string,
-    img: string,
-    value?: string
-}
-export interface BodyCheckStateProps {
-    data: BodyCheckProps[]
-}
-
-
-export interface ReducerProps {
-    type: string,
-    payload: any
-}
-
-
-export interface SupportStateProps {
-    data: {
-        note: string,
-        files: FileProps[]
-    }
-}
-
-export interface MedicineProps {
-    id: string,
-    name: string,
-    note?: string
-}
-export interface MedicineStateProps {
-    data: MedicineProps[]
+//STATE Props
+export interface LayoutStateProps {
+    data: "grid" | "list"
 }
 
 export interface SearchStateProps {
     data: string
-}
-
-export interface MedicalRecordProps {
-    complaint?: string,
-    diagnosis?: string,
-    diagnosisStatus?: string,
-    execution?: string,
-}
-
-export interface MedicalRecordStateProps {
-    data: MedicalRecordProps
-}
-
-export interface VitalSignProps {
-    sistole_tension: string,
-    diastole_tension: string,
-    pulse: string,
-    temperature: string,
-    respiration: string,
-    height: string,
-    weight: string,
-}
-
-export interface VitalSignStateProps {
-    data: VitalSignProps
 }
 
 export interface AuthStateProps {
@@ -82,61 +34,57 @@ export interface AuthStateProps {
     phone?: string
 }
 
+export interface CategoryStateProps {
+    data: CategoryResultProps[],
+    temp: CategoryResultProps[],
+    selected: CategoryResultProps
+}
 
-// Htpp request response
-export interface UserResultProps {
+export interface CustomerStateProps {
+    data: CustomerResultProps | null,
+}
+
+
+export interface CartStateProps {
+    data: CartProps[]
+}
+
+export interface UnitProps {
     id: number,
-    alamat: string,
-    avatar?: string,
-    nama: string,
-    spesialis: string,
-    username: string,
-    no_hp?: string
-
+    name: string
+}
+export interface CartProps {
+    id: string,
+    img: string,
+    name: string,
+    price: number,
+    priceList: PriceProductResultProps[],
+    qty: number,
+    unit: UnitProps,
+    discount: number,
+    stok: number,
+    description?: string
 }
 
-export interface OrganResultProps {
-    id: number,
-    organ: string,
-    img: string
+export interface BluetoothProps {
+    device_name: string,
+    inner_mac_address: string
+}
+export interface BluetoothStateProps {
+    data: BluetoothProps
 }
 
-export interface MedicineResultProps {
-    kode: string;
-    nama: string;
-    harga_beli: number;
-    stok_awal?: null | number;
-    foto: string;
-    kategori_produk_id: number;
-    jenis_produk_id: number;
-    kategori: string;
-    jenis: string;
+export interface SettingStateProps {
+    data: SettingProps
 }
 
-export interface QueueResultProps {
+export interface SettingProps {
     id: number;
-    tanggal: string;
-    no_antrian: string;
-    status: number;
-    pasien_id: number;
-    user_id: number;
-    pasien: string;
-    dokter: string;
-    layanan: string,
-    no_identitas?: string
-}
-
-export interface VitalSignResultProps {
-    id: number;
-    tensi_sistole: number;
-    tensi_diastole: number;
-    nadi: number;
-    suhu: number;
-    respirasi: number;
-    tinggi_badan: number;
-    rekap_medis_no_rekap: string;
-    berat_badan: number;
-    tanggal: string;
+    name: string;
+    phone: string;
+    adress: string;
+    logo: string;
+    footer: string;
 }
 
 //pagination
@@ -162,35 +110,145 @@ interface Link {
     active: boolean;
 }
 
-export interface MedicalRecordResultProps {
-    no_rekap: string;
-    tanggal: string;
-    pasien_id: number;
-    users_id: number;
-    keluhan: string;
-    diagnosa: string;
-    status: number;
-    tata_laksana: string;
-    penunjang: string;
-    transaksi_kode: string;
-    nama: string;
-}
 
-//SCREEN 
-export interface QueueScreenProps {
+// Htpp request response
+export interface UserResultProps {
     id: number,
-    pattientId: number,
-    name: string,
-    service: string,
-    idNumber?: string
+    alamat: string,
+    avatar?: string,
+    nama: string,
+    spesialis: string,
+    username: string,
+    no_hp?: string
 }
 
-export interface PattientDetailProps {
-    pattientId: number,
-    isActive?: boolean
+export interface CategoryResultProps {
+    id: number,
+    nama: string
 }
 
-export interface PattientScreenProps extends PattientDetailProps {
-    name?: string,
-    idNumber?: string,
+export interface CustomerResultProps {
+    id: number;
+    nama: string;
+    tanggal_lahir: string;
+    no_hp: string;
+    jenis_kelamin: string;
+    alamat: string;
+    jenis_identitas_id?: any;
+    no_identitas?: any;
+    alergi_khusus?: any;
+    keterangan: string;
+    golongan_darah?: any;
 }
+
+
+export interface ProductResultProps {
+    kode: string;
+    nama: string;
+    harga_beli: number;
+    stok_awal?: null | number;
+    foto: string;
+    kategori_produk_id: number;
+    jenis_produk_id: number;
+    kategori: string;
+    jenis: string;
+    stok: string;
+    satuan: string;
+    satuan_id: number;
+    harga_jual: number;
+    harga: PriceProductResultProps[];
+    keterangan?: string
+}
+
+export interface PriceProductResultProps {
+    id: number;
+    harga_jual: number;
+    satuan_id: number;
+    produk_kode: string;
+    status: number;
+    jumlah: string;
+    jumlah_satuan_utama: string;
+    satuan: string;
+}
+
+export interface TransactionResultProps {
+    kode: string;
+    tanggal: string;
+    status: number;
+    jumlah: number;
+    dibayar: number;
+    kembalian: number;
+    diskon: number;
+    is_tagihan_awal: number;
+    keterangan: string;
+    pengembalian_id?: number;
+    status_kasir: number;
+    pasien: string;
+    asuransi: number;
+    detail_transaksi: TransactionDetailResultProps[];
+}
+
+export interface TransactionDetailResultProps {
+    id: number;
+    jumlah: string;
+    jumlah_utama: number;
+    harga: number;
+    satuan_id: number;
+    produk_kode: string;
+    transaksi_kode: string;
+    produk: string;
+    satuan: string;
+    diskon: number;
+    foto: string;
+    checked: boolean;
+    qty: number;
+}
+
+export interface QueueResultProps {
+    dokter: string,
+    kode_transaksi: string,
+    no_identitas: string,
+    pasien: string,
+    id: number,
+    asuransi: string,
+    jumlah_asuransi: number,
+}
+
+
+
+export interface ServiceResultProps {
+    harga: number
+    id: number
+    layanan: string
+}
+
+export interface ReturnResultProps {
+    transaksi_kode: string;
+    tanggal: string;
+    jumlah: number;
+    id: number;
+    detail_pengembalian: ProductReturnResultProps[];
+}
+
+export interface ProductReturnResultProps {
+    id: number;
+    jumlah: number;
+    harga: number;
+    pengembalian_id: number;
+    produk_kode: string;
+    satuan_id: number;
+    produk: string;
+    foto: string;
+    satuan: string;
+}
+
+
+export interface SettingResultProps {
+    id: number;
+    nama: string;
+    no_hp: string;
+    alamat: string;
+    logo: string;
+    footer: string;
+}
+

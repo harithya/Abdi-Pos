@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import color from "./color";
 import constant from "./constant";
 import font from "./font";
@@ -131,6 +131,12 @@ const theme = StyleSheet.create({
         marginTop: -100,
         justifyContent: "center",
         alignItems: "center"
+    },
+    flatlist: {
+        height: Dimensions.get("window").height
+    },
+    section: {
+        marginBottom: constant.container
     }
 })
 

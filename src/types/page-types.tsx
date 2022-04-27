@@ -1,4 +1,5 @@
-import { PattientScreenProps, QueueScreenProps } from "@types";
+import { CartProps, TransactionResultProps } from "@types";
+
 
 type RootStackList = {
     Splash: undefined,
@@ -7,17 +8,28 @@ type RootStackList = {
     Home: undefined,
     ProfileEdit: undefined,
     PasswordEdit: undefined,
-    Queues: QueueScreenProps,
-    Organ: undefined,
-    Medicine: undefined,
-    Finish: undefined,
-    MedicalRecord: PattientScreenProps,
-    Patient: PattientScreenProps,
-    Identity: PattientScreenProps,
-    PersonResponsible: PattientScreenProps,
-    MedicalRecordDetail: PattientScreenProps,
-    VitalSignMonitoring: PattientScreenProps,
-    Information: undefined
+    Cart: undefined,
+    Customer: { withSelect?: boolean },
+    CartShow: { data: CartProps },
+    Checkout: undefined,
+    Finish: { kode: string },
+    Barcode: undefined,
+    CustomerImport: undefined,
+    CustomerCreate: {
+        id?: number
+    },
+    Product: undefined,
+    Transaction: undefined,
+    TransactionShow: { kode: string },
+    Return: { data: TransactionResultProps },
+    Setting: undefined,
+    Layout: undefined,
+    Receipt: undefined,
+    Printer: undefined,
+    Queue: undefined,
+    QueueShow: { id: number },
+    ReturnShow: { kode: string },
+    QueueFinish: { kode: string }
 }
 
 
