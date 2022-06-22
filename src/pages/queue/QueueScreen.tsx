@@ -6,7 +6,7 @@ import { PaginationProps, QueueResultProps, PageProps, SearchStateProps } from '
 import { State } from 'src/redux/reducer'
 import { useInfiniteQuery } from 'react-query'
 import { useSelector } from 'react-redux'
-import { theme } from '@utils'
+import { helper, theme } from '@utils'
 import { BottomNavigation, BottomNavigationTab, Text } from '@ui-kitten/components'
 
 const QueueScreen: FC<PageProps> = ({ navigation }) => {
@@ -70,11 +70,18 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
                         /> :
                         <React.Fragment key={item.current_page}>
                             {item.data?.map((newData: QueueResultProps) =>
-                                <List
+                                tabActive ? <List
+                                    key={newData.id}
+                                    title={newData.kode_transaksi}
+                                    subtitle={newData.pasien}
+                                    rightValue={helper.date(newData.tanggal_transaksi)}
+                                    onPress={() => handleNavigate(newData)}
+                                /> : <List
                                     key={newData.id}
                                     title={newData.pasien}
                                     onPress={() => handleNavigate(newData)}
-                                />)}
+                                />
+                            )}
                         </React.Fragment>
                 }
             />

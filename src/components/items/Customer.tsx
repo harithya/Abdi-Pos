@@ -19,7 +19,7 @@ const Customer: FC<Props> = ({ data, onPress }) => {
                     </View>
                     <View>
                         <Text>{data.nama}</Text>
-                        <Text appearance={"hint"} category="c1">{data.no_hp}</Text>
+                        <Text appearance={"hint"} category="c1">{data.no_hp ?? '-'}</Text>
                     </View>
                 </View>
             </TouchableRipple>
