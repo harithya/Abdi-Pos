@@ -25,7 +25,9 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
     }
 
     const { data, isLoading, isSuccess } = useQuery(['transactionDetail', route.params.kode],
-        () => fetchData(route.params.kode));
+        () => fetchData(route.params.kode), {
+        cacheTime: 0
+    });
 
 
     const returnAction = () => {

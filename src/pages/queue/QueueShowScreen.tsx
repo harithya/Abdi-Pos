@@ -19,7 +19,9 @@ const fetchData = async (id: number) => {
 const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
 
     const { data, isLoading, isSuccess } = useQuery(["queueShow", route.params.id],
-        () => fetchData(route.params.id));
+        () => fetchData(route.params.id), {
+        cacheTime: 0
+    });
 
     const queueCartState: CartStateProps = useSelector((state: State) => state.queueCart);
     const dispatch = useDispatch();
