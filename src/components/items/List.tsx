@@ -26,9 +26,9 @@ const List: FC<Props> = (props) => {
                     <View style={[theme.flex1, theme.flexBetween]}>
                         <View>
                             <Text>{props.title}</Text>
-                            {props.subtitle && <Text appearance={"hint"} category="c1">{props.subtitle}</Text>}
+                            {props.subtitle && <Text appearance={"hint"} style={theme.marginTop5} category="c1">{props.subtitle}</Text>}
                         </View>
-                        {props.rightValue && <Text>{props.rightValue}</Text>}
+                        {props.rightValue && <Text category={'c1'} appearance="hint">{props.rightValue}</Text>}
                     </View>
                 </View>
             </TouchableRipple>

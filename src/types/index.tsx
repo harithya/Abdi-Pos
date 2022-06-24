@@ -212,6 +212,7 @@ export interface QueueResultProps {
     id: number,
     asuransi: string,
     jumlah_asuransi: number,
+    tanggal_transaksi: string
 }
 
 

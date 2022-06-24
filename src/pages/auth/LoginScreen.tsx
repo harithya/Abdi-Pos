@@ -13,7 +13,8 @@ const LoginScreen: FC<PageProps> = (props) => {
     const [data, setData] = useState({
         username: '',
         password: '',
-        token: ''
+        token: '',
+        user_agent: "abdi-pos-app"
     })
     const [error, setError] = useState<any>([])
     const [loading, setLoading] = useState(false)

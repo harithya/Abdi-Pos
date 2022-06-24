@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { DetailLayout, Input } from '@components'
 import { constant, helper, theme } from '@utils'
@@ -47,6 +47,10 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
             subTotal: helper.getTotalCart(),
             customerId: customerState.data?.id ?? null
         }
+        if (!customerState.data?.id && paid < helper.getTotalCart()) {
+            Alert.alert("Peringatan", "Pembayaran harus lunas")
+            return { data: { status: false } }
+        }
         const req = http.post("/transaksi", data);
         return req;
     }
@@ -55,10 +59,12 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
 
 
     const mutaion = useMutation(postCheckout, {
-        onSuccess: (res) => {
-            dispatch(removeCustomer());
-            dispatch(emptySalesCart());
-            navigation.replace("Finish", { kode: res.data.result.kode });
+        onSuccess: (res: any) => {
+            if (res.data.status) {
+                navigation.replace("Finish", { kode: res.data.result.kode });
+                dispatch(removeCustomer());
+                dispatch(emptySalesCart());
+            }
         },
         onError: () => {
             ToastAndroid.show("Gagal melakukan transaksi", ToastAndroid.SHORT);
