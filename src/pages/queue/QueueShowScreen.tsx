@@ -2,14 +2,14 @@ import { ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { FC, useState, useEffect } from 'react'
 import { BottomSheet, DetailLayout, Input, Item, Section, Radio, ProductQueue } from '@components'
 import { color, constant, helper, theme } from '@utils'
-import { Button, Icon, Text } from '@ui-kitten/components'
+import { Button, Icon } from '@ui-kitten/components'
 import { CartProps, CartStateProps, PageProps, ProductResultProps, ServiceResultProps } from '@types'
 import { SheetManager } from 'react-native-actions-sheet'
 import { http } from '@services'
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
-import { addQueueCart } from 'src/redux/actions/queueCartAction'
+import { addQueueCart, emptyQueueCart } from 'src/redux/actions/queueCartAction'
 import QueueEditCart from './QueueEditCart'
 
 const fetchData = async (id: number) => {
@@ -40,6 +40,7 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
     const [cartSelected, setcartSelected] = useState<CartProps>(queueCartState.data[0] ?? []);
 
     useEffect(() => {
+        dispatch(emptyQueueCart())
         if (isSuccess && queueCartState.data.length === 0) {
             data.resep.map((val: ProductResultProps) => {
                 dispatch(addQueueCart(val))
