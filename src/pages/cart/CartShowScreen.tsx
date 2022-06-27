@@ -63,7 +63,6 @@ const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
         navigation.goBack()
     }
 
-
     const handleDeleteCart = () => {
         dispatch(deleteSalesCart(route.params.data.id));
         navigation.goBack()
@@ -71,7 +70,6 @@ const CartShowScreen: FC<PageProps<'CartShow'>> = ({ navigation, route }) => {
 
     return (
         <DetailLayout title={route.params.data.name} back>
-            {/* <Cart /> */}
             <View style={styles.container}>
                 <Input
                     placeholder='Harga'
@@ -132,7 +130,6 @@ export default CartShowScreen
 
 const styles = StyleSheet.create({
     input: {
-        // ...theme.flex1,
         ...theme.marginBottom0,
         width: "49%"
     },

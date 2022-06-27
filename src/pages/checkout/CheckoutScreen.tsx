@@ -6,7 +6,7 @@ import { Button, Divider, Text } from '@ui-kitten/components'
 import { CartStateProps, CustomerStateProps, PageProps } from '@types'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { http } from '@services'
 import { removeCustomer } from 'src/redux/actions/customerAction'
 import { emptySalesCart } from 'src/redux/actions/salesCartAction'
@@ -47,10 +47,27 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
             subTotal: helper.getTotalCart(),
             customerId: customerState.data?.id ?? null
         }
+
+        let error = 0;
+        saleCartState.data.map((val) => {
+            const unit = val.priceList.find((x) => x.satuan_id === val.unit.id);
+            const qty = val.qty * parseInt(unit?.jumlah_satuan_utama ?? '0');
+            const stock = val.stok // dalam satuan pcs
+            if (qty > stock) {
+                ToastAndroid.show(`Stok ${val.name} tidak mencukupi`, ToastAndroid.SHORT);
+                error += 1;
+            }
+        })
+
+        if (error > 0) {
+            return { data: { status: false } }
+        }
+
         if (!customerState.data?.id && paid < helper.getTotalCart()) {
             Alert.alert("Peringatan", "Pembayaran harus lunas")
             return { data: { status: false } }
         }
+
         const req = http.post("/transaksi", data);
         return req;
     }
@@ -59,8 +76,9 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
 
 
     const mutaion = useMutation(postCheckout, {
-        onSuccess: (res: any) => {
+        onSuccess: async (res: any) => {
             if (res.data.status) {
+                await queryClient.prefetchInfiniteQuery(["product", "", 0]);
                 navigation.replace("Finish", { kode: res.data.result.kode });
                 dispatch(removeCustomer());
                 dispatch(emptySalesCart());
@@ -71,6 +89,7 @@ const CheckoutScreen: FC<PageProps> = ({ navigation }) => {
         }
     })
 
+    const queryClient = useQueryClient();
     return (
         <DetailLayout title='Checkout' back loading={mutaion.isLoading}>
             <ScrollView contentContainerStyle={styles.scroll}>
