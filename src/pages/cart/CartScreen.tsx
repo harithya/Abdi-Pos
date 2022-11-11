@@ -40,6 +40,7 @@ const CartScreen: FC<Props> = ({ disableLayout }) => {
                 {salesCartState.data.length > 0 ?
                     <SwipeListView
                         data={salesCartState.data}
+                        contentContainerStyle={{ paddingBottom: 200 }}
                         keyExtractor={(val) => val.id.toString()}
                         renderItem={({ item }) => <Cart key={`cart-${item.id}`} data={item} />}
                         renderHiddenItem={(data, rowMap) => <DeleteSwipe onPress={() => deleteById(data.item.id)} />}

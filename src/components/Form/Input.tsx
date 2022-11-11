@@ -23,7 +23,11 @@ const Input: FC<Props> = (props) => {
             <View style={[styles.formInput, props.error ? styles.error : {}, props.style]}>
                 <View style={styles.content}>
                     {props.leftIcon &&
-                        <Icon fill={color.font} name={props.leftIcon} style={[styles.icon, styles.iconLeft]} />}
+                        <Icon
+                            fill={color.font}
+                            name={props.leftIcon}
+                            style={[styles.icon, styles.iconLeft]}
+                        />}
                     <TextInput
                         {...props}
                         style={[styles.input, props.textArea && styles.textArea]}

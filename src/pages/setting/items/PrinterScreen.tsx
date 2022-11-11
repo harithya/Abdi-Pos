@@ -1,4 +1,4 @@
-import { ToastAndroid, FlatList } from 'react-native'
+import { ToastAndroid, FlatList, PermissionsAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { DetailLayout, Empty, List } from '@components'
 import {
@@ -20,7 +20,16 @@ const PrinterScreen = () => {
         const fetchBleManager = async () => {
             setLoading(true)
             try {
-                const permission = await helper.requestPermissionBluetooth();
+                const permission = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+                    {
+                        title: "Location Permission",
+                        message: "This app needs access to your location ",
+                        buttonNeutral: "Ask Me Later",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
                 if (permission) {
                     await BLEPrinter.init()
                     const bluetooth = await BLEPrinter.getDeviceList();
@@ -28,7 +37,8 @@ const PrinterScreen = () => {
                 } else {
                     ToastAndroid.show('Permission not granted', ToastAndroid.SHORT)
                 }
-            } catch (error) {
+            } catch (error: any) {
+                console.log(error);
                 ToastAndroid.show("Mohon nyalakan bluetooth", ToastAndroid.SHORT)
             }
             setLoading(false)

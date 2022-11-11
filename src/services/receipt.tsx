@@ -11,31 +11,46 @@ const receipt = {
             const req = await BLEPrinter.connectPrinter(store.getState().bluetooth.data.inner_mac_address)
             if (req) {
                 let setting: SettingStateProps = store.getState().setting
+                const line = `------------------------------------------------`;
+                // const line = `------------------------------------`;
                 let design =
                     `<C>${setting.data.name}</C>\n` +
                     `<C>${setting.data.adress}</C>\n` +
-                    `<C>--------------------------------</C>\n\n` +
+                    `<C>${line}</C>\n\n` +
                     `No.Transaksi : ${data.kode}\n` +
                     `Pelanggan    : ${data.pasien !== null ? data.pasien.substring(0, 12) + '...' : '-'}\n` +
                     `Tanggal      : ${helper.date(data.tanggal)}\n` +
-                    `<C>--------------------------------</C>\n\n`;
+                    `<C>${line}</C>\n\n`;
 
                 data.detail_transaksi.map((val: TransactionDetailResultProps) => {
-                    design += `${val.produk}\n` +
-                        `${parseInt(val.jumlah)} ${val.satuan} x ${helper.formatNumber(val.harga, false)} ,  <R>${helper.formatNumber(val.harga * parseInt(val.jumlah), false)}</R>\n` +
-                        `Diskon: ${helper.formatNumber(val.diskon, false)}\n\n`;
+                    let produk = ''
+                    if (val.produk.length > 24) {
+                        produk = val.produk.substring(0, 18) + '...';
+                    } else {
+                        produk = val.produk;
+                    }
+                    const autoSpace = ' '.repeat(24 - produk.length);
+
+                    if (val.diskon > 0) {
+                        design += `${produk}${autoSpace}` +
+                            `${parseInt(val.jumlah)} ${val.satuan} x ${helper.formatNumber(val.harga, false)} ,  ${helper.formatNumber(val.harga * parseInt(val.jumlah), false)}\n`;
+                        design += `Diskon : ${helper.formatNumber(val.diskon, false)}\n\n`;
+                    } else {
+                        design += `${produk}${autoSpace}` +
+                            `${parseInt(val.jumlah)} ${val.satuan} x ${helper.formatNumber(val.harga, false)} ,  ${helper.formatNumber(val.harga * parseInt(val.jumlah), false)}\n\n`;
+                    }
                 })
-                design += `<C>--------------------------------</C>\n\n` +
+                design += `<C>${line}</C>\n\n` +
                     `Total       : ${helper.formatNumber(data.jumlah)}\n` +
                     `Diskon      : ${helper.formatNumber(data.diskon)}\n` +
                     `Bayar       : ${helper.formatNumber(data.dibayar)}\n` +
                     `Kembali     : ${helper.formatNumber(data.kembalian)}\n` +
-                    `<C>--------------------------------</C>\n\n` +
+                    `<C>${line}</C>\n\n` +
                     `<C>${setting.data.footer}</C>\n`;
                 BLEPrinter.printBill(design)
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
             ToastAndroid.show("Opps printer tidak terhubung", ToastAndroid.SHORT);
         }
 

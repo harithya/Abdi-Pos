@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Alert } from 'react-native'
+import { View, Image, StyleSheet, Alert, AsyncStorage } from 'react-native'
 import React, { useState } from 'react'
 import { theme } from '@utils'
 import { Divider, Text } from '@ui-kitten/components'
@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { ScrollView } from 'react-native-gesture-handler'
 import { http } from '@services'
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Sidebar = () => {
     const navigation: useNavigationProps = useNavigation();

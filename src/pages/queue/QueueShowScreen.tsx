@@ -59,7 +59,8 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
             total += val.qty * val.price;
         })
         data.layanan.map((val: ServiceResultProps) => {
-            total += val.harga;
+            // @ts-ignore
+            total += parseInt(val.harga);
         })
 
         total -= data.antrian.jumlah_asuransi ?? 0;
