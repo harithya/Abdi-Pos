@@ -22,6 +22,7 @@ const receipt = {
                     `Tanggal      : ${helper.date(data.tanggal)}\n` +
                     `<C>${line}</C>\n\n`;
 
+                let totalDiskon = 0;
                 data.detail_transaksi.map((val: TransactionDetailResultProps) => {
                     let produk = ''
                     if (val.produk.length > 24) {
@@ -33,16 +34,18 @@ const receipt = {
 
                     if (val.diskon > 0) {
                         design += `${produk}${autoSpace}` +
-                            `${parseInt(val.jumlah)} ${val.satuan} x ${helper.formatNumber(val.harga, false)} ,  ${helper.formatNumber(val.harga * parseInt(val.jumlah), false)}\n`;
+                            `${parseInt(val.jumlah)} ${val.satuan} x ${helper.formatNumber(val.harga - val.diskon, false)} ,  ${helper.formatNumber((val.harga - val.diskon) * parseInt(val.jumlah), false)}\n`;
                         design += `Diskon : ${helper.formatNumber(val.diskon, false)}\n\n`;
                     } else {
                         design += `${produk}${autoSpace}` +
                             `${parseInt(val.jumlah)} ${val.satuan} x ${helper.formatNumber(val.harga, false)} ,  ${helper.formatNumber(val.harga * parseInt(val.jumlah), false)}\n\n`;
                     }
+
+                    totalDiskon += val.diskon * parseInt(val.jumlah);
                 })
                 design += `<C>${line}</C>\n\n` +
-                    `Total       : ${helper.formatNumber(data.jumlah)}\n` +
-                    `Diskon      : ${helper.formatNumber(data.diskon)}\n` +
+                    `Total       : ${helper.formatNumber(data.jumlah - totalDiskon)}\n` +
+                    `Diskon      : ${helper.formatNumber(totalDiskon)}\n` +
                     `Bayar       : ${helper.formatNumber(data.dibayar)}\n` +
                     `Kembali     : ${helper.formatNumber(data.kembalian)}\n` +
                     `<C>${line}</C>\n\n` +
@@ -50,7 +53,6 @@ const receipt = {
                 BLEPrinter.printBill(design)
             }
         } catch (error) {
-            console.log(error)
             ToastAndroid.show("Opps printer tidak terhubung", ToastAndroid.SHORT);
         }
 

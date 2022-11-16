@@ -45,11 +45,12 @@ const QueueScreen: FC<PageProps> = ({ navigation }) => {
         }
     }
 
+
     const handleNavigate = (val: QueueResultProps) => {
         if (tabActive === 0) {
             navigation.navigate('QueueShow', { id: val.id })
         } else {
-            navigation.navigate('QueueFinish', { kode: val.kode_transaksi })
+            navigation.navigate('QueueFinish', { kode: val.kode_transaksi, id: val.id })
         }
     }
 

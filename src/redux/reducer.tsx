@@ -8,6 +8,7 @@ import salesCartReducer from "./reducers/salesCartReducer";
 import bluetoothReducer from "./reducers/bluetoothReducer";
 import queueCartReducer from "./reducers/queueCartReducer";
 import settingReducer from "./reducers/settingReducer";
+import printerReducer from "./reducers/printerReducer";
 
 const reducer = combineReducers({
     layout: layoutReducer,
@@ -18,7 +19,8 @@ const reducer = combineReducers({
     salesCart: salesCartReducer,
     bluetooth: bluetoothReducer,
     queueCart: queueCartReducer,
-    setting: settingReducer
+    setting: settingReducer,
+    printer: printerReducer
 })
 
 export default reducer;

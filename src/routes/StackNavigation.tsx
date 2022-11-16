@@ -18,6 +18,7 @@ import {
     QueueFinishScreen,
     QueueScreen,
     QueueShowScreen,
+    ReceiptLayoutScreen,
     ReceiptScreen,
     ReturnScreen,
     ReturnShowScreen,
@@ -60,6 +61,7 @@ const StackNavigation = () => {
             <Stack.Screen name="QueueShow" component={QueueShowScreen} />
             <Stack.Screen name="ReturnShow" component={ReturnShowScreen} />
             <Stack.Screen name="QueueFinish" component={QueueFinishScreen} />
+            <Stack.Screen name="ReceiptLayout" component={ReceiptLayoutScreen} />
 
         </Stack.Navigator>
     )

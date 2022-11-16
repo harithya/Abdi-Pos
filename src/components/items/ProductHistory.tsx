@@ -14,11 +14,11 @@ const ProductHistory: FC<Props> = ({ data }) => {
                 <View>
                     <Text>{data.produk}</Text>
                     <Text appearance={"hint"} category="c1" style=
-                        {theme.marginTop10}>{parseInt(data.jumlah)} {data.satuan},
-                        Diskon : {helper.formatNumber(data.harga)}
+                        {theme.marginTop10}>{parseInt(data.jumlah)} {data.satuan}
+                        {data.diskon > 0 ? `, Diskon : ${helper.formatNumber(data.diskon)}` : ''}
                     </Text>
                 </View>
-                <Text>{helper.formatNumber(data.harga * parseInt(data.jumlah))}</Text>
+                <Text>{helper.formatNumber((data.harga - data.diskon) * parseInt(data.jumlah))}</Text>
             </View>
         </View>
     )

@@ -91,7 +91,7 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
     const transactionMutate = useMutation(postTransaction, {
         onSuccess: () => {
             ToastAndroid.show("Transaksi berhasil", ToastAndroid.SHORT);
-            navigation.replace("QueueFinish", { kode: data.antrian.kode_transaksi });
+            navigation.replace("QueueFinish", { kode: data.antrian.kode_transaksi, id: route.params.id });
             queryClient.refetch();
         },
         onError: (err) => {

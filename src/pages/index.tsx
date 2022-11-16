@@ -23,6 +23,7 @@ import QueueScreen from "./queue/QueueScreen";
 import QueueShowScreen from "./queue/QueueShowScreen";
 import ReturnShowScreen from "./return/ReturnShowScreen";
 import QueueFinishScreen from "./queue/QueueFinishScreen";
+import ReceiptLayoutScreen from "./setting/items/ReceiptLayoutScreen";
 
 export {
     SplashScreen,
@@ -49,5 +50,6 @@ export {
     QueueScreen,
     QueueShowScreen,
     ReturnShowScreen,
-    QueueFinishScreen
+    QueueFinishScreen,
+    ReceiptLayoutScreen
 }

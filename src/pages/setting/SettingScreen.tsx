@@ -43,11 +43,17 @@ const SettingScreen: FC<PageProps> = ({ navigation }) => {
                 onPress={() => navigation.navigate("Printer")}
             />
             <Item
-                title='Struk'
-                icon='receipt'
+                title='Informasi'
+                icon='page-layout-header-footer'
                 subtitle='Header stuk, footer struk, informasi klinik'
                 onPress={() => navigation.navigate("Receipt")}
             />
+            {/* <Item
+                title='Struk'
+                icon='receipt'
+                subtitle='Ukuran printer dan layout struk'
+                onPress={() => navigation.navigate("ReceiptLayout")}
+            /> */}
         </DetailLayout>
     )
 }

@@ -7,7 +7,7 @@ import { AsyncStorage } from "react-native";
 const persistConfig: any = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['bluetooth', 'layout']
+    whitelist: ['bluetooth', 'layout', 'printer']
 }
 
 const persistedReducer = persistReducer<State>(persistConfig, reducer);
