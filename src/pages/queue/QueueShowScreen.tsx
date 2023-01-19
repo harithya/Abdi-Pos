@@ -100,7 +100,7 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
     })
 
     return (
-        <DetailLayout title='Detail' back loading={isLoading || transactionMutate.isLoading}>
+        <DetailLayout title='Detail Antrian' back loading={isLoading || transactionMutate.isLoading}>
             {isSuccess && <ScrollView contentContainerStyle={styles.container}>
                 <Section title='Informasi Antrian' style={styles.section}>
                     <Item title='Nama Lengkap' value={data.antrian.pasien} />

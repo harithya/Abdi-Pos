@@ -1,4 +1,4 @@
-import { ToastAndroid, FlatList, PermissionsAndroid } from 'react-native'
+import { ToastAndroid, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { DetailLayout, Empty, List } from '@components'
 import {
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setBluetooth } from 'src/redux/actions/bluetoothAction';
 import { BluetoothStateProps } from '@types';
 import { State } from 'src/redux/reducer';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 const PrinterScreen = () => {
     const [deviceList, setDeviceList] = useState<IBLEPrinter[]>([])
@@ -20,17 +21,9 @@ const PrinterScreen = () => {
         const fetchBleManager = async () => {
             setLoading(true)
             try {
-                const permission = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
-                    {
-                        title: "Location Permission",
-                        message: "This app needs access to your location ",
-                        buttonNeutral: "Ask Me Later",
-                        buttonNegative: "Cancel",
-                        buttonPositive: "OK"
-                    }
-                );
-                if (permission) {
+                const bluetootConnect = await request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT);
+                const bluetoothScan = await request(PERMISSIONS.ANDROID.BLUETOOTH_SCAN);
+                if (bluetootConnect == "granted" && bluetoothScan == "granted") {
                     await BLEPrinter.init()
                     const bluetooth = await BLEPrinter.getDeviceList();
                     setDeviceList(bluetooth);
@@ -38,7 +31,6 @@ const PrinterScreen = () => {
                     ToastAndroid.show('Permission not granted', ToastAndroid.SHORT)
                 }
             } catch (error: any) {
-                console.log(error);
                 ToastAndroid.show("Mohon nyalakan bluetooth", ToastAndroid.SHORT)
             }
             setLoading(false)

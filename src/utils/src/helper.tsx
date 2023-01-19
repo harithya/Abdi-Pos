@@ -126,7 +126,9 @@ const helper = {
         const cart = store.getState().salesCart.data;
         let total = 0;
         cart.forEach((item: CartProps) => {
-            total += item.qty * (item.price - item.discount);
+            if (item.price) {
+                total += item.qty * (item.price - item.discount);
+            }
         })
         return total;
     },
