@@ -4,7 +4,7 @@ import { BottomSheet, DetailLayout, List, ProductHistory, Section, Item } from '
 import { color, constant, helper, theme } from '@utils'
 import { Button, Icon } from '@ui-kitten/components'
 import { SheetManager } from 'react-native-actions-sheet'
-import { PageProps, TransactionDetailResultProps, TransactionResultProps } from '@types'
+import { PageProps, TransactionDetailResultProps } from '@types'
 import RootStackList from 'src/types/page-types'
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
 import { http, receipt } from '@services'
@@ -65,6 +65,14 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
         }
     })
 
+    const getTotalDiskon = () => {
+        let total = 0;
+        data?.detail_transaksi.forEach((item: TransactionDetailResultProps) => {
+            total += item.diskon * parseInt(item.jumlah)
+        })
+        return total;
+    }
+
     return (
         <DetailLayout title='Detail' loading={isLoading || cancleMutation.isLoading} back>
             {isSuccess && <>
@@ -82,8 +90,8 @@ const TransactionShowScreen: FC<PageProps<'TransactionShow'>> = ({ navigation, r
                     </Section>
                     <Section title='Total Transaksi' style={styles.section}>
                         <View style={styles.product}>
-                            <Item title='Sub Total' value={helper.formatNumber(data.jumlah)} />
-                            <Item title='Diskon' value={helper.formatNumber(data.diskon)} />
+                            <Item title='Sub Total' value={helper.formatNumber(data.jumlah - getTotalDiskon())} />
+                            <Item title='Diskon' value={helper.formatNumber(getTotalDiskon())} />
                             <Item title='Dibayarkan' value={helper.formatNumber(data.dibayar)} />
                             <Item title='Kembalian' value={helper.formatNumber(data.kembalian)} />
                         </View>

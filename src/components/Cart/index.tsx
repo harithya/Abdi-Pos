@@ -29,7 +29,6 @@ const Cart: FC<Props> = ({ data }) => {
                     </View>
                 </View>
             </TouchableRipple>
-            <Divider />
         </>
     )
 }

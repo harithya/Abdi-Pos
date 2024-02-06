@@ -1,6 +1,6 @@
 import axios from "axios";
 import { constant } from "@utils";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from 'react-native'
 
 const http = axios.create({
     baseURL: constant.baseUrl,

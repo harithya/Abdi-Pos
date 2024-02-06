@@ -2,12 +2,12 @@ import { createStore, applyMiddleware } from "redux";
 import reducer, { State } from "./reducer";
 import thunk from "redux-thunk";
 import { persistStore, persistReducer } from 'redux-persist'
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "react-native";
 
 const persistConfig: any = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['bluetooth', 'layout']
+    whitelist: ['bluetooth', 'layout', 'printer']
 }
 
 const persistedReducer = persistReducer<State>(persistConfig, reducer);

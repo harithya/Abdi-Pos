@@ -35,7 +35,7 @@ const Product: FC<Props> = ({ data, layout, onPress, cart }) => {
                 <View style={styles.main}>
                     <View style={styles.item}>
                         <View style={styles.container}>
-                            <Image source={{ uri: data.foto }} style={styles.img} />
+                            <Image source={{ uri: `https://ui-avatars.com/api/?background=50D4B4&color=fff&font-size=${layout == "list" ? '0.33' : '0.22'}&name=${data.nama}` }} style={styles.img} />
                             <View style={styles.body}>
                                 <Text category={"p2"} numberOfLines={(layout == "list") ? 1 : 2}>{data.nama}</Text>
                                 <View style={[theme.flexBetween, styles.footer]}>

@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Alert } from 'react-native'
+import { View, Image, StyleSheet, Alert, AsyncStorage } from 'react-native'
 import React, { useState } from 'react'
 import { theme } from '@utils'
 import { Divider, Text } from '@ui-kitten/components'
@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 import { State } from 'src/redux/reducer'
 import { ScrollView } from 'react-native-gesture-handler'
 import { http } from '@services'
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Sidebar = () => {
     const navigation: useNavigationProps = useNavigation();
@@ -40,10 +39,10 @@ const Sidebar = () => {
     return (
         <ScrollView scrollsToTop={false} showsVerticalScrollIndicator={false}>
             <View style={styles.profile}>
-                <Image source={{ uri: authState.avatar }} style={styles.img} />
-                <View>
-                    <Text style={theme.fontSemiBold} numberOfLines={1}>{authState.name}</Text>
-                    <Text category={'p2'} style={theme.marginTop5} appearance='hint'>Kasir</Text>
+                <Image source={{ uri: `https://ui-avatars.com/api/?background=50D4B4&color=fff&font-size=0.33&name=${authState.name}` }} style={styles.img} />
+                <View style={theme.toCenter}>
+                    <Text style={[theme.fontSemiBold]} numberOfLines={1}>{authState.name}</Text>
+                    <Text category={'p2'} style={[theme.marginTop5, theme.textCenter]} appearance='hint'>Kasir Arfan Medika</Text>
                 </View>
             </View>
             <Divider />
@@ -98,14 +97,15 @@ const styles = StyleSheet.create({
     },
     profile: {
         ...theme.content,
+        ...theme.toCenter,
         marginBottom: 0,
         marginTop: 30
     },
     img: {
-        height: 70,
-        width: 70,
+        height: 80,
+        width: 80,
         borderRadius: 50,
-        marginBottom: 20
+        marginBottom: 10
     },
     section: {
         marginVertical: 16

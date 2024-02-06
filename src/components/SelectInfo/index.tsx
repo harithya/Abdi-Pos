@@ -18,7 +18,8 @@ const SelectInfo: FC<Props> = ({ value, total, onPress }) => {
                         <Icon name='cart' fill={color.white} style={styles.icon} />
                         <Text status={"control"} style={theme.fontSemiBold}>{value}  Item</Text>
                     </View>
-                    {total && <Text status={"control"} style={theme.fontSemiBold}>{helper.formatNumber(total)}</Text>}
+                    {/* @ts-ignore */}
+                    {total !== '' && <Text status={"control"} style={theme.fontSemiBold}>{helper.formatNumber(total)}</Text>}
                 </View>
             </TouchableRipple>
         </View>

@@ -253,3 +253,11 @@ export interface SettingResultProps {
     footer: string;
 }
 
+export interface PrinterStateProps {
+    data: PrinterProps
+}
+
+export interface PrinterProps {
+    size: number,
+    layout: number,
+}

@@ -29,7 +29,8 @@ type RootStackList = {
     Queue: undefined,
     QueueShow: { id: number },
     ReturnShow: { kode: string },
-    QueueFinish: { kode: string }
+    QueueFinish: { kode: string, id: number },
+    ReceiptLayout: undefined
 }
 
 

@@ -59,7 +59,8 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
             total += val.qty * val.price;
         })
         data.layanan.map((val: ServiceResultProps) => {
-            total += val.harga;
+            // @ts-ignore
+            total += parseInt(val.harga);
         })
 
         total -= data.antrian.jumlah_asuransi ?? 0;
@@ -90,7 +91,7 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
     const transactionMutate = useMutation(postTransaction, {
         onSuccess: () => {
             ToastAndroid.show("Transaksi berhasil", ToastAndroid.SHORT);
-            navigation.replace("QueueFinish", { kode: data.antrian.kode_transaksi });
+            navigation.replace("QueueFinish", { kode: data.antrian.kode_transaksi, id: route.params.id });
             queryClient.refetch();
         },
         onError: (err) => {
@@ -99,7 +100,7 @@ const QueueShowScreen: FC<PageProps<'QueueShow'>> = ({ navigation, route }) => {
     })
 
     return (
-        <DetailLayout title='Detail' back loading={isLoading || transactionMutate.isLoading}>
+        <DetailLayout title='Detail Antrian' back loading={isLoading || transactionMutate.isLoading}>
             {isSuccess && <ScrollView contentContainerStyle={styles.container}>
                 <Section title='Informasi Antrian' style={styles.section}>
                     <Item title='Nama Lengkap' value={data.antrian.pasien} />

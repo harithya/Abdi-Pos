@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setBluetooth } from 'src/redux/actions/bluetoothAction';
 import { BluetoothStateProps } from '@types';
 import { State } from 'src/redux/reducer';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 const PrinterScreen = () => {
     const [deviceList, setDeviceList] = useState<IBLEPrinter[]>([])
@@ -20,15 +21,16 @@ const PrinterScreen = () => {
         const fetchBleManager = async () => {
             setLoading(true)
             try {
-                const permission = await helper.requestPermissionBluetooth();
-                if (permission) {
+                const bluetootConnect = await request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT);
+                const bluetoothScan = await request(PERMISSIONS.ANDROID.BLUETOOTH_SCAN);
+                if (bluetootConnect == "granted" && bluetoothScan == "granted") {
                     await BLEPrinter.init()
                     const bluetooth = await BLEPrinter.getDeviceList();
                     setDeviceList(bluetooth);
                 } else {
                     ToastAndroid.show('Permission not granted', ToastAndroid.SHORT)
                 }
-            } catch (error) {
+            } catch (error: any) {
                 ToastAndroid.show("Mohon nyalakan bluetooth", ToastAndroid.SHORT)
             }
             setLoading(false)

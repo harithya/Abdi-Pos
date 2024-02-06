@@ -24,10 +24,13 @@ const ProductQueue: FC<Props> = ({ data, onPress }) => {
                 <View style={styles.item}>
                     <View style={theme.flexStart}>
                         <View style={theme.flexStart}>
-                            <Image source={{ uri: data.img }} style={styles.img} />
+                            <View style={styles.qty}>
+                                <Text category="label" appearance='alternative' style={styles.textQty}>{data.qty}</Text>
+                            </View>
                             <View>
                                 <Text>{data.name}</Text>
-                                <Text appearance={"hint"} style={theme.marginTop5} category="c1">{`${data.qty} ${data.unit.name} x ${helper.formatNumber(data.price)}`}</Text>
+                                {/* <Text appearance={"hint"} style={theme.marginTop5} category="c1">{`${data.qty} ${data.unit.name} x ${helper.formatNumber(data.price)}`}</Text> */}
+                                <Text appearance={"hint"} style={theme.marginTop5} category="c1">Ket : {data.description ?? '-'}</Text>
                             </View>
                         </View>
                     </View>
@@ -58,5 +61,17 @@ const styles = StyleSheet.create({
     },
     checkbox: {
         marginRight: 20
+    },
+    qty: {
+        height: 50,
+        width: 50,
+        backgroundColor: color.primary,
+        ...theme.toCenter,
+        marginRight: 20,
+        borderRadius: 10,
+    },
+    textQty: {
+        fontWeight: "bold",
+        fontSize: 15
     }
 })

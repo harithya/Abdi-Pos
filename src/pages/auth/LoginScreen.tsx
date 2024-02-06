@@ -1,11 +1,10 @@
-import { Alert, StyleSheet, ToastAndroid, View } from 'react-native'
+import { Alert, StyleSheet, ToastAndroid, View, AsyncStorage } from 'react-native'
 import React, { FC, useState, useEffect } from 'react'
 import { AuthLayout, Input } from '@components'
 import { Button, Text } from '@ui-kitten/components'
 import { constant, theme } from '@utils'
 import { PageProps, UserResultProps } from '@types'
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch } from 'react-redux'
 import { setProfile } from '../../redux/actions/authAction'
 
